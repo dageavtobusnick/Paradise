@@ -1,7 +1,7 @@
 /obj/item/reagent_containers/food/snacks/bait
 	name = "worm"
 	ru_names = list(
-		NOMINATIVE = "червяк"
+		NOMINATIVE = "червяк",
 		ACCUSATIVE = "червяка"
 	) //actually, only two of them are actually used in game, so...
 	desc = "Тестовая наживка, если вы это видите, пингуйте зюзю."
@@ -21,7 +21,7 @@
 /obj/item/reagent_containers/food/snacks/bait/ash_eater
 	name = "ash eater"
 	ru_names = list(
-		NOMINATIVE = "пожиратель пепла"
+		NOMINATIVE = "пожиратель пепла",
 		ACCUSATIVE = "пожирателя пепла"
 	)
 	desc = "Маленький червячок со множеством невероятно острых зубов, покрывающим его ротовую полость. Ходят слухи, что эти крохи способны вырастать до размеров целого города. Пепел должен течь рекой."
@@ -31,7 +31,7 @@
 /obj/item/reagent_containers/food/snacks/bait/bloody_leach
 	name = "bloody leach"
 	ru_names = list(
-		NOMINATIVE = "кровавая пиявка"
+		NOMINATIVE = "кровавая пиявка",
 		ACCUSATIVE = "кровавую пиявку"
 	)
 	desc = "Паразитическая форма жизни Лазис Ардакса, которая цепляется к оголённым участкам кожи и питается своими жертвами. Её брюшко краснеет от количества выпитой ею крови."
@@ -41,7 +41,7 @@
 /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
 	name = "goldgrub larva"
 	ru_names = list(
-		NOMINATIVE = "личинка златожора"
+		NOMINATIVE = "личинка златожора",
 		ACCUSATIVE = "личинку златожора"
 	)
 	desc = "Небольшой червячок, который питается минералами, закопанными в пепле. Он так же пуглив, как и его более старшие сородичи."
@@ -51,7 +51,7 @@
 /obj/item/reagent_containers/food/snacks/charred_krill
 	name = "charred krill"
 	ru_names = list(
-		NOMINATIVE = "обугленная креветка"
+		NOMINATIVE = "обугленная креветка",
 		ACCUSATIVE = "обугленную креветку"
 	)
 	desc = "Одна из самых редких обиталей Лазис Ардакса, множество лет признанная вымершей. Эта креветка - одно из самых любимых угощений для местной \"подводной\" фауны."
@@ -69,7 +69,7 @@
 /obj/item/reagent_containers/food/snacks/charred_krill/can_be_pulled(atom/movable/user, force, show_message)
 	if(in_lava)
 		if(show_message)
-			to_chat(user, span_warning("[bait.declent_ru(NOMINATIVE)] почти утонула в лаве!"))
+			to_chat(user, span_warning("[declent_ru(NOMINATIVE)] почти утонула в лаве!"))
 			return
 
 /obj/item/reagent_containers/food/snacks/charred_krill/attack_hand(mob/user, pickupfireoverride)

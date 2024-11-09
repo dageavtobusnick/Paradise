@@ -44,7 +44,7 @@
 /obj/item/lavaland_fish
 	name = "generic lavaland fish"
 	ru_names = list(
-		NOMINATIVE = "рыба"
+		NOMINATIVE = "рыба",
 		ACCUSATIVE = "рыбу"
 	)
 	desc = "Вау, она такая... невпечатляющая!"
@@ -82,21 +82,45 @@
 	if(sharpness && user.a_intent == INTENT_HARM)
 		to_chat(user, "<span class='notice'>Вы начинаете разделывать [declent_ru(ACCUSATIVE)]...</span>")
 		playsound(loc, 'sound/weapons/slice.ogg', 50, 1, -1)
-		if(do_mob(user, src, 80 / sharpness) && Adjacent(I))
+		if(do_after(user, 6 SECONDS, src,) && Adjacent(I))
 			harvest(user)
 	return ..()
 
 /obj/item/lavaland_fish/proc/harvest(mob/user)
 	if(QDELETED(src))
 		return
-	for(var/i in 1 to butcher_results[path])
-		new path(loc)
+	for(var/path in butcher_loot)
+		for(var/i in 1 to butcher_loot[path])
+			new path(loc)
+		butcher_loot.Remove(path)
 	visible_message(span_notice("[user] успешно разделывает [declent_ru(ACCUSATIVE)]!"))
 	playsound(src.loc, 'sound/goonstation/effects/gib.ogg', 50, 1)
 	gibs(loc)
 	qdel(src)
 
-/obj/item/lavaland_fish/Moved(atom/OldLoc, Dir, Forced)
+/// Starts flopping animation
+/obj/item/lavaland_fish/proc/start_flopping()
+	if(flopping)  //Requires update_transform/animate_wrappers to be less restrictive.
+		return
+	flopping = TRUE
+	flop_animation(src)
+
+/// Stops flopping animation
+/obj/item/lavaland_fish/proc/stop_flopping()
+	if(flopping)
+		flopping = FALSE
+		animate(src, transform = matrix()) //stop animation
+
+/// Refreshes flopping animation after temporary animation finishes
+/obj/item/lavaland_fish/proc/on_temp_animation(datum/source, animation_duration)
+	if(animation_duration > 0)
+		addtimer(CALLBACK(src, PROC_REF(refresh_flopping)), animation_duration)
+
+/obj/item/lavaland_fish/proc/refresh_flopping()
+	if(flopping)
+		flop_animation(src)
+
+/obj/item/lavaland_fish/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	start_flopping()
 

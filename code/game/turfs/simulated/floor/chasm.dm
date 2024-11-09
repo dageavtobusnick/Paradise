@@ -121,7 +121,7 @@
 		return .|ATTACK_CHAIN_SUCCESS
 
 
-/turf/simulated/floor/chasm/proc/rod_checks(obj/item/twohanded/fishingrod/rod)
+/turf/simulated/floor/chasm/proc/rod_checks(obj/item/twohanded/fishing_rod/rod)
 	return HAS_TRAIT(rod, TRAIT_WIELDED)
 
 

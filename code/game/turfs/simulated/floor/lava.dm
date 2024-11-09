@@ -52,7 +52,7 @@
 		if(burn_stuff(AM))
 			START_PROCESSING(SSprocessing, src)
 
-/turf/simulated/floor/lava/krill_act(atom/movable/AM)
+/turf/simulated/floor/lava/proc/krill_act(atom/movable/AM)
 	var/obj/item/reagent_containers/food/snacks/charred_krill/krill = AM //yourself
 	var/datum/component/simple_fishing/fc = GetComponent(/datum/component/simple_fishing)
 	krill.in_lava = TRUE
@@ -216,7 +216,7 @@
 			for(var/i in 1 to 2)
 				var/fish = pick(fishable_list)
 				new fish(src)
-			qdel(C)
+			qdel(I)
 			return .|ATTACK_CHAIN_SUCCESS
 
 	if(istype(I, /obj/item/stack/fireproof_rods))
