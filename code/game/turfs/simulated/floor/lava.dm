@@ -46,8 +46,28 @@
 		START_PROCESSING(SSprocessing, src)
 
 /turf/simulated/floor/lava/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
-	if(burn_stuff(AM))
-		START_PROCESSING(SSprocessing, src)
+	if(istype(AM, /obj/item/reagent_containers/food/snacks/charred_krill))
+		krill_act(AM)
+	else
+		if(burn_stuff(AM))
+			START_PROCESSING(SSprocessing, src)
+
+/turf/simulated/floor/lava/krill_act(atom/movable/AM)
+	var/obj/item/reagent_containers/food/snacks/charred_krill/krill = AM //yourself
+	var/datum/component/simple_fishing/fc = GetComponent(/datum/component/simple_fishing)
+	krill.in_lava = TRUE
+	krill.anchored = TRUE	//no closet kidnaping
+	visible_message(span_warning("[krill] медленно тонет в лаве!"))
+	sleep(5 SECONDS)
+	qdel(krill)
+	if(!fc)
+		visible_message(span_warning("Но никто не пришёл."))
+		return
+	visible_message(span_warning("Неожиданно, из лавы выныривают две рыбы и разрывают [krill] на части!"))
+	var/list/fishable_list = fc.catchable_fish.Copy()
+	for(var/i in 1 to 2)
+		var/fish = pick(fishable_list)
+		new fish(src)
 
 /turf/simulated/floor/lava/process()
 	if(!burn_stuff())
@@ -181,6 +201,23 @@
 
 	if(ATTACK_CHAIN_CANCEL_CHECK(.))
 		return .
+
+	if(istype(I, /obj/item/reagent_containers/food/snacks/charred_krill))
+		to_chat(user, span_notice("Вы осторожно кладёте креветку на поверхность лавы.."))
+		if(do_after(user, 5 SECONDS, target = src))
+			if(QDELETED(C))
+				return .
+			var/datum/component/simple_fishing/fc = GetComponent(/datum/component/simple_fishing)
+			if(!fc)
+				to_chat(user, span_warning("Но никто не пришёл."))
+				return .
+			to_chat(user, span_notice("Неожиданно, из лавы выныривают две рыбы и разрывают [krill] на части!"))
+			var/list/fishable_list = fc.catchable_fish.Copy()
+			for(var/i in 1 to 2)
+				var/fish = pick(fishable_list)
+				new fish(src)
+			qdel(C)
+			return .|ATTACK_CHAIN_SUCCESS
 
 	if(istype(I, /obj/item/stack/fireproof_rods))
 		var/obj/item/stack/fireproof_rods/rods = I
