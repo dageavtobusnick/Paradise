@@ -1252,6 +1252,7 @@
 #include "code\game\objects\items\weapons\experimental_syringe_gun.dm"
 #include "code\game\objects\items\weapons\explosives.dm"
 #include "code\game\objects\items\weapons\extinguisher.dm"
+#include "code\game\objects\items\weapons\fishing_rod.dm"
 #include "code\game\objects\items\weapons\flamethrower.dm"
 #include "code\game\objects\items\weapons\garrote.dm"
 #include "code\game\objects\items\weapons\gift_wrappaper.dm"
