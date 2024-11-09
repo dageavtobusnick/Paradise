@@ -29,7 +29,7 @@
 /obj/item/twohanded/fishing_rod/examine(mob/user)
 	. = ..()
 	if(bait)
-		. += span_notice("на крючке находится [bait.ru_name].")
+		. += span_notice("на крючке находится [bait.declent_ru(NOMINATIVE)].")
 		. += span_notice("Вы можете снять наживку с помощью комбинации \"Alt+click\".")
 
 /obj/item/twohanded/fishing_rod/update_icon_state()
@@ -123,14 +123,14 @@
 	if(!user.drop_transfer_item_to_loc(I, src))
 		return
 	bait = worm
-	to_chat(user, span_notice("Вы насадили [worm.ru_fishing_name] на крючок."))
+	to_chat(user, span_notice("Вы насадили [worm.declent_ru(ACCUSATIVE)] на крючок."))
 	update_icon(UPDATE_OVERLAYS)
 
 
 /obj/item/twohanded/fishing_rod/AltClick(mob/user)
 	if(bait)
 		user.put_in_hands(bait)
-		to_chat(user, span_notice("Вы сняли [bait] с крючка."))
+		to_chat(user, span_notice("Вы сняли [bait.declent_ru(ACCUSATIVE)] с крючка."))
 		bait = null
 		update_icon(UPDATE_OVERLAYS)
 

@@ -57,13 +57,13 @@
 	var/datum/component/simple_fishing/fc = GetComponent(/datum/component/simple_fishing)
 	krill.in_lava = TRUE
 	krill.anchored = TRUE	//no closet kidnaping
-	visible_message(span_warning("[krill] медленно тонет в лаве!"))
+	visible_message(span_warning("[krill.declent_ru(NOMINATIVE)] медленно тонет в лаве!"))
 	sleep(5 SECONDS)
 	qdel(krill)
 	if(!fc)
 		visible_message(span_warning("Но никто не пришёл."))
 		return
-	visible_message(span_warning("Неожиданно, из лавы выныривают две рыбы и разрывают [krill] на части!"))
+	visible_message(span_warning("Неожиданно, из лавы выныривают две рыбы и разрывают [krill.declent_ru(ACCUSATIVE)] на части!"))
 	var/list/fishable_list = fc.catchable_fish.Copy()
 	for(var/i in 1 to 2)
 		var/fish = pick(fishable_list)
@@ -205,13 +205,13 @@
 	if(istype(I, /obj/item/reagent_containers/food/snacks/charred_krill))
 		to_chat(user, span_notice("Вы осторожно кладёте креветку на поверхность лавы.."))
 		if(do_after(user, 5 SECONDS, target = src))
-			if(QDELETED(C))
+			if(QDELETED(I))
 				return .
 			var/datum/component/simple_fishing/fc = GetComponent(/datum/component/simple_fishing)
 			if(!fc)
 				to_chat(user, span_warning("Но никто не пришёл."))
 				return .
-			to_chat(user, span_notice("Неожиданно, из лавы выныривают две рыбы и разрывают [krill] на части!"))
+			to_chat(user, span_notice("Неожиданно, из лавы выныривают две рыбы и разрывают креветку на части!"))
 			var/list/fishable_list = fc.catchable_fish.Copy()
 			for(var/i in 1 to 2)
 				var/fish = pick(fishable_list)
@@ -280,7 +280,7 @@
 	base_icon_state = "liquidplasma"
 	icon_state = "unsmooth"
 	smooth = SMOOTH_BITMASK
-	can_be_fished_on = FALSE
+	can_be_fished_on = FALSE // ~ Sin City's cold and empty, No one`s around to judge me ~
 	light_range = 3
 	light_power = 0.75
 	light_color = LIGHT_COLOR_PINK
