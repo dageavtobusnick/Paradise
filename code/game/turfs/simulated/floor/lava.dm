@@ -261,6 +261,13 @@
 	nitrogen = 23
 	planetary_atmos = TRUE
 	baseturf = /turf/simulated/floor/chasm/straight_down/lava_land_surface
+	/// Check for plasma river, subtype of lava, prevents simple fishing
+	var/can_be_fished_on = TRUE
+
+/turf/simulated/floor/lava/lava_land_surface/Initialize(mapload)
+	. = ..()
+	if(can_be_fished_on)
+		AddComponent(/datum/component/simple_fishing)
 
 /turf/simulated/floor/lava/airless
 	temperature = TCMB
@@ -273,7 +280,7 @@
 	base_icon_state = "liquidplasma"
 	icon_state = "unsmooth"
 	smooth = SMOOTH_BITMASK
-
+	can_be_fished_on = FALSE
 	light_range = 3
 	light_power = 0.75
 	light_color = LIGHT_COLOR_PINK
