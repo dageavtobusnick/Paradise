@@ -6,7 +6,7 @@
 	name = "ol' reliable"
 	desc = "О! Кажется, я поймал шахтера!"
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
-	icon_state = "fishing_rod0"
+	icon_state = "fishing_rod"
 	item_state = "fishing_rod"
 	w_class = WEIGHT_CLASS_BULKY
 	/// Used in sanity checks in order to avoid bugs
@@ -33,7 +33,9 @@
 		. += span_notice("Вы можете снять наживку с помощью комбинации \"Alt+click\".")
 
 /obj/item/twohanded/fishing_rod/update_icon_state()
-	icon_state = "fishing_rod[HAS_TRAIT(src, TRAIT_WIELDED)]"
+	. = ..()
+	if(!bait)
+		cut_overlays()
 
 /obj/item/twohanded/fishing_rod/afterattack(atom/target, mob/user, proximity, params)
 	if(!proximity)
@@ -113,18 +115,19 @@
 
 /obj/item/twohanded/fishing_rod/attackby(obj/item/I, mob/user, params)
 	if(!istype(I, /obj/item/reagent_containers/food/snacks/bait))
-		return
+		return ATTACK_CHAIN_PROCEED
 
 	if(bait)
 		to_chat(user, span_warning("На удочке уже есть наживка!"))
-		return
+		return ATTACK_CHAIN_PROCEED
 
 	var/obj/item/reagent_containers/food/snacks/bait/worm = I
 	if(!user.drop_transfer_item_to_loc(I, src))
-		return
+		return ATTACK_CHAIN_PROCEED
 	bait = worm
 	to_chat(user, span_notice("Вы насадили [worm.declent_ru(ACCUSATIVE)] на крючок."))
 	update_icon(UPDATE_OVERLAYS)
+	return ATTACK_CHAIN_PROCEED_SUCCESS
 
 
 /obj/item/twohanded/fishing_rod/AltClick(mob/user)
