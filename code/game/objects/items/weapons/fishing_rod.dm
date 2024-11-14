@@ -6,6 +6,8 @@
 	name = "ol' reliable"
 	desc = "О! Кажется, я поймал шахтера!"
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	lefthand_file = 'icons/mob/inhands/lavaland/lava_items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/lavaland/lava_items_righthand.dmi'
 	icon_state = "fishing_rod"
 	item_state = "fishing_rod"
 	w_class = WEIGHT_CLASS_BULKY
@@ -21,6 +23,12 @@
 	var/mob/fisher
 	/// Actual fish that we catch
 	var/reward_fish = null
+
+/obj/item/twohanded/fishing_rod/tribal
+	name = "fishing rod"
+	desc = "Примитивная костяная удочка, использующая сухожилия наблюдателя в качестве высокопрочной лески. Не совсем понятно, почему эта \"леска\" не плавится в лаве."
+	icon_state = "tribal_rod"
+	item_state = "fishing_rod"
 
 /obj/item/twohanded/fishing_rod/Destroy()
 	. = ..()

@@ -11,6 +11,9 @@
 	desc = "Тестовая наживка, если вы это видите, пингуйте зюзю."
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
 	icon_state = "ash_eater"
+	lefthand_file = 'icons/mob/inhands/lavaland/bait_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/lavaland/bait_righthand.dmi'
+	item_state = "ash_eater"
 	list_reagents = list("protein" = 1) //mmmm tasty
 	tastes = list("ash" = 5, "hopelessness" = 1)
 	bitesize = 1
@@ -48,6 +51,7 @@
 	)
 	desc = "Паразитическая форма жизни Лазис Ардакса, которая цепляется к оголённым участкам кожи и питается своими жертвами. Её брюшко краснеет от количества выпитой ею крови."
 	icon_state = "bloody_leach"
+	item_state = "bloody_leach"
 	rod_overlay = "bloody_leach_rod"
 
 /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
@@ -62,6 +66,7 @@
 	)
 	desc = "Небольшой червячок, который питается минералами, закопанными в пепле. Он так же пуглив, как и его более старшие сородичи."
 	icon_state = "goldgrub_larva"
+	item_state = "goldgrub_larva"
 	rod_overlay = "goldgrub_larva_rod"
 
 /obj/item/reagent_containers/food/snacks/charred_krill
@@ -77,6 +82,7 @@
 	desc = "Одна из самых редких обиталей Лазис Ардакса, множество лет признанная вымершей. Эта креветка - одно из самых любимых угощений для местной \"подводной\" фауны."
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
 	icon_state = "charred_krill"
+	item_state = "charred_krill"
 	list_reagents = list("protein" = 1)
 	bitesize = 1
 	tastes = list("ash" = 5, "wasted opportunity" = 1)
