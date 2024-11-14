@@ -172,6 +172,9 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 	. = ..()
 	recipes = GLOB.sinew_recipes
 
+/obj/item/stack/sheet/sinew/five
+	amount = 5
+
 /obj/item/stack/sheet/animalhide/goliath_hide
 	name = "goliath hide plates"
 	desc = "Pieces of a goliath's rocky hide, these might be able to make your suit a bit more durable to attack from the local fauna."
@@ -233,6 +236,9 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 			use(1)
 		else
 			to_chat(user, "<span class='warning'>You can't improve [D] any further!</span>")
+
+/obj/item/stack/sheet/animalhide/goliath_hide/five
+	amount = 5
 
 /obj/item/stack/sheet/armour_plate
 	name = "укрепленная броневая плита" // тут по причине того же механа что и шкура голиафа

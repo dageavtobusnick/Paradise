@@ -99,3 +99,9 @@
 	requires_sharpness = FALSE
 	claws_increment = 200
 
+/obj/item/whetstone/crab_shell
+	name = "sturdy crab shell"
+	desc = "Маленький панцирь пепельного краба, предназначенный для лёгкой заточки оружия или когтей. Достаточно крепкий для того, чтобы им можно пользоваться несколько раз."
+	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	icon_state = "crab_shell"
+	uses = -1

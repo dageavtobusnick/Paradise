@@ -45,15 +45,24 @@
 	name = "generic lavaland fish"
 	ru_names = list(
 		NOMINATIVE = "рыба",
-		ACCUSATIVE = "рыбу"
+		GENITIVE = "рыбы",
+		DATIVE = "рыбе",
+		ACCUSATIVE = "рыбу",
+		INSTRUMENTAL = "рыбой",
+		PREPOSITIONAL = "рыбе",
 	)
 	desc = "Вау, она такая... невпечатляющая!"
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
 	icon_state = "ash_crab"
+
+	lefthand_file = 'icons/mob/inhands/lavaland/fish_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/lavaland/fish_righthand.dmi'
+	item_state = "ash_crab"
+
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 	throwforce = 5
 	force = 1
-	attack_verb = list("slapped", "humiliated", "hit", "rubbed")
+	attack_verb = list("охлестал", "ударил", "стукнул", "опозорил") //стукнул рыбой, sounds nice
 	hitsound = 'sound/effects/snap.ogg'
 
 	/// If this fish should do the flopping animation
@@ -65,6 +74,12 @@
 
 	/// List of items you get after butchering it
 	var/list/butcher_loot = list()
+
+/obj/item/lavaland_fish/shoreline // all this subtypes used in actual fishing
+	w_class = WEIGHT_CLASS_NORMAL
+
+/obj/item/lavaland_fish/deep_water
+	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/lavaland_fish/Initialize(mapload)
 	. = ..()
@@ -124,9 +139,22 @@
 	. = ..()
 	start_flopping()
 
-/obj/item/lavaland_fish/shoreline
-	w_class = WEIGHT_CLASS_NORMAL
-
-/obj/item/lavaland_fish/deep_water
-	w_class = WEIGHT_CLASS_BULKY
-
+/obj/item/lavaland_fish/shoreline/ash_crab
+	name = "ash crab"
+	ru_names = list(
+		NOMINATIVE = "пепельный рак",
+		GENITIVE = "пепельного рака",
+		DATIVE = "пепельному раку",
+		ACCUSATIVE = "пепельного рака",
+		INSTRUMENTAL = "пепельным раком",
+		PREPOSITIONAL = "пепельном раке",
+	)
+	desc = "Небольшое всеядное ракообразное, обладающее на удивление крепким панцирем. Данный вид имеет интересную привычку в поедании мелких предметов, которые они находят. Лавовые крабы наиболее часто являются объектом охоты как для другой \"морской\" фауны, так и для местных племён в связи с крепким панцирем, используемым в качестве заточки, съедобным мясом и интересными находками в его желудке."
+	icon_state = "ash_crab"
+	item_state = "ash_crab"
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/ash_eater
+	butcher_loot = list(
+	/obj/item/whetstone/crab_shell = 1,
+	/obj/item/reagent_containers/food/snacks/lavaland/soft_meat = 1,
+	/obj/effect/spawner/random_spawners/lavaland_random_loot = 1,
+		)
