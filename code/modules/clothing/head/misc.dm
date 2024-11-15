@@ -596,6 +596,13 @@
 	icon_state = "shamskull"
 	species_restricted = list(SPECIES_UNATHI, SPECIES_ASHWALKER_BASIC, SPECIES_ASHWALKER_SHAMAN, SPECIES_DRACONOID)
 
+/obj/item/clothing/head/scorched_skull
+	name = "scorched skull"
+	desc = "Голова мертвого всадника, очищенная от чешуи, крови и внутренних органов во время разделки. Вселяет страх в ваших врагов, однако немного ограничивает зрение."
+	icon_state = "scorched_skull"
+	item_state = "shamskull" //заметка на русском, потому что потом удалю. Нет спрайта на теле, используется временный с шамана выше
+	species_restricted = list(SPECIES_UNATHI, SPECIES_ASHWALKER_BASIC, SPECIES_ASHWALKER_SHAMAN, SPECIES_DRACONOID) // это тоже удалить
+
 /obj/item/clothing/head/mr_chang_band
 	name = "Tight headband"
 	desc = "It is a safety tool, designed to prevent all marketing and selling techniques from escaping the wearers skull. Handle with care."

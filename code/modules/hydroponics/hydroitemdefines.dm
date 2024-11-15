@@ -340,3 +340,11 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "plastic_jug_pk"
 	list_reagents = list("pestkiller" = 80)
+
+/obj/item/conductive_organ
+	name = "conductive organ"
+	desc = "небольшой желтоватый мешочек, добываемый из лавового панцирника. Является мощным удобрением, значительно повышающим урожай и уровень нутриментов растения."
+	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	icon_state = "conductive_organ"
+	w_class = WEIGHT_CLASS_TINY
+	origin_tech = "biotech=6"

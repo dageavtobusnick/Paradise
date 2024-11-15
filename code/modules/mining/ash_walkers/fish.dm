@@ -91,11 +91,21 @@
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
+/obj/item/lavaland_fish/proc/fucking_dies()
+	do_flop_animation = FALSE
+	STOP_PROCESSING(SSobj, src)
+	UnregisterSignal(src, COMSIG_ATOM_TEMPORARY_ANIMATION_START)
+	stop_flopping()
+
 /obj/item/lavaland_fish/attackby(obj/item/I, mob/living/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
 	var/sharpness = is_sharp(I)
+	if(sharpness && user.a_intent == INTENT_HELP && do_flop_animation)
+		fucking_dies()
+		playsound(loc, 'sound/weapons/slice.ogg', 50, 1, -1)
+		to_chat(user, span_warning("[declent_ru(NOMINATIVE)] больше не двигается.."))
 	if(sharpness && user.a_intent == INTENT_HARM)
-		to_chat(user, "<span class='notice'>Вы начинаете разделывать [declent_ru(ACCUSATIVE)]...</span>")
+		to_chat(user, span_notice("Вы начинаете разделывать [declent_ru(ACCUSATIVE)]..."))
 		playsound(loc, 'sound/weapons/slice.ogg', 50, 1, -1)
 		if(do_after(user, 6 SECONDS, src,) && Adjacent(I))
 			harvest(user)
@@ -137,7 +147,8 @@
 
 /obj/item/lavaland_fish/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
-	start_flopping()
+	if(do_flop_animation)
+		start_flopping()
 
 /obj/item/lavaland_fish/shoreline/ash_crab
 	name = "ash crab"
@@ -154,7 +165,47 @@
 	item_state = "ash_crab"
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/ash_eater
 	butcher_loot = list(
-	/obj/item/whetstone/crab_shell = 1,
-	/obj/item/reagent_containers/food/snacks/lavaland/soft_meat = 1,
-	/obj/effect/spawner/random_spawners/lavaland_random_loot = 1,
+		/obj/item/whetstone/crab_shell = 1,
+		/obj/item/reagent_containers/food/snacks/lavaland/soft_meat = 1,
+		/obj/effect/spawner/random_spawners/lavaland_random_loot = 1,
+		)
+
+/obj/item/lavaland_fish/shoreline/dead_horseman
+	name = "dead horseman"
+	ru_names = list(
+		NOMINATIVE = "мертвый всадник",
+		GENITIVE = "мертвого всадника",
+		DATIVE = "мертвому всаднику",
+		ACCUSATIVE = "мертвого всадника",
+		INSTRUMENTAL = "мертвым всадником",
+		PREPOSITIONAL = "мертвом всаднике",
+	)
+	icon_state = "dead_horseman"
+	item_state = "dead_horseman"
+	desc = "Небольших размеров рыба, питающаяся преимущественно кровавыми пиявками, зарытыми в пепле. Получила свое название из-за своего характерного внешнего вида - голова всадника внешне напоминает гуманоидный череп. Ценится местными племенами в первую очередь из-за селезёнки, содержащей в себе частицы киновари и используемой для создания коричневого красителя."
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/bloody_leach
+	butcher_loot = list(
+		/obj/item/clothing/head/scorched_skull = 1,
+		/obj/item/reagent_containers/food/snacks/lavaland/soft_meat = 1,
+		/obj/item/lavaland_dye/cinnabar = 1,
+		)
+
+/obj/item/lavaland_fish/shoreline/shellfish
+	name = "shellfish"
+	ru_names = list(
+		NOMINATIVE = "лавовый панцирник", //there is actual fish - панцирник, so our little different
+		GENITIVE = "лавового панцирника",
+		DATIVE = "лавовому панцирнику",
+		ACCUSATIVE = "лавового панцирника",
+		INSTRUMENTAL = "лавовым панцирником",
+		PREPOSITIONAL = "лавовом панцирнике",
+	)
+	icon_state = "shellfish"
+	item_state = "shellfish"
+	desc = "Одна из самых больших рыб, встречающихся у берегов Лазис Ардакса. Практически всё тело, включая голову, покрыто багряными хрящевыми пластинами, достаточно крепкими, чтобы защищаться от большинства хищников. Внутри самой рыбы, рядом с сердцем, находится специализированный орган, собираемый местными племенами для ведения сельского хозяийства."
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
+	butcher_loot = list(
+		/obj/item/stack/sheet/cartilage_plate = 2, //заметка - доделать броню и крафт брони
+		/obj/item/conductive_organ = 1,
+		/obj/item/lavaland_dye/crimson = 1,
 		)

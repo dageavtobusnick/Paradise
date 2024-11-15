@@ -28,7 +28,7 @@
 	name = "fishing rod"
 	desc = "Примитивная костяная удочка, использующая сухожилия наблюдателя в качестве высокопрочной лески. Не совсем понятно, почему эта \"леска\" не плавится в лаве."
 	icon_state = "tribal_rod"
-	item_state = "fishing_rod"
+	item_state = "tribal_rod"
 
 /obj/item/twohanded/fishing_rod/Destroy()
 	. = ..()

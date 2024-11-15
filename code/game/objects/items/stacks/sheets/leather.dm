@@ -266,6 +266,15 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 		else
 			to_chat(user, "<span class='warning'>Вы больше не можете найти куда [name] пристраивается!</span>")
 
+/obj/item/stack/sheet/cartilage_plate
+	name = "cartilage plate"
+	desc = "Хрящевая пластина, снятая с тела лавового панцирника. Судя по всему, пластина начала терять свой характерный кроваво-красный цвет, однако она остаётся такой же крепкой, как и до этого."
+	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	icon_state = "thick_cartilage_plate"
+	singular_name = "cartilage plate"
+	item_flags = NOBLUDGEON
+	w_class = WEIGHT_CLASS_NORMAL
+	layer = MOB_LAYER
 
 /obj/item/stack/sheet/animalhide/ashdrake
 	name = "ash drake hide"
