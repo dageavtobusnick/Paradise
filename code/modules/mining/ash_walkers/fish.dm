@@ -209,3 +209,24 @@
 		/obj/item/conductive_organ = 1,
 		/obj/item/lavaland_dye/crimson = 1,
 		)
+
+/obj/item/lavaland_fish/deep_water/bottom_eel
+	name = "bottom eel"
+	ru_names = list(
+		NOMINATIVE = "донный угорь",
+		GENITIVE = "донного угря",
+		DATIVE = "донному угрю",
+		ACCUSATIVE = "донного угря",
+		INSTRUMENTAL = "донным угрём",
+		PREPOSITIONAL = "донном угре",
+	)
+	icon_state = "bottom_eel"
+	item_state = "bottom_eel"
+	desc = "Эта длинная склизская рыба обитает на огромной глубине, питаясь преимущественно личинками и другой мелкой рыбой. Для защиты от других хищников, эта рыба имеет бритвенно-острый хвост, который местные племена приспосабливают в качестве наконечника для копья."
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/ash_eater
+	butcher_loot = list(
+		/obj/item/reagent_containers/food/snacks/lavaland/eel_filet = 1,
+		/obj/item/eel_sharpened_tail = 1, //заметка - доделать копье
+		/obj/item/lavaland_dye/indigo = 1,
+		)
+

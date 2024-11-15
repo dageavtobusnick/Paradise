@@ -282,6 +282,13 @@
 	pickup_sound = 'sound/items/handling/bone_pickup.ogg'
 	drop_sound = 'sound/items/handling/bone_drop.ogg'
 
+/obj/item/kitchen/knife/combat/survival/bone/eel
+	name = "eel sharpened tail"
+	desc = "Бритвенно-острый хвост донного угля, аккуратно отделенный от основного тела рыбы. Используется для улучшения копья, однако сам по себе может использоваться как отличный нож."
+	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	icon_state = "eel_sharpened_tail"
+	item_state = "eel_sharpened_tail"
+
 /obj/item/kitchen/knife/combat/cyborg
 	name = "cyborg knife"
 	icon = 'icons/obj/items_cyborg.dmi'

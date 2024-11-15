@@ -9,3 +9,12 @@
 	bitesize = 2
 	tastes = list("raw meat" = 1)
 	foodtype = MEAT | RAW
+
+/obj/item/reagent_containers/food/snacks/lavaland/eel_filet
+	name = "eel filet"
+	desc = "Сырое филе донного угря. Хоть оно съедобно и в сыром виде, с правильными ингридиентами, ее можно превратить в прекрасное блюдо."
+	icon_state = "eel_filet"
+	list_reagents = list("nutriment" = 2, "menthol" = 2, "protein" = 2)
+	bitesize = 2
+	tastes = list("raw meat" = 1)
+	foodtype = MEAT | RAW
