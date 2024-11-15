@@ -202,7 +202,7 @@
 	)
 	icon_state = "shellfish"
 	item_state = "shellfish"
-	desc = "Одна из самых больших рыб, встречающихся у берегов Лазис Ардакса. Практически всё тело, включая голову, покрыто багряными хрящевыми пластинами, достаточно крепкими, чтобы защищаться от большинства хищников. Внутри самой рыбы, рядом с сердцем, находится специализированный орган, собираемый местными племенами для ведения сельского хозяийства."
+	desc = "Одна из самых больших рыб, встречающихся у берегов Лазис Ардакса. Практически всё тело, включая голову, покрыто багряными хрящевыми пластинами, достаточно крепкими, чтобы защищаться от большинства хищников. Внутри самой рыбы, рядом с сердцем, находится специализированный орган, собираемый местными племенами для ведения сельского хозяйства."
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
 	butcher_loot = list(
 		/obj/item/stack/sheet/cartilage_plate = 2, //заметка - доделать броню и крафт брони
@@ -226,7 +226,46 @@
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/ash_eater
 	butcher_loot = list(
 		/obj/item/reagent_containers/food/snacks/lavaland/eel_filet = 1,
-		/obj/item/eel_sharpened_tail = 1, //заметка - доделать копье
+		/obj/item/kitchen/knife/combat/survival/bone/eel = 1, //заметка - доделать копье
 		/obj/item/lavaland_dye/indigo = 1,
 		)
 
+/obj/item/lavaland_fish/deep_water/red_devourer
+	name = "red devourer"
+	ru_names = list(
+		NOMINATIVE = "красный пожиратель",
+		GENITIVE = "красного пожирателя",
+		DATIVE = "красному пожирателю",
+		ACCUSATIVE = "красного пожирателя",
+		INSTRUMENTAL = "красным пожирателем",
+		PREPOSITIONAL = "красном пожирателе",
+	)
+	icon_state = "red_devourer"
+	item_state = "red_devourer"
+	desc = "Огромная рыба краво-красного окраса со множеством острых зубов внутри её пасти. Данная рыба печально известна среди племён своей агрессивностью, от чего погибло множество молодых охотников. В желудке этих рыб можно частенько наткнуться на останки менее удачливых рыбаков."
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/bloody_leach
+	butcher_loot = list(
+		/obj/item/stack/sheet/razor_sharp_teeth = 2,
+		/obj/item/stack/sheet/bone = 1,
+		/obj/item/reagent_containers/food/snacks/bait/random = 2,
+		/obj/effect/spawner/random_spawners/lavaland_random_loot = 2,
+		/obj/item/lavaland_dye/crimson = 1,
+		)
+
+/obj/item/lavaland_fish/deep_water/magma_hammerhead
+	name = "magma hammerhead"
+	ru_names = list(
+		NOMINATIVE = "магмовая акула-молот",
+		GENITIVE = "магмовой акулы-молота",
+		DATIVE = "магмовой акуле-молоту",
+		ACCUSATIVE = "магмовую акулу-молот",
+		INSTRUMENTAL = "магмовой акулой-молотом",
+		PREPOSITIONAL = "магмовой акуле-молоте",
+	)
+	icon_state = "magma_hammerhead"
+	item_state = "magma_hammerhead"
+	desc = ""
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
+	butcher_loot = list(
+
+		)

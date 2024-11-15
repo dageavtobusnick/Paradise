@@ -662,6 +662,18 @@ GLOBAL_LIST_INIT(fake_brass_recipes, list(
 	throw_range = 3
 	origin_tech = "materials=2;biotech=2"
 
+/obj/item/stack/sheet/razor_sharp_teeth
+	name = "razor sharp teeth"
+	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	icon_state = "razor_sharp_teeth"
+	singular_name = "razor sharp tooth"
+	desc = "Бритвенно-острые зубы, добытые из пасти лавового хищника. Хороши для улучшения стрел."
+	w_class = WEIGHT_CLASS_NORMAL
+	throw_speed = 1
+	throw_range = 7
+	throwforce = 15
+	origin_tech = "materials=4;biotech=5"
+
 /*
  * Plastic
  */

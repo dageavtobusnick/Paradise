@@ -7,7 +7,7 @@
 		ACCUSATIVE = "червяка",
 		INSTRUMENTAL = "червяком",
 		PREPOSITIONAL = "червякам",
-	) //actually, only two of them are actually used in game, so...
+	)
 	desc = "Тестовая наживка, если вы это видите, пингуйте зюзю."
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
 	icon_state = "ash_eater"
@@ -24,6 +24,11 @@
 /obj/item/reagent_containers/food/snacks/bait/examine(mob/user)
 	. = ..()
 	. += span_notice("Вы можете использовать [declent_ru(ACCUSATIVE)] в качестве наживки.")
+
+/obj/item/reagent_containers/food/snacks/bait/random/Initialize(mapload)
+	. = ..()
+	var/bait = pick(subtypesof(/obj/item/reagent_containers/food/snacks/bait))
+	new bait(loc)
 
 /obj/item/reagent_containers/food/snacks/bait/ash_eater
 	name = "ash eater"
