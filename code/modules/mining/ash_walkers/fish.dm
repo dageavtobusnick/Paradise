@@ -108,6 +108,7 @@
 		to_chat(user, span_notice("Вы начинаете разделывать [declent_ru(ACCUSATIVE)]..."))
 		playsound(loc, 'sound/weapons/slice.ogg', 50, 1, -1)
 		if(do_after(user, 6 SECONDS, src,) && Adjacent(I))
+			check_special_harvest()
 			harvest(user)
 	return ..()
 
@@ -144,6 +145,9 @@
 /obj/item/lavaland_fish/proc/refresh_flopping()
 	if(flopping)
 		flop_animation(src)
+
+/obj/item/lavaland_fish/proc/check_special_harvest()
+	return
 
 /obj/item/lavaland_fish/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
@@ -270,3 +274,74 @@
 		/obj/item/hivelordstabilizer/molten_mass = 2,
 		/obj/item/lavaland_dye/cinnabar = 1,
 		)
+
+/obj/item/lavaland_fish/deep_water/blind_reaper
+	name = "blind reaper"
+	ru_names = list(
+		NOMINATIVE = "ослеплённый жнец",
+		GENITIVE = "ослеплённого жнеца",
+		DATIVE = "ослеплённому жнецу",
+		ACCUSATIVE = "ослеплённого жнеца",
+		INSTRUMENTAL = "ослеплённым жнецом",
+		PREPOSITIONAL = "ослеплённом жнеце",
+	)
+	icon_state = "blind_reaper"
+	item_state = "blind_reaper"
+	desc = "Самая маленькая представительница глубоководных рыб Лазис Ардакса, она привлекает к себе внимание не только небольшим размером, но и огромным костным наростом на голове, напоминающем лезвие циркулярной пилы. Данный вид, будучи лишенным зрения, использует свое лезвие в качестве биологического сонара, что помогает ей ориентироваться на огромных лавовых глубинах."
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/ash_eater
+	butcher_loot = list(
+		/obj/item/circular_saw_blade = 1,
+		/obj/item/reagent_containers/food/snacks/lavaland/predator_meat = 1,
+		/obj/item/lavaland_dye/indigo = 1,
+		)
+
+
+/obj/item/lavaland_fish/deep_water/herald_of_carnage
+	name = "herald of carnage"
+	ru_names = list(
+		NOMINATIVE = "вестник резни",
+		GENITIVE = "вестника резни",
+		DATIVE = "вестнику резни",
+		ACCUSATIVE = "вестника резни",
+		INSTRUMENTAL = "вестником резни",
+		PREPOSITIONAL = "вестнике резни",
+	)
+	icon_state = "herald_of_carnage"
+	item_state = "herald_of_carnage"
+	desc = "Эта массивная рыба, имеющая в своей пасти сотни бритвенно острых зубов, признана высшим хищником среди всего подводного мира Лазис Ардакса. Её массивные зелёные глаза используются в качестве украшения для самых прославленных охотников среди местных племён. В её желудке достаточно часто находят останки других рыб. И не только рыб."
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/bloody_leach
+	butcher_loot = list(
+		/obj/item/stack/sheet/razor_sharp_teeth = 2,
+		/obj/item/stack/sheet/bone = 2,
+		/obj/item/reagent_containers/food/snacks/lavaland/predator_meat = 1,
+		/obj/effect/spawner/random_spawners/lavaland_random_loot = 3,
+		/obj/item/lavaland_dye/mint = 1,
+		)
+
+/obj/item/lavaland_fish/deep_water/sulfuric_tramp
+	name = "sulfuric tramp"
+	ru_names = list(
+		NOMINATIVE = "сернистый странник",
+		GENITIVE = "сернистого странника",
+		DATIVE = "сернистому страннику",
+		ACCUSATIVE = "сернистого странника",
+		INSTRUMENTAL = "сернистым странником",
+		PREPOSITIONAL = "сернистом страннике",
+	)
+	icon_state = "sulfuric_tramp"
+	item_state = "sulfuric_tramp"
+	desc = "Данный вид рыб никогда не был зафиксирован ни в одной исследовательской работе по изучению фауны Лазис Ардакса - это инвазивный вид, попавший в лавовые реки в результате крушения контрабандистского судна, перевозившего фауну с неизвестной кислотной планеты. Судя по всему, эти рыбы нашли свою нишу в пищевой цепи."
+	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
+	butcher_loot = list(
+		/obj/item/t_scanner/adv_mining_scanner/bleary_eye = 1,
+		//блядь как мне это реализовать
+		/obj/item/lavaland_dye/amber = 1,
+		)
+
+/obj/item/lavaland_fish/deep_water/sulfuric_tramp/check_special_harvest()
+	var/location = get_turf(src)
+	var/datum/reagents/reagents_list = new (30)
+	reagents_list.add_reagent("sacid", 25)
+	var/datum/effect_system/smoke_spread/chem/smoke = new
+	smoke.set_up(reagents_list, location)
+	smoke.start(3)

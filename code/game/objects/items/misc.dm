@@ -87,3 +87,9 @@
 	update_appearance(UPDATE_NAME|UPDATE_ICON_STATE)
 	return TRUE
 
+/obj/item/circular_saw_blade
+	name = "circular saw blade"
+	desc = "Костный нарост в виде циркулярной пилы, вырванный из черепа ослеплённого жнеца. Используется для улучшения костяного топора."
+	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	icon_state = "circular_saw_blade"
+	w_class = WEIGHT_CLASS_TINY
