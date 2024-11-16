@@ -138,11 +138,10 @@
 	origin_tech = "magnets=6;biotech=6"
 	speaker = FALSE
 	scan_range = 4
-	on = TRUE
 
 /obj/item/t_scanner/adv_mining_scanner/bleary_eye/Initialize(mapload)
 	. = ..()
-
+	toggle_mode()
 
 /obj/item/t_scanner/adv_mining_scanner/bleary_eye/attack_self(mob/user)
 	return

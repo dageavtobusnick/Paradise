@@ -340,8 +340,10 @@
 
 /obj/item/lavaland_fish/deep_water/sulfuric_tramp/check_special_harvest()
 	var/location = get_turf(src)
-	var/datum/reagents/reagents_list = new (30)
-	reagents_list.add_reagent("sacid", 25)
+	var/datum/reagents/R = new (500)
+	R.add_reagent("sacid", 2450)
+
 	var/datum/effect_system/smoke_spread/chem/smoke = new
-	smoke.set_up(reagents_list, location)
-	smoke.start(3)
+	smoke.set_up(reagents_list, location, TRUE)
+	smoke.start(2)
+

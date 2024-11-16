@@ -29,6 +29,7 @@
 	. = ..()
 	var/bait = pick(subtypesof(/obj/item/reagent_containers/food/snacks/bait))
 	new bait(loc)
+	return INITIALIZE_HINT_QDEL
 
 /obj/item/reagent_containers/food/snacks/bait/ash_eater
 	name = "ash eater"
