@@ -7,6 +7,18 @@
 	w_class = WEIGHT_CLASS_TINY
 	origin_tech = "biotech=3"
 
+/obj/item/hivelordstabilizer/molten_mass
+	name = "gooey molten mass"
+	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	icon_state = "gooey_molten_mass"
+	desc = "Странноватые сгустки, снятые с головы магмового рыбы-молота. Являются природным аналогом стабилизатора регенеративных ядер."
+	w_class = WEIGHT_CLASS_TINY
+	origin_tech = "biotech=5"
+	light_range = 2
+	light_power = 3
+	light_color = "#FFBF00"
+	light_system = MOVABLE_LIGHT
+
 /obj/item/hivelordstabilizer/afterattack(obj/item/organ/internal/M, mob/user, proximity, params)
 	. = ..()
 	if(!proximity)

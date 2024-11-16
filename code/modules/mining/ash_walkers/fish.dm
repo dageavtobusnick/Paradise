@@ -242,10 +242,10 @@
 	)
 	icon_state = "red_devourer"
 	item_state = "red_devourer"
-	desc = "Огромная рыба краво-красного окраса со множеством острых зубов внутри её пасти. Данная рыба печально известна среди племён своей агрессивностью, от чего погибло множество молодых охотников. В желудке этих рыб можно частенько наткнуться на останки менее удачливых рыбаков."
+	desc = "Массивная рыба краво-красного окраса со множеством острых зубов внутри её пасти. Данная рыба печально известна среди племён своей агрессивностью, от чего погибло множество молодых охотников. В желудке этих рыб можно частенько наткнуться на останки менее удачливых рыбаков."
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/bloody_leach
 	butcher_loot = list(
-		/obj/item/stack/sheet/razor_sharp_teeth = 2,
+		/obj/item/stack/sheet/razor_sharp_teeth = 2, //заметка - доделать стрелы
 		/obj/item/stack/sheet/bone = 1,
 		/obj/item/reagent_containers/food/snacks/bait/random = 2,
 		/obj/effect/spawner/random_spawners/lavaland_random_loot = 2,
@@ -264,8 +264,9 @@
 	)
 	icon_state = "magma_hammerhead"
 	item_state = "magma_hammerhead"
-	desc = ""
+	desc = "Огромная глубоководная рыба тёмного окраса с характерной головой, отдалённо напоминающей молот. Несмотря на угрожающий внешний вид, данный тип рыб преимущественно охотится на мелких ракообразных, придавливая их своем \"молотом\" ко дну и раздавливая их панцирь. По краям их головы находятся странноватые сгустки, синергирующие с регенеративными ядрами."
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
 	butcher_loot = list(
-
+		/obj/item/hivelordstabilizer/molten_mass = 2,
+		/obj/item/lavaland_dye/cinnabar = 1,
 		)
