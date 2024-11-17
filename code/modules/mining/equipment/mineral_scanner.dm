@@ -129,7 +129,7 @@
 	animate(src, alpha = 0, time = duration, easing = EASE_IN)
 
 /obj/item/t_scanner/adv_mining_scanner/bleary_eye
-	name = "bleary_eye"
+	name = "bleary eye"
 	desc = "Глаз, вырванный из тела массивного сернистого странника. Даже спустя долгое время, он все еще движется и внимательно осматривает местность в поисках руды."
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
 	icon_state = "bleary_eye"
@@ -137,11 +137,15 @@
 	materials = null
 	origin_tech = "magnets=6;biotech=6"
 	speaker = FALSE
-	scan_range = 4
+	range = 4
+	cooldown = 3 SECONDS
 
 /obj/item/t_scanner/adv_mining_scanner/bleary_eye/Initialize(mapload)
 	. = ..()
 	toggle_mode()
+
+/obj/item/t_scanner/adv_mining_scanner/bleary_eye/update_icon_state()
+	return
 
 /obj/item/t_scanner/adv_mining_scanner/bleary_eye/attack_self(mob/user)
 	return
