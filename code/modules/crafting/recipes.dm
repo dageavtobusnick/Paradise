@@ -602,6 +602,7 @@
 	time = 30
 	reqs = list(/obj/item/stack/sheet/bone = 6)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/bonetalisman
 	name = "Bone Talisman"
@@ -610,6 +611,7 @@
 	reqs = list(/obj/item/stack/sheet/bone = 2,
 				 /obj/item/stack/sheet/sinew = 1)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/bonecodpiece
 	name = "Skull Codpiece"
@@ -618,6 +620,7 @@
 	reqs = list(/obj/item/stack/sheet/bone = 2,
 				 /obj/item/stack/sheet/animalhide/goliath_hide = 1)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/bracers
 	name = "Bone Bracers"
@@ -626,6 +629,7 @@
 	reqs = list(/obj/item/stack/sheet/bone = 2,
 				 /obj/item/stack/sheet/sinew = 1)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/skullhelm
 	name = "Skull Helmet"
@@ -633,6 +637,7 @@
 	time = 30
 	reqs = list(/obj/item/stack/sheet/bone = 4)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/beltprimitive
 	name = "Hunter's Belt"
@@ -641,6 +646,7 @@
 	reqs = list(/obj/item/stack/sheet/sinew = 4,
 				/obj/item/stack/sheet/animalhide/goliath_hide = 2)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/goliathcloak
 	name = "Goliath Cloak"
@@ -650,6 +656,7 @@
 				/obj/item/stack/sheet/sinew = 2,
 				/obj/item/stack/sheet/animalhide/goliath_hide = 2)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/drakecloak
 	name = "Ash Drake Armour"
@@ -659,6 +666,7 @@
 				/obj/item/stack/sheet/sinew = 2,
 				/obj/item/stack/sheet/animalhide/ashdrake = 5)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/firebrand
 	name = "Firebrand"
@@ -666,6 +674,7 @@
 	time = 100 //Long construction time. Making fire is hard work.
 	reqs = list(/obj/item/stack/sheet/wood = 2)
 	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
 
 /datum/crafting_recipe/tribal_splint
 	name = "Tribal Splint"
@@ -674,6 +683,7 @@
 				/obj/item/stack/sheet/sinew = 1)
 	result = /obj/item/stack/medical/splint/tribal
 	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
 
 /datum/crafting_recipe/bonedagger
 	name = "Bone Dagger"
@@ -681,6 +691,7 @@
 	time = 20
 	reqs = list(/obj/item/stack/sheet/bone = 2)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/bonesword
 	name = "Bone Sword"
@@ -689,6 +700,7 @@
 	reqs = list(/obj/item/stack/sheet/bone = 3,
 				/obj/item/stack/sheet/sinew = 2)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/goliathshield
 	name = "Goliath Shield"
@@ -697,6 +709,7 @@
 	reqs = list(/obj/item/stack/sheet/bone = 4,
 				/obj/item/stack/sheet/animalhide/goliath_hide = 3)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/bonespear
 	name = "Bone Spear"
@@ -705,6 +718,7 @@
 	reqs = list(/obj/item/stack/sheet/bone = 4,
 				 /obj/item/stack/sheet/sinew = 1)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/chitinspear
 	name = "Chitin Spear"
@@ -715,6 +729,7 @@
 				/obj/item/stack/sheet/animalhide/weaver_chitin = 8)
 	blacklist = list(/obj/item/twohanded/spear/bonespear/chitinspear)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/bow
 	name = "Wooden Bow"
@@ -724,6 +739,7 @@
 				 /obj/item/stack/sheet/sinew = 2,
 				 /obj/item/stack/sheet/animalhide/goliath_hide = 1)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/bone_bow
 	name = "Bone Bow"
@@ -735,6 +751,7 @@
 				/obj/item/stack/sheet/sinew = 2)
 	blacklist = list(/obj/item/gun/projectile/bow/ashen)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/arrow
 	name = "Arrows"
@@ -745,6 +762,7 @@
 	reqs = list(/obj/item/stack/sheet/bone = 1,
 				 /obj/item/stack/sheet/wood = 1)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/ashen_arrow //the price is fully justified
 	name = "Bone-tipped Arrows"
@@ -758,6 +776,7 @@
 				/obj/item/stack/sheet/animalhide/weaver_chitin = 2)
 	blacklist = list(/obj/item/ammo_casing/caseless/arrow/bone_tipped)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/quiver
 	name = "Quiver"
@@ -766,6 +785,7 @@
 	reqs = list(/obj/item/stack/sheet/wood = 2,
 				 /obj/item/stack/sheet/sinew = 1)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/chitinquiver
 	name = "Chitin Quiver"
@@ -773,6 +793,7 @@
 	time = 8 SECONDS
 	reqs = list(/obj/item/stack/sheet/animalhide/weaver_chitin = 4) //Just one spider!
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/bola_s
 	name = "Skull Bola"
@@ -781,6 +802,7 @@
 				/obj/item/stack/sheet/bone = 3)
 	time = 20
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/boneaxe
 	name = "Bone Axe"
@@ -789,6 +811,7 @@
 	reqs = list(/obj/item/stack/sheet/bone = 6,
 				 /obj/item/stack/sheet/sinew = 3)
 	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/bonfire
 	name = "Bonfire"
@@ -796,6 +819,7 @@
 	reqs = list(/obj/item/grown/log = 5)
 	result = /obj/structure/bonfire
 	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
 	alert_admins_on_craft = TRUE
 
 /datum/crafting_recipe/rake //Category resorting incoming
@@ -804,6 +828,7 @@
 	reqs = list(/obj/item/stack/sheet/wood = 5)
 	result = /obj/item/cultivator/rake
 	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
 
 /datum/crafting_recipe/woodbucket
 	name = "Wooden Bucket"
@@ -811,6 +836,7 @@
 	reqs = list(/obj/item/stack/sheet/wood = 3)
 	result = /obj/item/reagent_containers/glass/bucket/wooden
 	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
 
 /datum/crafting_recipe/guillotine
 	name = "Guillotine"
@@ -1481,6 +1507,7 @@
 				/obj/item/stack/sheet/bone = 8,
 				/obj/item/stack/sheet/sinew = 10)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/pathtreads
 	name = "Pathfinder Treads"
@@ -1489,6 +1516,7 @@
 	reqs = list(/obj/item/stack/sheet/sinew = 2,
 				/obj/item/stack/sheet/animalhide/weaver_chitin = 2)
 	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
 
 /datum/crafting_recipe/makeshift_speedloader
 	name = "Makeshift Speedloader"
@@ -1527,6 +1555,7 @@
 	)
 	result = list(/obj/item/pickaxe)
 	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
 
 /datum/crafting_recipe/pickaxe/silver
 	name = "Silver pickaxe"
@@ -1551,7 +1580,7 @@
 		/obj/item/stack/sheet/mineral/diamond = 5
 	)
 	result = list(/obj/item/pickaxe/diamond)
-  
+
 /datum/crafting_recipe/drone
 	name = "Inactive Drone"
 	result = list(/obj/item/inactive_drone)

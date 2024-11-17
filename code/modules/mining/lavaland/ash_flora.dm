@@ -325,6 +325,7 @@
 	reqs = list(/obj/item/reagent_containers/food/snacks/grown/ash_flora/shavings = 5)
 	time = 30
 	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
 
 /obj/item/reagent_containers/food/drinks/mushroom_bowl
 	name = "mushroom bowl"
