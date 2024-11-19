@@ -334,7 +334,7 @@
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
 	butcher_loot = list(
 		/obj/item/t_scanner/adv_mining_scanner/bleary_eye = 1,
-		//блядь как мне это реализовать
+		/obj/item/acid_bladder = 1,
 		/obj/item/lavaland_dye/amber = 1,
 		)
 
