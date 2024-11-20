@@ -598,10 +598,23 @@
 
 /obj/item/clothing/head/scorched_skull
 	name = "scorched skull"
-	desc = "Голова мертвого всадника, очищенная от чешуи, крови и внутренних органов во время разделки. Вселяет страх в ваших врагов, однако немного ограничивает зрение."
+	desc = "Голова мертвого всадника, очищенная от чешуи, крови и внутренних органов во время разделки. Вселяет страх в ваших врагов."
 	icon_state = "scorched_skull"
-	item_state = "shamskull" //заметка на русском, потому что потом удалю. Нет спрайта на теле, используется временный с шамана выше
-	species_restricted = list(SPECIES_UNATHI, SPECIES_ASHWALKER_BASIC, SPECIES_ASHWALKER_SHAMAN, SPECIES_DRACONOID) // это тоже удалить
+	item_state = "scorched_skull"
+	w_class = WEIGHT_CLASS_TINY
+	flags_cover = HEADCOVERSEYES|HEADCOVERSMOUTH
+	flags_inv = HIDENAME|HIDEHAIR
+	sprite_sheets = list(
+		SPECIES_VOX = 'icons/mob/clothing/species/vox/helmet.dmi',
+		SPECIES_DRASK = 'icons/mob/clothing/species/drask/head.dmi',
+		SPECIES_GREY = 'icons/mob/clothing/species/grey/head.dmi',
+		SPECIES_MONKEY = 'icons/mob/clothing/species/monkey/head.dmi',
+		SPECIES_FARWA = 'icons/mob/clothing/species/monkey/head.dmi',
+		SPECIES_WOLPIN = 'icons/mob/clothing/species/monkey/head.dmi',
+		SPECIES_NEARA = 'icons/mob/clothing/species/monkey/head.dmi',
+		SPECIES_STOK = 'icons/mob/clothing/species/monkey/head.dmi'
+		)
+
 
 /obj/item/clothing/head/mr_chang_band
 	name = "Tight headband"
