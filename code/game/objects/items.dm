@@ -202,6 +202,9 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 	///Datum used in item pixel shift TGUI
 	var/datum/ui_module/item_pixel_shift/item_pixel_shift
 
+	/// Used in butchering of animals, set to TRUE for near instant butchering
+	var/has_speed_harvest = FALSE
+
 /obj/item/New()
 	..()
 	for(var/path in actions_types)

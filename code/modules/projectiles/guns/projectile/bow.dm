@@ -18,7 +18,6 @@
 	desc = "A primitive bow with a sinew bowstring. Typically used by tribal hunters and warriors. Due to the specific design of the bow, it's able to shoot only bone arrows."
 	icon_state = "ashenbow"
 	item_state = "ashenbow"
-	mag_type = /obj/item/ammo_box/magazine/internal/bow/ashen //you can't shoot wooden arrows from bone bow!
 	flags = NONE
 	force = 10
 	slowdown_when_ready = 1
@@ -99,11 +98,6 @@
 	max_ammo = 1
 	start_empty = TRUE
 
-/obj/item/ammo_box/magazine/internal/bow/ashen
-	name = "ashen bow internal magazine"
-	ammo_type = /obj/item/ammo_casing/caseless/arrow/bone_tipped
-	caliber = "bone_arrow"
-
 /obj/item/projectile/bullet/reusable/arrow //only for wooden bow!
 	name = "arrow"
 	icon_state = "arrow"
@@ -118,6 +112,14 @@
 	ammo_type = /obj/item/ammo_casing/caseless/arrow/bone_tipped
 	range = 12
 	damage = 45
+	armour_penetration = -10
+
+/obj/item/projectile/bullet/reusable/arrow/jagged //alternative arrow, made from fishing
+	name = "jagged-tipped arrow"
+	icon_state = "jagged_arrow"
+	ammo_type = /obj/item/ammo_casing/caseless/arrow/jagged
+	range = 12
+	damage = 70
 	armour_penetration = -10
 
 /obj/item/ammo_casing/caseless/arrow
@@ -135,7 +137,15 @@
 	icon_state = "bone_arrow"
 	force = 12
 	projectile_type = /obj/item/projectile/bullet/reusable/arrow/bone
-	caliber = "bone_arrow"
+	caliber = "arrow"
+
+/obj/item/ammo_casing/caseless/arrow/jagged
+	name = "jagged-tipped arrow"
+	desc = "Стрела, сделанная из зубов хищной рыбы. Невероятно острая и крепкая."
+	icon_state = "jagged_arrow"
+	force = 16
+	projectile_type = /obj/item/projectile/bullet/reusable/arrow/jagged
+	caliber = "arrow"
 
 //quiver
 /obj/item/storage/backpack/quiver

@@ -107,7 +107,7 @@
 	if(sharpness && user.a_intent == INTENT_HARM)
 		to_chat(user, span_notice("Вы начинаете разделывать [declent_ru(ACCUSATIVE)]..."))
 		playsound(loc, 'sound/weapons/slice.ogg', 50, 1, -1)
-		if(do_after(user, 6 SECONDS, src,) && Adjacent(I))
+		if(do_after(user, I.has_speed_harvest ? 1 SECONDS : 6 SECONDS, src,) && Adjacent(I))
 			check_special_harvest()
 			harvest(user)
 	return ..()

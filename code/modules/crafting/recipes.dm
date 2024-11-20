@@ -731,6 +731,18 @@
 	category = CAT_PRIMAL
 	subcategory = CAT_WEAPONS
 
+/datum/crafting_recipe/upgraded_spear
+	name = "Her Biting Embrace"
+	result = /obj/item/twohanded/spear/bonespear/her_biting_embrace
+	time = 7.5 SECONDS
+	reqs = list(/obj/item/twohanded/spear/bonespear/chitinspear = 1, //tier 3 spear
+				/obj/item/stack/sheet/sinew = 1,
+				/obj/item/kitchen/knife/combat/survival/bone/eel = 1,
+				/obj/item/gem/ruby = 1)
+	blacklist = list(/obj/item/twohanded/spear/bonespear/her_biting_embrace)
+	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
+
 /datum/crafting_recipe/bow
 	name = "Wooden Bow"
 	result = /obj/item/gun/projectile/bow
@@ -778,6 +790,18 @@
 	category = CAT_PRIMAL
 	subcategory = CAT_WEAPONS
 
+/datum/crafting_recipe/jagged_arrow
+	result = list(/obj/item/ammo_casing/caseless/arrow/jagged,
+				/obj/item/ammo_casing/caseless/arrow/jagged,
+				/obj/item/ammo_casing/caseless/arrow/jagged)
+	time = 4 SECONDS
+	reqs = list(/obj/item/ammo_casing/caseless/arrow = 3,
+				/obj/item/stack/sheet/razor_sharp_teeth = 1,
+				/obj/item/stack/sheet/animalhide/weaver_chitin = 1)
+	blacklist = list(/obj/item/ammo_casing/caseless/arrow/jagged)
+	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
+
 /datum/crafting_recipe/quiver
 	name = "Quiver"
 	result = /obj/item/storage/backpack/quiver
@@ -810,6 +834,17 @@
 	time = 50
 	reqs = list(/obj/item/stack/sheet/bone = 6,
 				 /obj/item/stack/sheet/sinew = 3)
+	category = CAT_PRIMAL
+	subcategory = CAT_WEAPONS
+
+/datum/crafting_recipe/boneaxe
+	name = "Bone Axe"
+	result = /obj/item/twohanded/fireaxe/boneaxe/guillotine
+	time = 5 SECONDS
+	reqs = list(/obj/item/twohanded/fireaxe/boneaxe = 1,
+				/obj/item/circular_saw_blade = 1,
+				/obj/item/stack/sheet/sinew = 2)
+	blacklist = list(/obj/item/twohanded/fireaxe/boneaxe/guillotine)
 	category = CAT_PRIMAL
 	subcategory = CAT_WEAPONS
 
