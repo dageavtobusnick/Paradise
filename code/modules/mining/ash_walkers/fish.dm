@@ -62,7 +62,7 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 	throwforce = 5
 	force = 1
-	attack_verb = list("охлестал", "ударил", "стукнул", "опозорил") //стукнул рыбой, sounds nice
+	attack_verb = list("slapped", "humiliated", "hit", "rubbed") //attacks aren't translated, so in order to escape "You has ударил ssferhes ssusshes with generic lavaland fish" this has to be in english
 	hitsound = 'sound/effects/snap.ogg'
 
 	/// If this fish should do the flopping animation
@@ -209,7 +209,7 @@
 	desc = "Одна из самых больших рыб, встречающихся у берегов Лазис Ардакса. Практически всё тело, включая голову, покрыто багряными хрящевыми пластинами, достаточно крепкими, чтобы защищаться от большинства хищников. Внутри самой рыбы, рядом с сердцем, находится специализированный орган, собираемый местными племенами для ведения сельского хозяйства."
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/goldgrub_larva
 	butcher_loot = list(
-		/obj/item/stack/sheet/cartilage_plate = 2, //заметка - доделать броню и крафт брони
+		/obj/item/stack/sheet/cartilage_plate = 2,
 		/obj/item/conductive_organ = 1,
 		/obj/item/lavaland_dye/crimson = 1,
 		)
@@ -230,7 +230,7 @@
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/ash_eater
 	butcher_loot = list(
 		/obj/item/reagent_containers/food/snacks/lavaland/eel_filet = 1,
-		/obj/item/kitchen/knife/combat/survival/bone/eel = 1, //заметка - доделать копье
+		/obj/item/kitchen/knife/combat/survival/bone/eel = 1,
 		/obj/item/lavaland_dye/indigo = 1,
 		)
 
@@ -249,7 +249,7 @@
 	desc = "Массивная рыба краво-красного окраса со множеством острых зубов внутри её пасти. Данная рыба печально известна среди племён своей агрессивностью, от чего погибло множество молодых охотников. В желудке этих рыб можно частенько наткнуться на останки менее удачливых рыбаков."
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/bloody_leach
 	butcher_loot = list(
-		/obj/item/stack/sheet/razor_sharp_teeth = 2, //заметка - доделать стрелы
+		/obj/item/stack/sheet/razor_sharp_teeth = 2,
 		/obj/item/stack/sheet/bone = 1,
 		/obj/item/reagent_containers/food/snacks/bait/random = 2,
 		/obj/effect/spawner/random_spawners/lavaland_random_loot = 2,

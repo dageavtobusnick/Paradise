@@ -267,7 +267,7 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 			to_chat(user, "<span class='warning'>Вы больше не можете найти куда [name] пристраивается!</span>")
 
 /obj/item/stack/sheet/cartilage_plate
-	name = "cartilage plate"
+	name = "thick cartilage plate"
 	desc = "Хрящевая пластина, снятая с тела лавового панцирника. Судя по всему, пластина начала терять свой характерный кроваво-красный цвет, однако она остаётся такой же крепкой, как и до этого."
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
 	icon_state = "thick_cartilage_plate"

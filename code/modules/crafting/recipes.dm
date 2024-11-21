@@ -668,6 +668,62 @@
 	category = CAT_PRIMAL
 	subcategory = CAT_ARMOR
 
+/datum/crafting_recipe/cartilage_greaves
+	name = "Cartilage Greaves"
+	result = /obj/item/clothing/suit/armor/cartilage/cartilage_greaves
+	time = 4 SECONDS
+	reqs = list(/obj/item/stack/sheet/cartilage_plate = 2,
+				/obj/item/stack/sheet/leather = 2,
+				/obj/item/stack/sheet/sinew = 2)
+	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
+
+/datum/crafting_recipe/cartilage_pads
+	name = "Cartilage Shoulder Pads"
+	result = /obj/item/clothing/suit/armor/cartilage/cartilage_pads
+	time = 4 SECONDS
+	reqs = list(/obj/item/stack/sheet/cartilage_plate = 2,
+				/obj/item/stack/sheet/leather = 2,
+				/obj/item/stack/sheet/sinew = 1)
+	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
+
+/datum/crafting_recipe/footwrapsgoliath
+	name = "Goliath Hide Footwraps"
+	result = /obj/item/clothing/shoes/footwraps/goliath
+	reqs = list(/obj/item/stack/sheet/animalhide/goliath_hide = 1,
+				/obj/item/stack/sheet/leather = 1)
+	time = 6 SECONDS
+	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
+
+/datum/crafting_recipe/footwrapsdragon
+	name = "Ash Drake Hide Footwraps"
+	result = /obj/item/clothing/shoes/footwraps/dragon
+	reqs = list(/obj/item/stack/sheet/animalhide/ashdrake = 1,
+				/obj/item/stack/sheet/leather = 1)
+	time = 6 SECONDS
+	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
+
+/datum/crafting_recipe/goliathgloves
+	name = "Goliath Gloves"
+	result = /obj/item/clothing/gloves/color/black/goliath
+	time = 2 SECONDS
+	reqs = list(/obj/item/stack/sheet/leather = 2,
+				/obj/item/stack/sheet/animalhide/goliath_hide = 1)
+	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
+
+/datum/crafting_recipe/chitingloves
+	name = "Weaver Chitin Gloves"
+	result = /obj/item/clothing/gloves/fingerless/weaver
+	time = 2 SECONDS
+	reqs = list(/obj/item/stack/sheet/leather = 1,
+				/obj/item/stack/sheet/animalhide/weaver_chitin = 3)
+	category = CAT_PRIMAL
+	subcategory = CAT_ARMOR
+
 /datum/crafting_recipe/firebrand
 	name = "Firebrand"
 	result = /obj/item/match/firebrand
@@ -791,6 +847,7 @@
 	subcategory = CAT_WEAPONS
 
 /datum/crafting_recipe/jagged_arrow
+	name = "Jagged-tipped Arrows"
 	result = list(/obj/item/ammo_casing/caseless/arrow/jagged,
 				/obj/item/ammo_casing/caseless/arrow/jagged,
 				/obj/item/ammo_casing/caseless/arrow/jagged)
@@ -1630,7 +1687,6 @@
 	category = CAT_ROBOT
 	always_availible = FALSE
 	time = 5 SECONDS
-
 
 /datum/crafting_recipe/drone_circ
 	name = "Combat drone Basic Control Module"
