@@ -30,3 +30,17 @@
 	filling_color = "#BE7C64"
 	tastes = list("toxin meat" = 1)
 	foodtype = MEAT | TOXIC | RAW
+
+/obj/item/reagent_containers/food/snacks/lavaland_food
+	name = "generic lavaland food"
+	desc = "самое обычное блюдо. Если вы это видите, то зюзя напортачил"
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "fine_meal"
+	bitesize = 100 //eat whole thing down
+	list_reagents = list("nutriment" = 6, "protein" = 6)
+	has_special_eating_effects = TRUE
+	eat_time = 5 SECONDS
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/on_mob_eating_effect(mob/user)
+	to_chat(user, "тест, проверка. ты - [user].")
+	return

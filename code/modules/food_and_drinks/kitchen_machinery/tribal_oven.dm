@@ -1,0 +1,23 @@
+/obj/machinery/kitchen_machine/tribal_oven
+	name = "stone oven"
+	desc = "Огромная примитивная каменная печь, используемая для примитивной готовки из подручных средств."
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "oven_off"
+	use_power = NO_POWER_USE
+	idle_power_usage = 0
+	active_power_usage = 0
+	cook_verbs = list("Baking", "Roasting", "Broiling")
+	recipe_type = RECIPE_TRIBAL_OVEN
+	off_icon = "oven_off"
+	on_icon = "oven_on"
+	can_be_dirty = FALSE
+	can_broke = FALSE
+
+/obj/machinery/kitchen_machine/tribal_oven/screwdriver_act()
+	return FALSE
+
+/obj/machinery/kitchen_machine/tribal_oven/wrench_act()
+	return FALSE
+
+/obj/machinery/kitchen_machine/crowbar_act()
+	return FALSE

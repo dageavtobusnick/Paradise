@@ -249,7 +249,7 @@
 	desc = "Массивная рыба краво-красного окраса со множеством острых зубов внутри её пасти. Данная рыба печально известна среди племён своей агрессивностью, от чего погибло множество молодых охотников. В желудке этих рыб можно частенько наткнуться на останки менее удачливых рыбаков."
 	favorite_bait = /obj/item/reagent_containers/food/snacks/bait/bloody_leach
 	butcher_loot = list(
-		/obj/item/stack/sheet/razor_sharp_teeth = 2,
+		/obj/item/stack/sheet/razor_sharp_teeth = 1,
 		/obj/item/stack/sheet/bone = 1,
 		/obj/item/reagent_containers/food/snacks/bait/random = 2,
 		/obj/effect/spawner/random_spawners/lavaland_random_loot = 2,

@@ -35,5 +35,6 @@
 #define RECIPE_OVEN			"Oven"
 #define RECIPE_GRILL		"Grill"
 #define RECIPE_CANDY		"Candy"
+#define RECIPE_TRIBAL_OVEN	"tribal_oven"
 
 #define RECIPE_FAIL		null

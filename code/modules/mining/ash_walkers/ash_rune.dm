@@ -17,6 +17,7 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	anchored = TRUE
 	plane = FLOOR_PLANE
+	layer = TURF_DECAL_LAYER
 
 /obj/effect/rune_animation_landmark/Initialize(mapload)
 	. = ..()

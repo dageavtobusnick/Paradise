@@ -15,9 +15,16 @@
 	idle_power_usage = 5
 	active_power_usage = 100
 	container_type = OPENCONTAINER
-	var/operating = FALSE // Is it on?
-	var/dirty = NO_DIRT // = {0..100} Does it need cleaning?
-	var/broken = BROKEN_NONE //  How broken is it???
+	/// Is it on?
+	var/operating = FALSE
+	/// = {0..100} Does it need cleaning?
+	var/dirty = NO_DIRT
+	/// Can our machine be dirty?
+	var/can_be_dirty = TRUE
+	/// How broken is it???
+	var/broken = BROKEN_NONE
+	/// Can our machine be broken?
+	var/can_broke = TRUE
 	var/efficiency = 0
 	var/list/cook_verbs = list("Cooking")
 	//Recipe & Item vars
@@ -167,7 +174,8 @@
 	)
 	if(!I.use_tool(src, user, 2 SECONDS, volume = I.tool_volume) || operating || broken != BROKEN_NEEDS_SCREWDRIVER)
 		return .
-	broken = BROKEN_NEEDS_WRENCH // Fix it a bit
+	if(can_broke)
+		broken = BROKEN_NEEDS_WRENCH // Fix it a bit
 	update_icon(UPDATE_ICON_STATE)
 	user.visible_message(
 		span_notice("[user] fixes the internal parts of [src]."),
@@ -338,7 +346,8 @@
 	if(recipes_to_make.len == 1 && recipes_to_make[1][2] == RECIPE_FAIL)
 		//This only runs if there is a single recipe source to be made and it is a failure (the machine was loaded with only 1 mixing bowl that results in failure OR was directly loaded with ingredients that results in failure).
 		//If there are multiple sources, this bit gets skipped.
-		dirty += 1
+		if(can_be_dirty)
+			dirty += 1
 		if(prob(max(10,dirty*5)))	//chance to get so dirty we require cleaning before next use
 			if(!wzhzhzh(4))
 				abort()
@@ -429,6 +438,9 @@
 
 /obj/machinery/kitchen_machine/proc/wzhzhzh(seconds)
 	for(var/i=1 to seconds)
+		if(use_power == NO_POWER_USE)
+			sleep(10)
+			continue
 		if(stat & (NOPOWER|BROKEN))
 			return 0
 		use_power(500)
@@ -461,7 +473,7 @@
 /obj/machinery/kitchen_machine/proc/dispose()
 	for(var/obj/O in contents)
 		O.forceMove(loc)
-	if(reagents.total_volume)
+	if(reagents.total_volume && can_be_dirty)
 		dirty++
 	reagents.clear_reagents()
 	to_chat(usr, "<span class='notice'>You dispose of \the [src]'s contents.</span>")
@@ -473,7 +485,8 @@
 /obj/machinery/kitchen_machine/proc/muck_finish()
 	playsound(loc, 'sound/machines/ding.ogg', 50, 1)
 	visible_message("<span class='alert'>\The [src] gets covered in muck!</span>")
-	dirty = MAX_DIRT // Make it dirty so it can't be used util cleaned
+	if(can_be_dirty) //this vars are much more easy than copy-paste all that code to tribal oven
+		dirty = MAX_DIRT // Make it dirty so it can't be used util cleaned
 	container_type = NONE
 	operating = FALSE // Turn it off again afterwards
 	update_icon(UPDATE_ICON_STATE)
@@ -482,7 +495,8 @@
 /obj/machinery/kitchen_machine/proc/broke()
 	do_sparks(2, 1, src)
 	visible_message("<span class='alert'>The [src] breaks!</span>") //Let them know they're stupid
-	broken = BROKEN_NEEDS_SCREWDRIVER // Make it broken so it can't be used util fixed
+	if(can_broke)
+		broken = BROKEN_NEEDS_SCREWDRIVER // Make it broken so it can't be used util fixed
 	container_type = NONE
 	operating = FALSE // Turn it off again aferwards
 	update_icon(UPDATE_ICON_STATE)
