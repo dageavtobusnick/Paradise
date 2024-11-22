@@ -331,7 +331,7 @@
 ************************************/
 
 /obj/machinery/kitchen_machine/proc/cook()
-	if(stat & (NOPOWER|BROKEN))
+	if(use_power != NO_POWER_USE && stat & (NOPOWER|BROKEN))
 		return
 	start()
 	if(reagents.total_volume==0 && !(locate(/obj) in contents)) //dry run

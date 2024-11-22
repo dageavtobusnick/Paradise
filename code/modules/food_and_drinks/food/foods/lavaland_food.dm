@@ -38,8 +38,10 @@
 	icon_state = "fine_meal"
 	bitesize = 100 //eat whole thing down
 	list_reagents = list("nutriment" = 6, "protein" = 6)
+	tastes = list("good food" = 1)
 	has_special_eating_effects = TRUE
 	eat_time = 5 SECONDS
+	foodtype = MEAT
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/on_mob_eating_effect(mob/user)
 	to_chat(user, "тест, проверка. ты - [user].")

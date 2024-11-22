@@ -12,6 +12,7 @@
 	on_icon = "oven_on"
 	can_be_dirty = FALSE
 	can_broke = FALSE
+	efficiency = 1 //we don't have parts, soo
 
 /obj/machinery/kitchen_machine/tribal_oven/screwdriver_act()
 	return FALSE
