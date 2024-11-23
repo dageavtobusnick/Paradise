@@ -774,3 +774,19 @@
 /datum/status_effect/drill_payback/on_remove()
 	..()
 	owner.clear_fullscreen("payback")
+
+/atom/movable/screen/alert/status_effect/lavaland_freaky_leg
+	name = "freaky legs"
+	desc = "Поедание человеческих конечностей себя оправдало!"
+	icon_state = "freaky_legs"
+
+/datum/status_effect/lavaland_no_pain
+	duration = 3 MINUTES
+	status_type = STATUS_EFFECT_REPLACE
+	alert_type = /atom/movable/screen/alert/status_effect/lavaland_freaky_leg
+
+/datum/status_effect/lavaland_no_pain/on_apply()
+	owner.ignore_slowdown(TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/lavaland_no_pain/on_remove()
+	owner.unignore_slowdown(TRAIT_STATUS_EFFECT(id))

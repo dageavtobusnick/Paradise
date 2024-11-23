@@ -310,3 +310,13 @@
 /datum/status_effect/forced_rumble/tick(seconds_between_ticks)
 	if(prob(40) && isunathi(owner))
 		owner.emote("rumble")
+
+/datum/status_effect/forced_sneeze
+	id = "forced_sneeze"
+	alert_type = null
+	duration = 1 MINUTES
+	status_type = STATUS_EFFECT_REFRESH
+
+/datum/status_effect/forced_sneeze/tick(seconds_between_ticks)
+	if(prob(60))
+		owner.emote("sneeze")

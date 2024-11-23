@@ -48,8 +48,9 @@
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/fine_meal
 	name = "fine meal"
+	icon_state = "fine_meal"
 	desc = "Мясо голиафа, обжаренное в соку кактусового фрукта. Невероятно вкусное и питательное."
-	list_reagents = list("vitfro" = 8, "protein" = 7, "vitamin" = 3)
+	list_reagents = list("vitfro" = 6, "protein" = 7, "vitamin" = 3)
 	tastes = list("well-balanced food" = 1)
 	foodtype = MEAT|FRUIT
 
@@ -57,3 +58,38 @@
 	if(isliving(user))
 		var/mob/living/living_user = user
 		living_user.apply_status_effect(STATUS_EFFECT_FORCED_RUMBLE)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/freaky_leg
+	name = "freaky leg"
+	icon_state = "freaky_leg"
+	desc = "Многие народы галактики расценивают поедание себе подобных как ужасающее преступление. Однако эти стопы вышли слишком питательными.."
+	tastes = list("bad times" = 1)
+	foodtype = MEAT
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/freaky_leg/on_mob_eating_effect(mob/user)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.apply_status_effect(STATUS_EFFECT_LAVALAND_NO_PAIN)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/veggie_meal
+	name = "veggie meal"
+	icon_state = "veggie_meal"
+	desc = "Обычно пеплоходцы питаются мясом местной фауны, однако, если правильно смешать нужные реагенты, то получится крайне полезное, хоть не очень вкусное блюдо."
+	list_reagents = list("spaceacillin" = 10, "lavaland_extract" = 2, "vitfro" = 20, "sal_acid" = 15)
+	tastes = list("herbs" = 1)
+	foodtype = FRUIT|VEGETABLES
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/veggie_meal/on_mob_eating_effect(mob/user)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.apply_status_effect(STATUS_EFFECT_FORCED_SNEEZE)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/hunters_treat
+	name = "hunter's treat"
+	icon_state = "hunters_treat"
+	desc = "Человеческое сердце, обжаренное в соку мяса голиафа. Легенды говорят, что если сьесть сердце поверженного врага, то обретешь невероятную силу."
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/hunters_treat/on_mob_eating_effect(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/human = user
+		human.force_gene_block(GLOB.strongblock, TRUE)
