@@ -93,3 +93,10 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/human = user
 		human.force_gene_block(GLOB.strongblock, TRUE)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/yum_grub
+	name = "yum-grub"
+	icon_state = "yum_grub"
+	desc = "Мясо златожора, обжаренное вместе с грибами. Крайне полезно для зрения и мозга."
+	list_reagents = list("oculine" = 12, "mannitol" = 12, "vitamin" = 3)
+

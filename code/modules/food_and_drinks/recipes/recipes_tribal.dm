@@ -40,3 +40,14 @@
 		/obj/item/reagent_containers/food/snacks/grown/mushroom/reishi,
 		/obj/item/reagent_containers/food/snacks/grown/mushroom/reishi
 	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/hunters_treat
+
+/datum/recipe/tribal_oven/yum_grub
+	reagents = list()
+	items = list(
+		/obj/item/reagent_containers/food/snacks/monstermeat/goldgrub,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_cap,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_cap,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/yum_grub
