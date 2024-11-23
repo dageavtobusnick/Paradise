@@ -25,6 +25,7 @@
 	var/broken = BROKEN_NONE
 	/// Can our machine be broken?
 	var/can_broke = TRUE
+	var/transfer_reagents_from_ingredients = TRUE
 	var/efficiency = 0
 	var/list/cook_verbs = list("Cooking")
 	//Recipe & Item vars
@@ -423,7 +424,8 @@
 			source.reagents.clear_reagents()
 			for(var/e=1 to efficiency)		//upgraded machine? make additional servings and split the ingredient reagents among each serving equally.
 				var/obj/cooked = new recipe.result()
-				temp_reagents.trans_to(cooked, temp_reagents.total_volume/efficiency, no_react = TRUE) // Don't react with the abstract holder please
+				if(transfer_reagents_from_ingredients)
+					temp_reagents.trans_to(cooked, temp_reagents.total_volume/efficiency, no_react = TRUE) // Don't react with the abstract holder please
 				cooked.forceMove(loc)
 			temp_reagents.clear_reagents()
 			var/obj/byproduct = recipe.get_byproduct()	//if the recipe has a byproduct, handle returning that (such as re-usable candy moulds)

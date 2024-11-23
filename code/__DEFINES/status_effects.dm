@@ -188,3 +188,5 @@
 #define STATUS_EFFECT_STARING /datum/status_effect/staring //Used in ../human/examine() proc
 
 #define STATUS_EFFECT_RECENTLY_SUCCUMBED /datum/status_effect/recently_succumbed
+
+#define STATUS_EFFECT_FORCED_RUMBLE /datum/status_effect/forced_rumble

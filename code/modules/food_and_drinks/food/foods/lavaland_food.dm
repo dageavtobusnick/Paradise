@@ -44,5 +44,16 @@
 	foodtype = MEAT
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/on_mob_eating_effect(mob/user)
-	to_chat(user, "тест, проверка. ты - [user].")
 	return
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/fine_meal
+	name = "fine meal"
+	desc = "Мясо голиафа, обжаренное в соку кактусового фрукта. Невероятно вкусное и питательное."
+	list_reagents = list("vitfro" = 8, "protein" = 7, "vitamin" = 3)
+	tastes = list("well-balanced food" = 1)
+	foodtype = MEAT|FRUIT
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/fine_meal/on_mob_eating_effect(mob/user)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.apply_status_effect(STATUS_EFFECT_FORCED_RUMBLE)

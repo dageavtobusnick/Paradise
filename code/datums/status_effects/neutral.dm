@@ -300,3 +300,13 @@
 	alert_type = null
 	duration = 1 MINUTES
 	status_type = STATUS_EFFECT_REFRESH
+
+/datum/status_effect/forced_rumble
+	id = "forced_rumble"
+	alert_type = null
+	duration = 30 SECONDS
+	status_type = STATUS_EFFECT_REFRESH
+
+/datum/status_effect/forced_rumble/tick(seconds_between_ticks)
+	if(prob(40) && isunathi(owner))
+		owner.emote("rumble")
