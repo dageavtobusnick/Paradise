@@ -100,3 +100,13 @@
 	desc = "Мясо златожора, обжаренное вместе с грибами. Крайне полезно для зрения и мозга."
 	list_reagents = list("oculine" = 12, "mannitol" = 12, "vitamin" = 3)
 
+/obj/item/reagent_containers/food/snacks/lavaland_food/ashie_kebab
+	name = "ashie-kebab"
+	icon_state = "ashie_kebab"
+	desc = "Несколько жизненно-важных органов, грубо удаленных из тела и насаженных на железный стержень. Выглядит вкусно!"
+	list_reagents = list("nutriment" = 6, "protein" = 6, "ephedrine" = 10)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/ashie_kebab/on_mob_eating_effect(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/human = user
+		human.add_blood()

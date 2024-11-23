@@ -51,3 +51,14 @@
 		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf
 	)
 	result = /obj/item/reagent_containers/food/snacks/lavaland_food/yum_grub
+
+/datum/recipe/tribal_oven/ashie_kebab
+	reagents = list()
+	items = list(
+		/obj/item/stack/rods,
+		/obj/item/organ/internal/liver,
+		/obj/item/organ/internal/heart,
+		/obj/item/organ/internal/kidneys,
+		/obj/item/reagent_containers/food/snacks/monstermeat/spiderleg
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/ashie_kebab
