@@ -194,3 +194,5 @@
 #define STATUS_EFFECT_FORCED_RUMBLE /datum/status_effect/forced_rumble
 
 #define STATUS_EFFECT_FORCED_SNEEZE /datum/status_effect/forced_sneeze
+
+#define STATUS_EFFECT_LAVALAND_VISION /datum/status_effect/lavaland_vision

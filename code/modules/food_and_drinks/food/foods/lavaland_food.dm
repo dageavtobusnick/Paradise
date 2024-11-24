@@ -43,9 +43,6 @@
 	eat_time = 5 SECONDS
 	foodtype = MEAT
 
-/obj/item/reagent_containers/food/snacks/lavaland_food/on_mob_eating_effect(mob/user)
-	return
-
 /obj/item/reagent_containers/food/snacks/lavaland_food/fine_meal
 	name = "fine meal"
 	icon_state = "fine_meal"
@@ -110,3 +107,51 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/human = user
 		human.add_blood()
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/tail_o_dead
+	name = "tail'o'dead"
+	icon_state = "tail_o_dead"
+	desc = "Массивный хвост унати, запечённый в соку фруктовых кактусов. Выглядит аппетитно!"
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/tail_o_dead/on_mob_eating_effect(mob/user)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.apply_status_effect(STATUS_EFFECT_LAVALAND_VISION)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/cure_curse
+	name = "cure curse"
+	icon_state = "cure_curse"
+	desc = "Два проткнутых сердца, одно из которых проклято. Что может пойти не так?"
+	var/active = FALSE
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/cure_curse/examine(mob/user)
+	. = ..()
+	if(active)
+		. += span_notice("проклятое сердце бьётся.")
+	else
+		. += span_danger("проклятое сердце неподвижно.")
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/cure_curse/attackby(obj/item/I, mob/user, params)
+	. = ..()
+	if(!istype(I, /obj/item/melee/touch_attack/healtouch))
+		return ..()
+	if(active)
+		balloon_alert(user, "уже активно!")
+		return ..()
+	user.say("NWOC EGEVNER")
+	active = TRUE
+	qdel(I)
+	update_icon(UPDATE_ICON_STATE)
+	return ATTACK_CHAIN_PROCEED
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/cure_curse/update_icon_state()
+	. = ..()
+	icon_state = "[initial(icon_state)][active ? "_active" : ""]"
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/cure_curse/on_mob_eating_effect(mob/user)
+	if(!active)
+		return
+	if(isliving(user))
+		var/mob/living/living_user = user
+		if(!living_user.get_int_organ(/obj/item/organ/internal/regenerative_core/legion))
+			new /obj/item/organ/internal/regenerative_core/legion/pre_preserved(living_user)

@@ -781,12 +781,14 @@
 	icon_state = "freaky_legs"
 
 /datum/status_effect/lavaland_no_pain
+	id = "Freaky Legs"
 	duration = 3 MINUTES
 	status_type = STATUS_EFFECT_REPLACE
 	alert_type = /atom/movable/screen/alert/status_effect/lavaland_freaky_leg
 
 /datum/status_effect/lavaland_no_pain/on_apply()
 	owner.ignore_slowdown(TRAIT_STATUS_EFFECT(id))
+	return TRUE
 
 /datum/status_effect/lavaland_no_pain/on_remove()
 	owner.unignore_slowdown(TRAIT_STATUS_EFFECT(id))

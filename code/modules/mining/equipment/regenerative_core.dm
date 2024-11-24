@@ -130,6 +130,9 @@
 	desc = "A strange rock that crackles with power. It can be used to heal completely, but it will rapidly decay into uselessness."
 	icon_state = "legion_soul"
 
+/obj/item/organ/internal/regenerative_core/legion/pre_preserved
+	preserved = TRUE
+
 /obj/item/organ/internal/regenerative_core/legion/Initialize(mapload)
 	. = ..()
 	update_icon()
