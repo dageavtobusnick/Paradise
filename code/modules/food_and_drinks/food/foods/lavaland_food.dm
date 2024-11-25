@@ -158,7 +158,7 @@
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/wings_n_fangs_n_tentacles
 	name = "wings'n'fangs'n'tentacles"
-	icon_state = "wings_n_legs_n_tentacles"
+	icon_state = "wings_n_fangs_n_tentacles"
 	desc = "Одно из щупалец голиафа, крыло наблюдателя и жвало ткача, запеченные вместе. На вкус оно так же ужасно, как и на вид."
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/wings_n_fangs_n_tentacles/on_mob_eating_effect(mob/user)
