@@ -155,3 +155,35 @@
 		var/mob/living/living_user = user
 		if(!living_user.get_int_organ(/obj/item/organ/internal/regenerative_core/legion))
 			new /obj/item/organ/internal/regenerative_core/legion/pre_preserved(living_user)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/wings_n_fangs_n_tentacles
+	name = "wings'n'fangs'n'tentacles"
+	icon_state = "wings_n_legs_n_tentacles"
+	desc = "Одно из щупалец голиафа, крыло наблюдателя и жвало ткача, запеченные вместе. На вкус оно так же ужасно, как и на вид."
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/wings_n_fangs_n_tentacles/on_mob_eating_effect(mob/user)
+	if(isunathi(user))
+		var/mob/living/carbon/human/human_unathi = user
+		var/obj/item/organ/internal/cyberimp/tail/blade/organic_upgrade/tumour = human_unathi.get_organ_slot(INTERNAL_ORGAN_TAIL_DEVICE)
+		if(!tumour)
+			tumour = new
+			to_chat(human_unathi, span_warning("Вы чувствуете сильное покалывание в вашем хвосте."))
+			tumour.insert(human_unathi)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels
+	name = "goli-kernels"
+	icon_state = "goli_kernels"
+	desc = "небольшой мясной шарик на \"подносе\" из грибной шляпки. Вкуснятина!"
+	list_reagents = list("nutriment" = 2, "protein" = 2)
+	eat_time = 0 SECONDS
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	. = ..()
+
+	if(..() || !ishuman(hit_atom))//if it gets caught or the target aren't human
+		return TRUE	//abort
+
+	var/mob/living/carbon/human/target = hit_atom
+	target.eat(src, target)
+	if(!QDELETED(src))
+		return TRUE

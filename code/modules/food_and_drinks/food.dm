@@ -16,7 +16,7 @@
 	var/junkiness = 0  //for junk food. used to lower human satiety.
 	var/bitesize = 2
 	var/has_special_eating_effects = FALSE
-	var/eat_time = 0
+	var/eat_time = 0 SECONDS
 	var/consume_sound = 'sound/items/eatfood.ogg'
 	var/apply_type = REAGENT_INGEST
 	var/apply_method = "swallow"

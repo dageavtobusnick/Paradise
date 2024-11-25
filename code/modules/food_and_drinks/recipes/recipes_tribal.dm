@@ -83,3 +83,24 @@
 		/obj/item/stack/sheet/wood
 	)
 	result = /obj/item/reagent_containers/food/snacks/lavaland_food/cure_curse
+
+/datum/recipe/tribal_oven/wings_n_fangs_n_tentacles
+	reagents = list()
+	items = list(
+		/obj/item/crusher_trophy/goliath_tentacle,
+		/obj/item/crusher_trophy/watcher_wing,
+		/obj/item/crusher_trophy/fang,
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/wings_n_fangs_n_tentacles
+
+/datum/recipe/tribal_oven/goli_kernels
+	reagents = list()
+	items = list(
+		/obj/item/reagent_containers/food/snacks/monstermeat/goliath,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf
+	)
+	result = list(
+		/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels,
+		/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels,
+		/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels
+	)
