@@ -32,3 +32,44 @@
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
 	icon_state = "circular_saw_blade"
 	w_class = WEIGHT_CLASS_TINY
+
+//**********Grace of Lazis **********//
+/obj/structure/grace_of_lazis
+	name = "grace of lazis"
+	icon = 'icons/obj/lavaland/grace_of_lazis.dmi'
+	icon_state = "grace_of_lazis4"
+	desc = "Огромное количество мяса, насаженного на костяное копье. Символ невероятно удачного сезона охоты."
+	anchored = TRUE
+	density = TRUE
+	max_integrity = 1000
+	var/meat_parts = 40
+
+/obj/structure/grace_of_lazis/attackby(obj/item/I, mob/user, params)
+	if(!istype(I, /obj/item/kitchen/knife))
+		return ..()
+
+	to_chat(user, span_notice("Вы начали отрезать порцию мяса от постамента."))
+
+	if(!do_after(user, 3 SECONDS, src, max_interact_count = 1))
+		return
+
+	meat_parts--
+	update_icon(UPDATE_ICON_STATE)
+	to_chat(user, span_notice("Вы отрезали порцию мяса с постамента."))
+	var/obj/item/reagent_containers/food/snacks/lavaland_food/grace_of_lazis/food = new()
+	user.put_in_hands(food)
+	if(meat_parts == 0)
+		visible_message(span_warning("от постамента остается лишь одно копье!"))
+		var/obj/item/twohanded/spear/bonespear/spear = new(loc)
+		qdel(src)
+
+/obj/structure/grace_of_lazis/update_icon_state()
+	switch(meat_parts)
+		if(1 to 10)
+			icon_state = "grace_of_lazis1"
+		if(11 to 20)
+			icon_state = "grace_of_lazis2"
+		if(21 to 30)
+			icon_state = "grace_of_lazis3"
+		if(31 to INFINITY)
+			icon_state = "grace_of_lazis4"

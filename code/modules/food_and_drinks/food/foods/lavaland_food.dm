@@ -187,3 +187,10 @@
 	target.eat(src, target)
 	if(!QDELETED(src))
 		return TRUE
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/grace_of_lazis
+	name = "grace of lazis portion"
+	desc = "Кусок мяса, срезанный с массивного постамента в честь славной охоты. Невероятно вкусно."
+	icon_state = "grace_of_lazis"
+	list_reagents = list("protein" = 4, "vitamin" = 2)
+	eat_time = 0 SECONDS

@@ -741,6 +741,24 @@
 	category = CAT_PRIMAL
 	subcategory = CAT_MISC2
 
+/datum/crafting_recipe/tribal_rod
+	name = "Tribal Fishing Rod"
+	time = 4 SECONDS
+	reqs = list(/obj/item/stack/sheet/bone = 2,
+				/obj/item/stack/sheet/sinew = 1)
+	result = /obj/item/twohanded/fishing_rod/tribal
+	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
+
+/datum/crafting_recipe/grace_of_lazis
+	name = "Grace Of Lazis"
+	time = 6 SECONDS
+	reqs = list(/obj/item/twohanded/spear/bonespear = 1,
+				/obj/item/reagent_containers/food/snacks/monstermeat/goliath = 18)
+	result = /obj/item/twohanded/fishing_rod/tribal //на нормальное.
+	category = CAT_PRIMAL
+	subcategory = CAT_MISC2
+
 /datum/crafting_recipe/bonedagger
 	name = "Bone Dagger"
 	result = /obj/item/kitchen/knife/combat/survival/bone
