@@ -99,8 +99,4 @@
 		/obj/item/reagent_containers/food/snacks/monstermeat/goliath,
 		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf
 	)
-	result = list(
-		/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels,
-		/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels,
-		/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels
-	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/triple

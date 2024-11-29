@@ -177,6 +177,12 @@
 	list_reagents = list("nutriment" = 2, "protein" = 2)
 	eat_time = 0 SECONDS
 
+/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/triple/Initialize(mapload)
+	. = ..()
+	for(var/i in 1 to 3)
+		var/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/food = new(loc)
+	return INITIALIZE_HINT_QDEL
+
 /obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	. = ..()
 
@@ -185,8 +191,7 @@
 
 	var/mob/living/carbon/human/target = hit_atom
 	target.eat(src, target)
-	if(!QDELETED(src))
-		return TRUE
+	qdel(src)
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/grace_of_lazis
 	name = "grace of lazis portion"

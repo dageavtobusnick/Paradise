@@ -51,7 +51,7 @@
 	to_chat(user, span_notice("Вы начали отрезать порцию мяса от постамента."))
 
 	if(!do_after(user, 3 SECONDS, src, max_interact_count = 1))
-		return
+		return ..()
 
 	meat_parts--
 	update_icon(UPDATE_ICON_STATE)
@@ -60,8 +60,11 @@
 	user.put_in_hands(food)
 	if(meat_parts == 0)
 		visible_message(span_warning("от постамента остается лишь одно копье!"))
-		var/obj/item/twohanded/spear/bonespear/spear = new(loc)
+		var/obj/item/twohanded/spear/bonespear/spear
+		spear = new(loc)
 		qdel(src)
+		return ATTACK_CHAIN_PROCEED
+	return ATTACK_CHAIN_SUCCESS
 
 /obj/structure/grace_of_lazis/update_icon_state()
 	switch(meat_parts)

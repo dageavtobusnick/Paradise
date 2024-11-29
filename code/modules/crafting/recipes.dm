@@ -755,7 +755,7 @@
 	time = 6 SECONDS
 	reqs = list(/obj/item/twohanded/spear/bonespear = 1,
 				/obj/item/reagent_containers/food/snacks/monstermeat/goliath = 18)
-	result = /obj/item/twohanded/fishing_rod/tribal //на нормальное.
+	result = /obj/structure/grace_of_lazis
 	category = CAT_PRIMAL
 	subcategory = CAT_MISC2
 
