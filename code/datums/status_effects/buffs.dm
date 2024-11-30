@@ -792,3 +792,34 @@
 
 /datum/status_effect/lavaland_no_pain/on_remove()
 	owner.unignore_slowdown(TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/lavaland_eternal_bleeding_fix
+	id = "Lavaland Eternal Bleeding"
+	status_type = STATUS_EFFECT_REPLACE
+	duration = 30 SECONDS
+
+/datum/status_effect/lavaland_eternal_bleeding_fix/tick(seconds_between_ticks)
+	if(ishuman(user))
+		var/mob/living/carbon/human/hum = owner
+		for(var/obj/item/organ/external/bodypart as anything in hum.bodyparts)
+			if(bodypart.has_internal_bleeding() && prob(7))
+				to_chat(hum, span_notice("You feel a burning sensation in your [bodypart.name] as your veins begin to recover!"))
+				bodypart.stop_internal_bleeding()
+
+/datum/status_effect/lavaland_night_vision
+	id = "Lavaland Night Vision"
+	status_type = STATUS_EFFECT_REFRESH
+	duration = 450 SECONDS
+
+/datum/status_effect/lavaland_no_pain/on_apply()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human = owner
+		human.force_gene_block(GLOB.colourblindblock, TRUE)
+		human.set_vision_override(/datum/vision_override/nightvision)
+	return TRUE
+
+/datum/status_effect/lavaland_no_pain/on_remove()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human = owner
+		human.force_gene_block(GLOB.colourblindblock, FALSE)
+		human.set_vision_override(null)

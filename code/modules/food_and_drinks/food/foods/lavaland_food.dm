@@ -5,7 +5,7 @@
 	name = "soft meat cut"
 	desc = "Нежная мясная вырезка. Сырая в текущем виде, однако с правильными ингридиентами её можно превратить в прекрасное блюдо."
 	icon_state = "soft_meat_cut"
-	list_reagents = list("nutriment" = 3, "vitamin" = 4, "protein" = 6)
+	list_reagents = list("nutriment" = 1, "vitamin" = 3, "protein" = 3)
 	bitesize = 2
 	filling_color = "#D49284"
 	tastes = list("raw meat" = 1)
@@ -15,7 +15,7 @@
 	name = "eel filet"
 	desc = "Сырое филе донного угря. Хоть оно съедобно и в сыром виде, с правильными ингридиентами, ее можно превратить в прекрасное блюдо."
 	icon_state = "eel_filet"
-	list_reagents = list("nutriment" = 4, "menthol" = 3, "protein" = 8)
+	list_reagents = list("nutriment" = 2, "menthol" = 3, "protein" = 4)
 	bitesize = 2
 	filling_color = "#414F71"
 	tastes = list("raw meat" = 1)
@@ -25,11 +25,41 @@
 	name = "predatory fish slice"
 	desc = "Достаточно большой кусок мяса, добытый из хищной рыбы. Не рекомендуется к употреблению в сыром виде."
 	icon_state = "predatory_fish_slice"
-	list_reagents = list("nutriment" = 4, "toxin" = 2, "protein" = 12)
+	list_reagents = list("nutriment" = 2, "toxin" = 2, "protein" = 4)
 	bitesize = 3
 	filling_color = "#BE7C64"
 	tastes = list("toxin meat" = 1)
 	foodtype = MEAT | TOXIC | RAW
+
+/obj/item/reagent_containers/food/snacks/lavaland/soft_meat_cubes
+	name = "soft meat cubes"
+	desc = "Филе рыбы, порезанное на маленькие кубики и обжаренное в печи. Выглядит аппетитно."
+	icon_state = "soft_meat_cubes"
+	list_reagents = list("nutriment" = 2, "vitamin" = 3, "protein" = 3)
+	bitesize = 3
+	filling_color = "#BE7C64"
+	tastes = list("soft meat" = 1)
+	foodtype = MEAT
+
+/obj/item/reagent_containers/food/snacks/lavaland/predatory_fish_slab
+	name = "cooked predatory fish slab"
+	desc = "Кусок мяса хищной рыбы, обжаренный в печи. Пригоден к употреблению."
+	icon_state = "predatory_fish_slab"
+	list_reagents = list("nutriment" = 4, "protein" = 6)
+	bitesize = 3
+	filling_color = "#BE7C64"
+	tastes = list("meat" = 1)
+	foodtype = MEAT
+
+/obj/item/reagent_containers/food/snacks/lavaland/eel_ringlets
+	name = "eel ringlets"
+	desc = "Обжаренное в печи филе донного угря. Невероятно вкусное."
+	icon_state = "eel_ringlets"
+	list_reagents = list("nutriment" = 4, "protein" = 6)
+	bitesize = 3
+	filling_color = "#BE7C64"
+	tastes = list("meat" = 1)
+	foodtype = MEAT
 
 /obj/item/reagent_containers/food/snacks/lavaland_food
 	name = "generic lavaland food"
@@ -37,7 +67,7 @@
 	icon = 'icons/obj/lavaland/ashie_food.dmi'
 	icon_state = "fine_meal"
 	bitesize = 100 //eat whole thing down
-	list_reagents = list("nutriment" = 6, "protein" = 6)
+	list_reagents = list("nutriment" = 6, "menthol" = 4 "protein" = 6)
 	tastes = list("good food" = 1)
 	has_special_eating_effects = TRUE
 	eat_time = 5 SECONDS
@@ -199,3 +229,63 @@
 	icon_state = "grace_of_lazis"
 	list_reagents = list("protein" = 4, "vitamin" = 2)
 	eat_time = 0 SECONDS
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/beer_grub_stew
+	name = "beer grub stew"
+	desc = "Алкогольное рагу, приготовленное с использованием мяса златожора. Питательно!"
+	icon_state = "beer_grub_stew"
+	list_reagents = list("nutriment" = 4, "protein" = 6, "beer" = 7)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/beer_grub_stew/on_mob_eating_effect(mob/user)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.apply_status_effect(STATUS_EFFECT_TEMPERATURE_STABILIZE)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/thick_red_paste
+	name = "thick red paste"
+	desc = "Отвратительно выглядящая на вид вязкая красная паста, сделанная из ошмётков тел. На вкус невероятно отвратительно."
+	icon_state = "thick_red_paste"
+	list_reagents = list("protein" = 2)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/thick_red_paste/on_mob_eating_effect(mob/user)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.apply_status_effect(STATUS_EFFECT_LAVALAND_ETERNAL_BLEEDING_FIX)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/black_blood_sausage
+	name = "black blood sausage"
+	desc = "Небольшая кровяная колбаска, сделанная из мяса голиафа и... настоящей крови. Крайне полезно, если вы в критическом состоянии."
+	icon_state = "black_blood_sausage"
+	list_reagents = list("nutriment" = 4, "protein" = 3, "ashiezine" = 6)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/xeno_sticks
+	name = "xeno sticks"
+	desc = "Мясо ксеноморфа на палочках, украшенное грибами рейши. На удивление довольно вкусное!"
+	icon_state = "xeno_sticks"
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/xeno_sticks/on_mob_eating_effect(mob/user)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.apply_status_effect(STATUS_EFFECT_LAVALAND_NIGHT_VISION)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/filet_madras
+	name = "filet madras"
+	desc = "Нежное филе рыбы, обжаренное вместе с грибами. Невероятно вкусно."
+	icon_state = "filet_madras"
+	list_reagents = list("nutriment" = 3, "protein" = 2, "pen_acid" = 4)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/eel_katigo
+	name = "eel katigo"
+	desc = "Филе донного угря с травяными приправами и \"соусом\" в виде собранных кусков мяса. Питательно!"
+	icon_state = "eel_katigo"
+	list_reagents = list("nutriment" = 3, "protein" = 2, "nicotine" = 6, "menthol" = 15)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/predatory_chowder
+	name = "predatory chowder"
+	desc = "Суп, приготовленный с использованием рыбного мяса, приправ и человеческих органов. Вкусно!"
+	icon_state = "predatory_chowder"
+	list_reagents = list("nutriment" = 3, "protein" = 2, "godblood" = 20)
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/eleven
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/twelve

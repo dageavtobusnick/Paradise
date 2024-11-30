@@ -100,3 +100,108 @@
 		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf
 	)
 	result = /obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/triple
+
+/datum/recipe/tribal_oven/beer_grub_stew
+	reagents = list(
+		"beer" = 15
+	)
+	items = list(
+		/obj/item/reagent_containers/food/snacks/monstermeat/goldgrub,
+		/obj/item/reagent_containers/food/snacks/grown/mushroom/reishi,
+		/obj/item/reagent_containers/food/snacks/grown/mushroom/reishi,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/cactus_fruit,
+		/obj/item/reagent_containers/food/drinks/mushroom_bowl
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/beer_grub_stew
+
+/datum/recipe/tribal_oven/thick_red_paste
+	reagents = list(
+		"liquidgibs" = 15
+	)
+	items = list(
+		/obj/item/reagent_containers/food/snacks/grown/wheat,
+		/obj/item/reagent_containers/food/snacks/grown/wheat,
+		/obj/item/reagent_containers/food/snacks/grown/wheat,
+		/obj/item/reagent_containers/food/snacks/grown/wheat,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf,
+		/obj/item/reagent_containers/food/drinks/mushroom_bowl
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/thick_red_paste
+
+/datum/recipe/tribal_oven/black_blood_sausage
+	reagents = list(
+		"liquidgibs" = 15,
+		"blood" = 10
+	)
+	items = list(
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_cap,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_cap,
+		/obj/item/reagent_containers/food/snacks/monstermeat/goliath
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/black_blood_sausage
+
+/datum/recipe/tribal_oven/xeno_sticks
+	reagents = list()
+	items = list(
+		/obj/item/reagent_containers/food/snacks/monstermeat/xenomeat,
+		/obj/item/reagent_containers/food/snacks/grown/mushroom/reishi
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/xeno_sticks
+
+/datum/recipe/tribal_oven/soft_meat_cubes
+	reagents = list()
+	items = list(
+		/obj/item/reagent_containers/food/snacks/lavaland/soft_meat
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland/soft_meat_cubes
+
+/datum/recipe/tribal_oven/predatory_fish_slab
+	reagents = list()
+	items = list(
+		/obj/item/reagent_containers/food/snacks/lavaland/predator_meat
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland/predatory_fish_slab
+
+/datum/recipe/tribal_oven/eel_ringlets
+	reagents = list()
+	items = list(
+		/obj/item/reagent_containers/food/snacks/lavaland/eel_filet
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland/eel_ringlets
+
+/datum/recipe/tribal_oven/filet_madras
+	reagents = list()
+	items = list(
+		/obj/item/reagent_containers/food/snacks/lavaland/soft_meat,
+		/obj/item/reagent_containers/food/snacks/grown/comfrey,
+		/obj/item/reagent_containers/food/snacks/grown/mushroom/reishi
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/filet_madras
+
+/datum/recipe/tribal_oven/eel_katigo
+	reagents = list(
+		"liquidgibs" = 10
+	)
+	items = list(
+		/obj/item/reagent_containers/food/snacks/lavaland/eel_filet,
+		/obj/item/reagent_containers/food/snacks/grown/wheat
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/eel_katigo
+
+/datum/recipe/tribal_oven/predatory_chowder
+	reagents = list(
+		"water" = 15
+	)
+	items = list(
+		/obj/item/reagent_containers/food/snacks/lavaland/predator_meat,
+		/obj/item/organ/internal/liver,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/fireblossom,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/fireblossom,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/fireblossom
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/predatory_chowder
+
+/datum/recipe/tribal_oven/eleven
+
+/datum/recipe/tribal_oven/twelve

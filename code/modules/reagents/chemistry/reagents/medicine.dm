@@ -1618,3 +1618,19 @@
 /datum/reagent/medicine/adv_lava_extract/on_mob_delete(mob/living/carbon/human/user)
 	. = ..()
 	user.clear_alert("penthrite")
+
+/datum/reagent/medicine/ashiezine
+	name = "lavaland syrup"
+	id = "ashiezine"
+	description = "Strange reagent from lavaland, that heals only ash walkers."
+	reagent_state = LIQUID
+	color = "#f45555"
+	harmless = FALSE
+	taste_description = "some gibs"
+	can_synth = FALSE
+
+/datum/reagent/medicine/ashiezine/on_mob_life(mob/living/M)
+	var/update_flags = STATUS_UPDATE_NONE
+	if(isashwalker(M))
+		M.reagents.add_reagent("epinephrine", 0.2)
+		M.reagents.add_reagent("heparin", 0,4)

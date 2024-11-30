@@ -345,3 +345,20 @@
 		var/mob/living/carbon/human/human = owner
 		human.force_gene_block(GLOB.colourblindblock, FALSE)
 		human.set_vision_override(null)
+
+/datum/status_effect/temperature_stabilize
+	id = "temperature stabilisation"
+	duration = 5 MINUTES
+	status_type = STATUS_EFFECT_REFRESH
+	var/temp_effect
+
+/datum/status_effect/temperature_stabilize/tick(seconds_between_ticks)
+	var/normal_temperature = owner?.dna?.species.body_temperature
+	if(!normal_temperature)
+		normal_temperature = BODYTEMP_NORMAL
+	var/difference = owner.bodytemperature - normal_temperature
+	if(abs(difference) > temp_effect)
+		var/current_effect = difference > 0 ? -temp_effect : temp_effect
+		owner.adjust_bodytemperature(current_effect * TEMPERATURE_DAMAGE_COEFFICIENT)
+
+
