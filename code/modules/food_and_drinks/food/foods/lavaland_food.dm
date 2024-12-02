@@ -67,7 +67,7 @@
 	icon = 'icons/obj/lavaland/ashie_food.dmi'
 	icon_state = "fine_meal"
 	bitesize = 100 //eat whole thing down
-	list_reagents = list("nutriment" = 6, "menthol" = 4 "protein" = 6)
+	list_reagents = list("nutriment" = 6, "protein" = 6)
 	tastes = list("good food" = 1)
 	has_special_eating_effects = TRUE
 	eat_time = 5 SECONDS
@@ -286,6 +286,14 @@
 	icon_state = "predatory_chowder"
 	list_reagents = list("nutriment" = 3, "protein" = 2, "godblood" = 20)
 
-/obj/item/reagent_containers/food/snacks/lavaland_food/eleven
+/obj/item/reagent_containers/food/snacks/lavaland_food/abu_ghosh
+	name = "abu ghosh"
+	desc = "Суп, приготовленный с использованием молока гатланчей и местных ингридиентов. Вкуснятина!"
+	icon_state = "abu_ghosh"
+
+/obj/item/reagent_containers/food/snacks/lavaland_food/abu_ghosh/on_mob_eating_effect(mob/user)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.apply_status_effect(STATUS_EFFECT_LAVALAND_BLOOD_REGEN)
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/twelve

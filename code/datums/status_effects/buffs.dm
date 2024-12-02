@@ -823,3 +823,14 @@
 		var/mob/living/carbon/human/human = owner
 		human.force_gene_block(GLOB.colourblindblock, FALSE)
 		human.set_vision_override(null)
+
+/datum/status_effect/lavaland_blood_regen
+	name = "Lavaland Blood Regeneration"
+	status_type = STATUS_EFFECT_REFRESH
+	duration = 5 MINUTES
+
+/datum/status_effect/lavaland_blood_regen/tick(seconds_between_ticks)
+	if(ishuman(owner))
+		var/mob/living/carbon/human/H = owner
+		if(!HAS_TRAIT(H, TRAIT_NO_BLOOD) && !HAS_TRAIT(H, TRAIT_NO_BLOOD_RESTORE) && H.blood_volume < BLOOD_VOLUME_NORMAL)
+			H.blood_volume += 0.4
