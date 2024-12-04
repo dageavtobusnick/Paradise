@@ -1,5 +1,7 @@
 /obj/item/reagent_containers/food/snacks/lavaland
 	icon = 'icons/obj/lavaland/lava_fishing.dmi'
+	var/overlay_sprite
+	list_reagents = list("nutriment" = 2, "vitamin" = 4, "protein" = 2)
 
 /obj/item/reagent_containers/food/snacks/lavaland/soft_meat
 	name = "soft meat cut"
@@ -60,6 +62,54 @@
 	filling_color = "#BE7C64"
 	tastes = list("meat" = 1)
 	foodtype = MEAT
+
+/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_bacon
+	name = "thali lazis bacon part"
+	desc = "Небольшая порция бекона, взятая из тарелки Тали Лазис."
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "thali_lazis_bacon"
+	overlay_sprite = "thali_lazis_bacon_overlay"
+	foodtype = MEAT
+
+/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_cacti
+	name = "thali lazis cacti part"
+	desc = "Небольшой кактус, взятый из тарелки Тали Лазис."
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "thali_lazis_cacti"
+	overlay_sprite = "thali_lazis_cacti_overlay"
+	foodtype = FRUIT
+
+/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_wing
+	name = "thali lazis wing part"
+	desc = "Небольшое крыло, взятое из тарелки Тали Лазис."
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "thali_lazis_wing"
+	overlay_sprite = "thali_lazis_wing_overlay"
+	foodtype = MEAT
+
+/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_fish
+	name = "thali lazis fish part"
+	desc = "Небольшая порция рыбы, взятая из тарелки Тали Лазис."
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "thali_lazis_fish"
+	overlay_sprite = "thali_lazis_fish_overlay"
+	foodtype = MEAT
+
+/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_crunchie
+	name = "thali lazis crunchie part"
+	desc = "Небольшая хрустящая порция, взятая из тарелки Тали Лазис."
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "thali_lazis_crunchie"
+	overlay_sprite = "thali_lazis_crunchie_overlay"
+	foodtype = MEAT
+
+/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_bungus
+	name = "thali lazis bungus part"
+	desc = "Небольшая порция грибов, взятая из тарелки Тали Лазис."
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "thali_lazis_bungus"
+	overlay_sprite = "thali_lazis_bungus_overlay"
+	foodtype = VEGETABLES
 
 /obj/item/reagent_containers/food/snacks/lavaland_food
 	name = "generic lavaland food"
@@ -210,7 +260,7 @@
 /obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/triple/Initialize(mapload)
 	. = ..()
 	for(var/i in 1 to 3)
-		var/obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/food = new(loc)
+		new obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/food(src.loc)
 	return INITIALIZE_HINT_QDEL
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
@@ -296,4 +346,37 @@
 		var/mob/living/living_user = user
 		living_user.apply_status_effect(STATUS_EFFECT_LAVALAND_BLOOD_REGEN)
 
-/obj/item/reagent_containers/food/snacks/lavaland_food/twelve
+/obj/item/storage/bag/tray/lava_tray
+	name = "thali lazis plate"
+	desc = "Большой поднос, сделанный из дерева. Предназначен для хранения огромного количества съестного."
+	icon = 'icons/obj/lavaland/ashie_food.dmi'
+	icon_state = "thali_lazis_plate"
+	flags = NONE
+	materials = null
+	can_hold = list(
+		/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_bacon,
+		/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_cacti,
+		/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_wing,
+		/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_fish,
+		/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_crunchie,
+		/obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_bungus,
+	)
+	display_contents_with_number = TRUE
+	storage_slots = 12
+	max_combined_w_class = 30
+	slot_flags = NONE
+
+/obj/item/storage/bag/tray/lava_tray/update_overlays()
+	. = ..()
+	for(var/obj/item/reagent_containers/food/snacks/lavaland/snack in contents)
+		. += image(icon = snack.icon, icon_state = snack.overlay_sprite)
+
+/obj/item/storage/bag/tray/lava_tray/full/populate_contents()
+	for(var/i in 1 to 2)
+		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_bacon(src)
+		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_cacti(src)
+		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_wing(src)
+		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_fish(src)
+		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_crunchie(src)
+		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_bungus(src)
+	update_overlays()

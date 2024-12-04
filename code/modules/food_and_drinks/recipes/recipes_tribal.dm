@@ -202,6 +202,29 @@
 	)
 	result = /obj/item/reagent_containers/food/snacks/lavaland_food/predatory_chowder
 
-/datum/recipe/tribal_oven/eleven
+/datum/recipe/tribal_oven/abu_ghosh
+	reagents = list(
+		"bugmilk" = 30
+	)
+	items = list(
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/fireblossom,
+		/obj/item/reagent_containers/food/snacks/meat,
+		/obj/item/reagent_containers/food/snacks/grown/wheat
+	)
+	result = /obj/item/reagent_containers/food/snacks/lavaland_food/abu_ghosh
 
-/datum/recipe/tribal_oven/twelve
+/datum/recipe/tribal_oven/thali_lazis
+	reagents = list()
+	items = list(
+		/obj/item/reagent_containers/food/snacks/grown/mushroom/reishi,
+		/obj/item/crusher_trophy/watcher_wing,
+		/obj/item/reagent_containers/food/snacks/grown/wheat,
+		/obj/item/reagent_containers/food/snacks/lavaland/soft_meat,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/fireblossom,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf,
+		/obj/item/reagent_containers/food/snacks/monstermeat/spiderleg,
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/cactus_fruit,
+		/obj/item/reagent_containers/food/snacks/raw_bacon,
+		/obj/item/reagent_containers/food/snacks/rawcutlet
+	)
+	result = /obj/item/storage/bag/tray/lava_tray/full

@@ -60,8 +60,7 @@
 	user.put_in_hands(food)
 	if(meat_parts == 0)
 		visible_message(span_warning("от постамента остается лишь одно копье!"))
-		var/obj/item/twohanded/spear/bonespear/spear
-		spear = new(loc)
+		new /obj/item/twohanded/spear/bonespear/spear(src.loc)
 		qdel(src)
 		return ATTACK_CHAIN_PROCEED
 	return ATTACK_CHAIN_SUCCESS

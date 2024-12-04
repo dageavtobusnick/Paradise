@@ -799,7 +799,7 @@
 	duration = 30 SECONDS
 
 /datum/status_effect/lavaland_eternal_bleeding_fix/tick(seconds_between_ticks)
-	if(ishuman(user))
+	if(ishuman(owner))
 		var/mob/living/carbon/human/hum = owner
 		for(var/obj/item/organ/external/bodypart as anything in hum.bodyparts)
 			if(bodypart.has_internal_bleeding() && prob(7))
@@ -825,7 +825,7 @@
 		human.set_vision_override(null)
 
 /datum/status_effect/lavaland_blood_regen
-	name = "Lavaland Blood Regeneration"
+	id = "Lavaland Blood Regeneration"
 	status_type = STATUS_EFFECT_REFRESH
 	duration = 5 MINUTES
 
