@@ -260,7 +260,7 @@
 /obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/triple/Initialize(mapload)
 	. = ..()
 	for(var/i in 1 to 3)
-		new obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/food(src.loc)
+		new /obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels(src.loc)
 	return INITIALIZE_HINT_QDEL
 
 /obj/item/reagent_containers/food/snacks/lavaland_food/goli_kernels/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
@@ -367,7 +367,6 @@
 	slot_flags = NONE
 
 /obj/item/storage/bag/tray/lava_tray/update_overlays()
-	. = ..()
 	for(var/obj/item/reagent_containers/food/snacks/lavaland/snack in contents)
 		. += image(icon = snack.icon, icon_state = snack.overlay_sprite)
 
@@ -379,4 +378,4 @@
 		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_fish(src)
 		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_crunchie(src)
 		new /obj/item/reagent_containers/food/snacks/lavaland/thali_lazis_bungus(src)
-	update_overlays()
+	update_icon()

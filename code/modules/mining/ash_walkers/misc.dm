@@ -60,10 +60,10 @@
 	user.put_in_hands(food)
 	if(meat_parts == 0)
 		visible_message(span_warning("от постамента остается лишь одно копье!"))
-		new /obj/item/twohanded/spear/bonespear/spear(src.loc)
+		new /obj/item/twohanded/spear/bonespear(src.loc)
 		qdel(src)
 		return ATTACK_CHAIN_PROCEED
-	return ATTACK_CHAIN_SUCCESS
+	return ATTACK_CHAIN_BLOCKED
 
 /obj/structure/grace_of_lazis/update_icon_state()
 	switch(meat_parts)
