@@ -104,7 +104,7 @@
 		if(choosen_ritual != ritual.name)
 			continue
 
-		src.ritual = new ritual
+		src.ritual = ritual
 		ritual_status = pre_ritual_check(human)
 
 		break
