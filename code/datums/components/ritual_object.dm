@@ -179,7 +179,7 @@
 		for(var/atom/movable/atom as anything in used_things)
 			RegisterSignal(atom, COMSIG_MOVABLE_MOVED, PROC_REF(track_atoms))
 
-		if(!cast())
+		if(!cast(ritual))
 			return RITUAL_FAILED_ON_PROCEED
 
 	return ritual.do_ritual(invoker, invokers, used_things)
@@ -270,7 +270,7 @@
 
 	return ritual.check_contents(invoker, used_things)
 
-/datum/component/ritual_object/proc/cast()
+/datum/component/ritual_object/proc/cast(datum/ritual/ritual)
 	for(var/mob/living/carbon/human/human as anything in invokers)
 		if(!do_after(human, ritual.cast_time, parent, DA_IGNORE_HELD_ITEM, max_interact_count = 1))
 			return FALSE
