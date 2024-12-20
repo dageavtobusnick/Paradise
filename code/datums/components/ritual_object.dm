@@ -15,13 +15,14 @@
 	/// Cached selected ritual.
 	var/datum/ritual/ritual
 
-/datum/component/ritual_object/Initialize(force)
+/datum/component/ritual_object/Destroy(force)
 	LAZYNULL(rituals)
 	LAZYNULL(allowed_categories)
 	LAZYNULL(allowed_species)
 	LAZYNULL(allowed_special_role)
 	LAZYNULL(invokers)
 	LAZYNULL(used_things)
+	ritual = null
 
 	return ..()
 
@@ -59,10 +60,6 @@
 		ritual.ritual_object = parent
 
 	return
-
-/datum/component/ritual_object/Destroy(force)
-	LAZYNULL(rituals)
-	return ..()
 	
 /datum/component/ritual_object/proc/attackby(datum/source, mob/living/carbon/human/human)
 	SIGNAL_HANDLER
@@ -107,8 +104,8 @@
 		if(choosen_ritual != ritual.name)
 			continue
 
-		src.ritual = ritual
-		ritual_status = pre_ritual_check(human, ritual)
+		src.ritual = new ritual
+		ritual_status = pre_ritual_check(human)
 
 		break
 
@@ -166,6 +163,7 @@
 
 	LAZYNULL(invokers)
 	LAZYNULL(used_things)
+	ritual = null
 
 	return .
 
