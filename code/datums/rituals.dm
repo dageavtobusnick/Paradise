@@ -36,9 +36,7 @@
 
 /datum/ritual/Destroy(force)
 	ritual_object = null
-	LAZYNULL(used_things)
 	LAZYNULL(required_things)
-	LAZYNULL(invokers)
 	return ..()
 
 /datum/ritual/proc/handle_ritual_object(stage, silent = FALSE)
@@ -62,7 +60,7 @@
 /datum/ritual/proc/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things) // Do ritual stuff.
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/proc/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/proc/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	return
 
 /datum/ritual/ashwalker
@@ -150,7 +148,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/summon_ashstorm/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/summon_ashstorm/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/list/targets = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
@@ -202,7 +200,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/transformation/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/transformation/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	invoker.adjustBrainLoss(15)
 	invoker.SetKnockdown(5 SECONDS)
 	
@@ -276,7 +274,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/summon/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/summon/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	if(!prob(70))
 		return
 
@@ -347,7 +345,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/curse/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/curse/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/list/targets = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
@@ -408,7 +406,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/power/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/power/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/list/targets = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
@@ -482,7 +480,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/resurrection/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/resurrection/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	for(var/mob/living/carbon/human/human in range(10, ritual_object))
 		if(!isashwalker(human) || human.stat == DEAD)
 			continue
@@ -554,7 +552,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/recharge/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/recharge/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/list/targets = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
@@ -632,7 +630,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/population/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/population/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
 		if(!isashwalker(human) || !prob(disaster_prob))
 			continue
@@ -713,7 +711,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/soul/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/soul/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
 		if(!isashwalker(human) || !prob(disaster_prob))
 			continue
@@ -765,7 +763,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/transmutation/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/transmutation/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
 		if(!isashwalker(human) || !prob(disaster_prob))
 			continue
@@ -833,7 +831,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/interrogation/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/interrogation/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
 		if(!isashwalker(human))
 			continue
@@ -908,7 +906,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/creation/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/creation/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
 		if(!isashwalker(human) || !prob(disaster_prob))
 			continue
@@ -994,7 +992,7 @@
 
 	return RITUAL_SUCCESSFUL
 
-/datum/ritual/ashwalker/command/disaster(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/command/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
 		if(!isashwalker(human) || !prob(disaster_prob))
 			continue

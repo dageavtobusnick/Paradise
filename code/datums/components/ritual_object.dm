@@ -17,7 +17,7 @@
 	LAZYNULL(rituals)
 	LAZYNULL(allowed_categories)
 	LAZYNULL(allowed_species)
-	LAZYNULL(allowed_allowed_special_role)
+	LAZYNULL(allowed_special_role)
 	LAZYNULL(invokers)
 	LAZYNULL(used_things)
 
@@ -128,7 +128,7 @@
 		failed = TRUE
 
 	if(. & RITUAL_SUCCESSFUL)
-		addtimer(CALLBACK(ritual, PROC_REF(handle_ritual_object), RITUAL_ENDED), 1 SECONDS)
+		addtimer(CALLBACK(ritual, TYPE_PROC_REF(/datum/ritual, handle_ritual_object), RITUAL_ENDED), 1 SECONDS)
 		remove_charge = TRUE
 		start_cooldown = TRUE
 
@@ -137,10 +137,10 @@
 		start_cooldown = TRUE
 	
 	if(start_cooldown)
-		COOLDOWN_START(src, ritual_cooldown, cooldown_after_cast)
+		COOLDOWN_START(ritual, ritual_cooldown, ritual.cooldown_after_cast)
 
-	if(cause_disaster && prob(disaster_prob))
-		ritual.disaster(invoker)
+	if(cause_disaster && prob(ritual.disaster_prob))
+		ritual.disaster(invoker, invokers, used_things)
 
 	if((. & RITUAL_SUCCESSFUL) && (ritual.ritual_should_del_things))
 		del_things = TRUE
@@ -155,7 +155,7 @@
 		ritual.charges--
 
 	if(failed)
-		addtimer(CALLBACK(ritual, PROC_REF(handle_ritual_object), RITUAL_FAILED), 2 SECONDS)
+		addtimer(CALLBACK(ritual, TYPE_PROC_REF(/datum/ritual, handle_ritual_object), RITUAL_FAILED), 2 SECONDS)
 
 	for(var/atom/movable/atom as anything in used_things)
 		UnregisterSignal(atom, COMSIG_MOVABLE_MOVED)
