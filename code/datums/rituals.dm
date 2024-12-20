@@ -31,10 +31,6 @@
 	var/ritual_should_del_things = TRUE
 	/// After failed ritual proceed - we'll delete items.
 	var/ritual_should_del_things_on_fail = FALSE
-	/// Temporary list of objects, which we will delete. Or use in transformations! Then clear list.
-	var/list/used_things = list()
-	/// Temporary list of invokers.
-	var/list/invokers = list()
 	/// If defined - do_after will be added to your ritual
 	var/cast_time
 
@@ -44,214 +40,26 @@
 	LAZYNULL(required_things)
 	LAZYNULL(invokers)
 	return ..()
-		
-/datum/ritual/proc/pre_ritual_check(mob/living/carbon/human/invoker)
-	var/failed = FALSE
-	var/cause_disaster = FALSE
-	
-	var/del_things = FALSE
-	var/start_cooldown = FALSE
 
-	handle_ritual_object(RITUAL_STARTED)
-	
-	. = ritual_invoke_check(invoker)
-	switch(.)
-		if(RITUAL_SUCCESSFUL)
-			start_cooldown = TRUE
-			addtimer(CALLBACK(src, PROC_REF(handle_ritual_object), RITUAL_ENDED), 1 SECONDS)
-			charges--
-		if(RITUAL_FAILED_INVALID_SPECIES)
-			failed = TRUE
-		if(RITUAL_FAILED_EXTRA_INVOKERS)
-			failed = TRUE
-		if(RITUAL_FAILED_MISSED_REQUIREMENTS)
-			failed = TRUE
-		if(RITUAL_FAILED_INVALID_SPECIAL_ROLE)
-			failed = TRUE
-		if(RITUAL_FAILED_ON_PROCEED)
-			failed = TRUE
-			cause_disaster = TRUE
-			start_cooldown = TRUE
-		if(NONE)
-			failed = TRUE
-	
-	if(start_cooldown)
-		COOLDOWN_START(src, ritual_cooldown, cooldown_after_cast)
-
-	if(cause_disaster && prob(disaster_prob))
-		disaster(invoker)
-
-	if((. & RITUAL_SUCCESSFUL) && (ritual_should_del_things))
-		del_things = TRUE
-
-	if((. & RITUAL_FAILED_ON_PROCEED) && (ritual_should_del_things_on_fail))
-		del_things = TRUE
-
-	if(del_things)
-		del_things()
-
-	if(failed)
-		addtimer(CALLBACK(src, PROC_REF(handle_ritual_object), RITUAL_FAILED), 2 SECONDS)
-	
-	/// We use pre-defines
-	LAZYCLEARLIST(invokers)
-	LAZYCLEARLIST(used_things)
-
-	return .
-
-/datum/ritual/proc/handle_ritual_object(bitflags, silent = FALSE)
-	switch(bitflags)
+/datum/ritual/proc/handle_ritual_object(stage, silent = FALSE)
+	switch(stage)
 		if(RITUAL_STARTED)
-			. = RITUAL_STARTED
-			if(!silent)
-				playsound(ritual_object.loc, 'sound/effects/ghost2.ogg', 50, TRUE)
+			playsound(ritual_object.loc, 'sound/effects/ghost2.ogg', 50, TRUE)
 		if(RITUAL_ENDED)
-			. = RITUAL_ENDED
-			if(!silent)
-				playsound(ritual_object.loc, 'sound/effects/phasein.ogg', 50, TRUE)
+			playsound(ritual_object.loc, 'sound/effects/phasein.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
-			. = RITUAL_FAILED
-			if(!silent)
-				playsound(ritual_object.loc, 'sound/effects/empulse.ogg', 50, TRUE)
-				
-	return .
+			playsound(ritual_object.loc, 'sound/effects/empulse.ogg', 50, TRUE)
 
-/datum/ritual/proc/del_things() // This is a neutral variant with item delete. Override it to change.
-	for(var/obj/item/thing in used_things)
-		qdel(thing)
-
+/datum/ritual/proc/del_things(list/used_things)
 	return
 
-/datum/ritual/proc/ritual_invoke_check(mob/living/carbon/human/invoker)
-	if(!COOLDOWN_FINISHED(src, ritual_cooldown))
-		return NONE
-
-	if(charges == 0)
-		return NONE
-
-	if(allowed_special_role && !LAZYIN(allowed_special_role, invoker.mind?.special_role))
-		return RITUAL_FAILED_INVALID_SPECIAL_ROLE
-
-	if(allowed_species && !is_type_in_list(invoker.dna.species, allowed_species)) // double check to avoid funny situations
-		return RITUAL_FAILED_INVALID_SPECIES
-
-	if(!check_invokers(invoker))
-		return RITUAL_FAILED_EXTRA_INVOKERS
-
-	if(required_things && !check_contents(invoker))
-		return RITUAL_FAILED_MISSED_REQUIREMENTS
-
-	if(prob(fail_chance))
-		return RITUAL_FAILED_ON_PROCEED
-
-	if(cast_time && !cast(invoker))
-		return RITUAL_FAILED_ON_PROCEED
-
-	return do_ritual(invoker)
-
-/datum/ritual/proc/cast(mob/living/carbon/human/invoker)
-	. = TRUE
-
-	var/list/invokers_list = invokers.Copy() // create temp list to avoid funny situations
-	LAZYADD(invokers_list, invoker)
-
-	for(var/mob/living/carbon/human/human as anything in invokers_list)
-		if(!do_after(human, cast_time, ritual_object, DA_IGNORE_HELD_ITEM, extra_checks = CALLBACK(src, PROC_REF(action_check_contents))))
-			. = FALSE
-
-	return .
-
-/datum/ritual/proc/check_invokers(mob/living/carbon/human/invoker)
-	if(!extra_invokers)
-		return TRUE
-
-	for(var/mob/living/carbon/human/human in range(finding_range, ritual_object))
-		if(human == invoker)
-			continue
-
-		if(require_allowed_species && !is_type_in_list(human.dna.species, allowed_species))
-			continue
-
-		if(require_allowed_special_role && !LAZYIN(allowed_special_role, human.mind?.special_role))
-			continue
-
-		LAZYADD(invokers, human)
-
-		if(LAZYLEN(invokers) >= extra_invokers)
-			break
-				
-	if(LAZYLEN(invokers) < extra_invokers)
-		ritual_object.balloon_alert(invoker, "требуется больше участников!")
-		return FALSE
-
+/datum/ritual/proc/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	return TRUE
 
-/datum/ritual/proc/check_contents(mob/living/carbon/human/invoker)
-	var/list/atom/movable/atoms = list()
-
-	for(var/atom/obj as anything in range(finding_range, ritual_object))
-		if(isitem(obj))
-			var/obj/item/close_item = obj
-			if(close_item.item_flags & ABSTRACT)
-				continue
-
-		if(obj.invisibility)
-			continue
-
-		if(obj == invoker)
-			continue
-
-		if(obj == ritual_object)
-			continue
-
-		if(LAZYIN(invokers, obj))
-			continue
-
-		LAZYADD(atoms, obj)
-
-	var/list/requirements = required_things.Copy()
-	for(var/atom/atom as anything in atoms)
-		for(var/req_type in requirements)
-			if(requirements[req_type] <= 0)
-				continue
-			
-			if(!istype(atom, req_type))
-				continue
-
-			LAZYADD(used_things, atom)
-
-			if(isstack(atom))
-				var/obj/item/stack/picked_stack = atom
-				requirements[req_type] -= picked_stack.amount
-			else
-				requirements[req_type]--
-
-	var/list/what_are_we_missing = list()
-	for(var/req_type in requirements)
-		var/number_of_things = requirements[req_type]
-		
-		if(number_of_things <= 0)
-			continue
-
-		LAZYADD(what_are_we_missing, req_type)
-
-	if(LAZYLEN(what_are_we_missing))
-		ritual_object.balloon_alert(invoker, "требуется больше компонентов!")
-		return FALSE
-
+/datum/ritual/proc/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	return TRUE
 
-/datum/ritual/proc/action_check_contents()
-	for(var/atom/atom as anything in used_things)
-		if(QDELETED(atom))
-			return FALSE
-
-		if(!(atom in range(finding_range, ritual_object)))
-			return FALSE
-
-	return TRUE
-
-/datum/ritual/proc/do_ritual(mob/living/carbon/human/invoker) // Do ritual stuff.
+/datum/ritual/proc/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things) // Do ritual stuff.
 	return RITUAL_SUCCESSFUL
 
 /datum/ritual/proc/disaster(mob/living/carbon/human/invoker)
@@ -264,7 +72,7 @@
 	var/shaman_only = FALSE
 	allowed_species = list(/datum/species/unathi/ashwalker, /datum/species/unathi/draconid)
 
-/datum/ritual/ashwalker/check_invokers(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	. = ..()
 
 	if(!.)
@@ -278,16 +86,12 @@
 	
 	if(extra_shaman_invokers)
 		for(var/mob/living/carbon/human/human as anything in invokers)
-			if(human == invoker)
+			if(!isashwalkershaman(human))
 				continue
 
-			if(isashwalkershaman(human))
-				LAZYADD(shaman_invokers, human)
-
-			if(LAZYLEN(shaman_invokers) >= extra_shaman_invokers)
-				break
+			LAZYADD(shaman_invokers, human)
 				
-		if(LAZYLEN(shaman_invokers) < extra_shaman_invokers)
+		if(LAZYLEN(shaman_invokers) < (extra_shaman_invokers + 1))
 			ritual_object.balloon_alert(invoker, "требуется больше шаманов!")
 			return FALSE
 
@@ -306,7 +110,7 @@
 		/mob/living/simple_animal/hostile/asteroid/goldgrub = 1
 	)
 
-/datum/ritual/ashwalker/summon_ashstorm/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/summon_ashstorm/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -319,7 +123,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/summon_ashstorm/del_things()
+/datum/ritual/ashwalker/summon_ashstorm/del_things(list/used_things)
 	. = ..()
 
 	for(var/mob/living/living in used_things)
@@ -327,14 +131,10 @@
 
 	return
 
-/datum/ritual/ashwalker/summon_ashstorm/check_invokers(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/summon_ashstorm/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	. = ..()
 
 	if(!.)
-		return FALSE
-
-	if(!invoker.fire_stacks)
-		to_chat(invoker, "Инициатор ритуала должнен быть в воспламеняемой субстанции.")
 		return FALSE
 
 	for(var/mob/living/carbon/human/human as anything in invokers)
@@ -344,7 +144,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/summon_ashstorm/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/summon_ashstorm/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	SSweather.run_weather(/datum/weather/ash_storm)
 	message_admins("[key_name(invoker)] accomplished ashstorm ritual and summoned ashstorm")
 
@@ -354,8 +154,10 @@
 	var/list/targets = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
-		if(isashwalker(human))
-			LAZYADD(targets, human)
+		if(!isashwalker(human))
+			continue
+
+		LAZYADD(targets, human)
 
 	if(!LAZYLEN(targets))
 		return
@@ -366,18 +168,14 @@
 
 	return
 
-/datum/ritual/ashwalker/summon_ashstorm/handle_ritual_object(bitflags, silent = FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/summon_ashstorm/handle_ritual_object(stage, silent = FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/magic/fleshtostone.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/invoke_general.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/castsummon.ogg', 50, TRUE)
-
-	return .
 
 /datum/ritual/ashwalker/transformation
 	name = "Transformation ritual"
@@ -393,7 +191,7 @@
 		/mob/living/carbon/human = 1
 	)
 
-/datum/ritual/ashwalker/transformation/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/transformation/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/mob/living/carbon/human/human = locate() in used_things
 
 	if(!human || !human.mind || !human.ckey)
@@ -423,15 +221,12 @@
 
 	return
 
-/datum/ritual/ashwalker/transformation/handle_ritual_object(bitflags, silent = FALSE)
-	. = ..(bitflags, TRUE)
-
-	if(. == RITUAL_ENDED)
+/datum/ritual/ashwalker/transformation/handle_ritual_object(stage, silent = FALSE)
+	if(stage & RITUAL_ENDED)
 		playsound(ritual_object.loc, 'sound/effects/clone_jutsu.ogg', 50, TRUE)
 		return
 
-	. = ..(bitflags)
-	return .
+	return ..()
 
 /datum/ritual/ashwalker/summon
 	name = "Summoning ritual"
@@ -442,7 +237,7 @@
 	cast_time = 30 SECONDS
 	extra_invokers = 1
 
-/datum/ritual/ashwalker/summon/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/summon/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/list/ready_for_summoning = list()
 
 	for(var/mob/living/carbon/human/human in GLOB.mob_list)
@@ -490,10 +285,8 @@
 
 	return
 
-/datum/ritual/ashwalker/summon/handle_ritual_object(bitflags, silent = FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/summon/handle_ritual_object(stage, silent = FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/weapons/zapbang.ogg', 50, TRUE)
 			var/datum/effect_system/smoke_spread/smoke = new
@@ -503,8 +296,6 @@
 			playsound(ritual_object.loc, 'sound/magic/forcewall.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/invoke_general.ogg', 50, TRUE)
-
-	return .
 
 /datum/ritual/ashwalker/curse
 	name = "Curse ritual"
@@ -519,13 +310,13 @@
 		/mob/living/carbon/human = 3
 	)
 
-/datum/ritual/ashwalker/curse/del_things()
+/datum/ritual/ashwalker/curse/del_things(list/used_things)
 	for(var/mob/living/carbon/human/human in used_things)
 		human.gib()
 
 	return
 
-/datum/ritual/ashwalker/curse/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/curse/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -538,7 +329,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/curse/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/curse/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/list/humans = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
@@ -560,8 +351,10 @@
 	var/list/targets = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
-		if(isashwalker(human))
-			LAZYADD(targets, human)
+		if(!isashwalker(human))
+			continue
+
+		LAZYADD(targets, human)
 
 	if(!LAZYLEN(targets))
 		return
@@ -585,13 +378,13 @@
 		/obj/item/organ/internal/regenerative_core = 3
 	)
 
-/datum/ritual/ashwalker/power/del_things()
+/datum/ritual/ashwalker/power/del_things(list/used_things)
 	for(var/mob/living/living in used_things)
 		living.gib()
 
 	return
 
-/datum/ritual/ashwalker/power/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/power/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -604,7 +397,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/power/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/power/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	LAZYADD(invokers, invoker)
 
 	for(var/mob/living/carbon/human/human as anything in invokers)
@@ -619,8 +412,10 @@
 	var/list/targets = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
-		if(isashwalker(human))
-			LAZYADD(targets, human)
+		if(!isashwalker(human))
+			continue
+
+		LAZYADD(targets, human)
 
 	if(!LAZYLEN(targets))
 		return
@@ -634,18 +429,14 @@
 
 	return
 
-/datum/ritual/ashwalker/power/handle_ritual_object(bitflags, silent =  FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/power/handle_ritual_object(stage, silent =  FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/magic/castsummon.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/smoke.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/strings.ogg', 50, TRUE)
-
-	return .
 
 /datum/ritual/ashwalker/resurrection
 	name = "Resurrection ritual"
@@ -663,7 +454,7 @@
 		/obj/item/reagent_containers/food/snacks/grown/ash_flora/cactus_fruit = 1
 	)
 
-/datum/ritual/ashwalker/resurrection/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/resurrection/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -684,7 +475,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/resurrection/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/resurrection/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/mob/living/carbon/human/human = locate() in used_things
 	human.revive()
 	human.adjustBrainLoss(20)
@@ -700,18 +491,14 @@
 
 	return
 
-/datum/ritual/ashwalker/resurrection/handle_ritual_object(bitflags, silent =  FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/resurrection/handle_ritual_object(stage, silent =  FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/magic/clockwork/reconstruct.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/disable_tech.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/invoke_general.ogg', 50, TRUE)
-
-	return .
 
 /datum/ritual/ashwalker/recharge
 	name = "Recharge rituals"
@@ -729,7 +516,7 @@
 	)
 	var/list/blacklisted_rituals = list(/datum/ritual/ashwalker/power)
 
-/datum/ritual/ashwalker/recharge/del_things()
+/datum/ritual/ashwalker/recharge/del_things(list/used_things)
 	. = ..()
 
 	for(var/mob/living/living in used_things)
@@ -737,7 +524,7 @@
 
 	return
 
-/datum/ritual/ashwalker/recharge/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/recharge/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -750,7 +537,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/recharge/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/recharge/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/datum/component/ritual_object/component = ritual_object.GetComponent(/datum/component/ritual_object)
 
 	if(!component)
@@ -771,8 +558,10 @@
 	var/list/targets = list()
 
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
-		if(isashwalker(human))
-			LAZYADD(targets, human)
+		if(!isashwalker(human))
+			continue
+
+		LAZYADD(targets, human)
 
 	if(!LAZYLEN(targets))
 		return
@@ -782,18 +571,14 @@
 
 	return
 
-/datum/ritual/ashwalker/recharge/handle_ritual_object(bitflags, silent =  FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/recharge/handle_ritual_object(stage, silent =  FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/magic/castsummon.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/cult_spell.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/invoke_general.ogg', 50, TRUE)
-
-	return .
 
 /datum/ritual/ashwalker/population
 	name = "Population ritual"
@@ -811,7 +596,7 @@
 		/obj/item/reagent_containers/food/snacks/grown/ash_flora/shavings = 1
 	)
 
-/datum/ritual/ashwalker/population/check_invokers(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/population/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	. = ..()
 
 	if(!.)
@@ -823,13 +608,13 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/population/del_things()
+/datum/ritual/ashwalker/population/del_things(list/used_things)
 	for(var/mob/living/living in used_things)
 		living.gib()
 
 	return
 
-/datum/ritual/ashwalker/population/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/population/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -842,7 +627,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/population/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/population/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	new /obj/effect/mob_spawn/human/ash_walker/shaman(ritual_object.loc)
 
 	return RITUAL_SUCCESSFUL
@@ -864,10 +649,8 @@
 
 	return
 
-/datum/ritual/ashwalker/population/handle_ritual_object(bitflags, silent =  FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/population/handle_ritual_object(stage, silent =  FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/magic/demon_consume.ogg', 50, TRUE)
 			var/datum/effect_system/smoke_spread/smoke = new
@@ -877,8 +660,6 @@
 			playsound(ritual_object.loc, 'sound/magic/cult_spell.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/teleport_diss.ogg', 50, TRUE)
-			
-	return .
 
 /datum/ritual/ashwalker/soul
 	name = "Soul ritual"
@@ -890,7 +671,7 @@
 		/obj/item/stack/sheet/animalhide/ashdrake = 1
 	)
 
-/datum/ritual/ashwalker/soul/check_invokers(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/soul/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	. = ..()
 
 	if(!.)
@@ -902,7 +683,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/population/del_things()
+/datum/ritual/ashwalker/population/del_things(list/used_things)
 	var/obj/item/stack/sheet/animalhide/ashdrake/stack = locate() in used_things
 	stack.use(1)
 
@@ -911,7 +692,7 @@
 
 	return
 
-/datum/ritual/ashwalker/soul/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/soul/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -924,7 +705,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/soul/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/soul/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/datum/effect_system/smoke_spread/smoke = new
 	smoke.set_up(5, FALSE, get_turf(invoker.loc))
 	smoke.start()
@@ -947,18 +728,14 @@
 
 	return
 
-/datum/ritual/ashwalker/soul/handle_ritual_object(bitflags, silent =  FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/soul/handle_ritual_object(stage, silent =  FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/effects/whoosh.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/effects/bamf.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/effects/blobattack.ogg', 50, TRUE)
-
-	return .
 
 /datum/ritual/ashwalker/transmutation
 	name = "Transmutation ritual"
@@ -968,7 +745,7 @@
 		/obj/item/stack/ore = 10
 	)
 
-/datum/ritual/ashwalker/transmutation/check_invokers(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/transmutation/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	. = ..()
 
 	if(!.)
@@ -980,7 +757,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/transmutation/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/transmutation/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/ore_type = pick(subtypesof(/obj/item/stack/ore))
 
 	var/obj/item/stack/ore/ore = new ore_type(get_turf(ritual_object))
@@ -1003,18 +780,14 @@
 
 	return
 
-/datum/ritual/ashwalker/transmutation/handle_ritual_object(bitflags, silent =  FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/transmutation/handle_ritual_object(stage, silent =  FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/effects/bin_close.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/cult_spell.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/knock.ogg', 50, TRUE)
-
-	return .
 
 /datum/ritual/ashwalker/interrogation
 	name = "Interrogation ritual"
@@ -1025,7 +798,7 @@
 		/mob/living/carbon/human = 1
 	)
 
-/datum/ritual/ashwalker/interrogation/check_invokers(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/interrogation/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	. = ..()
 
 	if(!.)
@@ -1037,7 +810,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/interrogation/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/interrogation/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -1053,7 +826,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/interrogation/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/interrogation/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/obj/effect/proc_holder/spell/empath/empath = new
 	if(!empath.cast(used_things, invoker))
 		return RITUAL_FAILED_ON_PROCEED
@@ -1079,18 +852,14 @@
 
 	return
 
-/datum/ritual/ashwalker/interrogation/handle_ritual_object(bitflags, silent =  FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/interrogation/handle_ritual_object(stage, silent =  FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/effects/anvil_start.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/effects/hulk_hit_airlock.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/effects/forge_destroy.ogg', 50, TRUE)
-			
-	return .
 
 /datum/ritual/ashwalker/creation
 	name = "Creation ritual"
@@ -1102,7 +871,7 @@
 		/mob/living/carbon/human = 2
 	)
 
-/datum/ritual/ashwalker/creation/check_invokers(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/creation/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	. = ..()
 
 	if(!.)
@@ -1115,7 +884,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/creation/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/creation/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -1132,7 +901,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/creation/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/creation/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	for(var/mob/living/mob as anything in subtypesof(/mob/living/simple_animal/hostile/asteroid))
 		if(prob(30))
 			mob = new(get_turf(ritual_object))
@@ -1154,18 +923,14 @@
 
 	return
 
-/datum/ritual/ashwalker/creation/handle_ritual_object(bitflags, silent =  FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/creation/handle_ritual_object(stage, silent =  FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/magic/demon_consume.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/blind.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/castsummon.ogg', 50, TRUE)
-
-	return .
 
 /datum/ritual/ashwalker/command
 	name = "Command ritual"
@@ -1180,7 +945,7 @@
 		/obj/item/reagent_containers/food/snacks/monstermeat/spiderleg = 1
 	)
 
-/datum/ritual/ashwalker/command/check_contents(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/command/check_contents(mob/living/carbon/human/invoker, list/used_things)
 	. = ..()
 
 	if(!.)
@@ -1201,7 +966,7 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/command/do_ritual(mob/living/carbon/human/invoker)
+/datum/ritual/ashwalker/command/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/mob/living/simple_animal/animal = locate() in used_things
 	
 	if(QDELETED(animal))
@@ -1248,16 +1013,11 @@
 
 	return
 
-/datum/ritual/ashwalker/command/handle_ritual_object(bitflags, silent = FALSE)
-	. = ..(bitflags, TRUE)
-
-	switch(.)
+/datum/ritual/ashwalker/command/handle_ritual_object(stage, silent = FALSE)
+	switch(stage)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/magic/demon_consume.ogg', 50, TRUE)
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/invoke_general.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/castsummon.ogg', 50, TRUE)
-
-	return .
-	
