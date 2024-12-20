@@ -12,6 +12,8 @@
 	/// Temporary lists of invokers/Used things in rituals.
 	var/list/used_things
 	var/list/invokers
+	/// Cached selected ritual.
+	var/datum/ritual/ritual
 
 /datum/component/ritual_object/Initialize(force)
 	LAZYNULL(rituals)
@@ -105,7 +107,9 @@
 		if(choosen_ritual != ritual.name)
 			continue
 
+		src.ritual = ritual
 		ritual_status = pre_ritual_check(human, ritual)
+
 		break
 
 	if(ritual_status)
@@ -113,7 +117,7 @@
 
 	return TRUE
 
-/datum/component/ritual_object/proc/pre_ritual_check(mob/living/carbon/human/invoker, datum/ritual/ritual)
+/datum/component/ritual_object/proc/pre_ritual_check(mob/living/carbon/human/invoker)
 	var/failed = FALSE
 	var/cause_disaster = FALSE
 	var/del_things = FALSE
@@ -122,7 +126,7 @@
 
 	ritual.handle_ritual_object(RITUAL_STARTED)
 	
-	. = ritual_invoke_check(invoker, ritual)
+	. = ritual_invoke_check(invoker)
 
 	if(!(. & RITUAL_SUCCESSFUL))
 		failed = TRUE
@@ -165,11 +169,11 @@
 
 	return .
 
-/datum/component/ritual_object/proc/ritual_invoke_check(mob/living/carbon/human/invoker, datum/ritual/ritual)
-	if(!check_invokers(invoker, ritual))
+/datum/component/ritual_object/proc/ritual_invoke_check(mob/living/carbon/human/invoker)
+	if(!check_invokers(invoker))
 		return RITUAL_FAILED_MISSED_INVOKER_REQUIREMENTS
 
-	if(ritual.required_things && !check_contents(invoker, ritual))
+	if(ritual.required_things && !check_contents(invoker))
 		return RITUAL_FAILED_MISSED_REQUIREMENTS
 
 	if(prob(ritual.fail_chance))
@@ -179,7 +183,7 @@
 		for(var/atom/movable/atom as anything in used_things)
 			RegisterSignal(atom, COMSIG_MOVABLE_MOVED, PROC_REF(track_atoms))
 
-		if(!cast(ritual))
+		if(!cast())
 			return RITUAL_FAILED_ON_PROCEED
 
 	return ritual.do_ritual(invoker, invokers, used_things)
@@ -194,10 +198,10 @@
 )
 	SIGNAL_HANDLER
 
-	cast()
+	INVOKE_ASYNC(src, PROC_REF(cast))
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 
-/datum/component/ritual_object/proc/check_invokers(mob/living/carbon/human/invoker, datum/ritual/ritual)
+/datum/component/ritual_object/proc/check_invokers(mob/living/carbon/human/invoker)
 	if(!ritual.extra_invokers)
 		return TRUE
 
@@ -217,7 +221,7 @@
 
 	return ritual.check_invokers(invoker, invokers)
 
-/datum/component/ritual_object/proc/check_contents(mob/living/carbon/human/invoker, datum/ritual/ritual)
+/datum/component/ritual_object/proc/check_contents(mob/living/carbon/human/invoker)
 	var/list/atom/movable/atoms = list()
 
 	for(var/atom/movable/obj in range(ritual.finding_range, parent))
@@ -270,7 +274,7 @@
 
 	return ritual.check_contents(invoker, used_things)
 
-/datum/component/ritual_object/proc/cast(datum/ritual/ritual)
+/datum/component/ritual_object/proc/cast()
 	for(var/mob/living/carbon/human/human as anything in invokers)
 		if(!do_after(human, ritual.cast_time, parent, DA_IGNORE_HELD_ITEM, max_interact_count = 1))
 			return FALSE
