@@ -162,7 +162,8 @@
 		addtimer(CALLBACK(ritual, TYPE_PROC_REF(/datum/ritual, handle_ritual_object), RITUAL_FAILED), 2 SECONDS)
 
 	if(message)
-		balloon_alert(invoker, message)
+		var/atom/atom = parent
+		atom.balloon_alert(invoker, message)
 
 	for(var/atom/movable/atom as anything in used_things)
 		UnregisterSignal(atom, COMSIG_MOVABLE_MOVED)
