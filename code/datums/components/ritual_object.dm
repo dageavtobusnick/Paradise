@@ -208,7 +208,7 @@
 
 /datum/component/ritual_object/proc/check_invokers(mob/living/carbon/human/invoker)
 	if(!ritual.extra_invokers)
-		return ritual.check_invokers(invoker) // remember about checks on invoker in rituals
+		return ritual.check_invokers(invoker, list(invoker)) // remember about checks on invoker in rituals
 
 	for(var/mob/living/carbon/human/human in range(ritual.finding_range, parent))
 		if(ritual.require_allowed_species && !is_type_in_list(human.dna.species, ritual.allowed_species))
