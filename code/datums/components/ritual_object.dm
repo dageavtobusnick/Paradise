@@ -120,6 +120,7 @@
 	var/del_things = FALSE
 	var/start_cooldown = FALSE
 	var/remove_charge = FALSE
+	var/message
 
 	ritual.handle_ritual_object(RITUAL_STARTED)
 	
@@ -127,8 +128,10 @@
 
 	if(!(. & RITUAL_SUCCESSFUL))
 		failed = TRUE
+		message = "ритуал провален!"
 
 	if(. & RITUAL_SUCCESSFUL)
+		message = "ритуал проведён успешно!"
 		addtimer(CALLBACK(ritual, TYPE_PROC_REF(/datum/ritual, handle_ritual_object), RITUAL_ENDED), 1 SECONDS)
 		remove_charge = TRUE
 		start_cooldown = TRUE
@@ -158,6 +161,9 @@
 	if(failed)
 		addtimer(CALLBACK(ritual, TYPE_PROC_REF(/datum/ritual, handle_ritual_object), RITUAL_FAILED), 2 SECONDS)
 
+	if(message)
+		balloon_alert(invoker, message)
+
 	for(var/atom/movable/atom as anything in used_things)
 		UnregisterSignal(atom, COMSIG_MOVABLE_MOVED)
 
@@ -171,7 +177,7 @@
 	if(!check_invokers(invoker))
 		return RITUAL_FAILED_MISSED_INVOKER_REQUIREMENTS
 
-	if(ritual.required_things && !check_contents(invoker))
+	if(!check_contents(invoker))
 		return RITUAL_FAILED_MISSED_REQUIREMENTS
 
 	if(prob(ritual.fail_chance))
@@ -220,6 +226,9 @@
 	return ritual.check_invokers(invoker, invokers)
 
 /datum/component/ritual_object/proc/check_contents(mob/living/carbon/human/invoker)
+	if(!ritual.required_things)
+		return TRUE
+
 	var/list/atom/movable/atoms = list()
 
 	for(var/atom/movable/obj in range(ritual.finding_range, parent))
