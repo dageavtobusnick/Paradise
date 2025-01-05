@@ -109,6 +109,54 @@
 	)
 	..()
 
+/obj/item/gripper/universal
+	name = "Universal gripper"
+	desc = "Универсальный захватывающий инструмент, используемый для выполнения сверх секретных заданий клана паука."
+	icon_state = "diskgripper"
+	can_hold = list(/obj/item/firealarm_electronics,
+		/obj/item/airalarm_electronics,
+		/obj/item/airlock_electronics,
+		/obj/item/firelock_electronics,
+		/obj/item/intercom_electronics,
+		/obj/item/apc_electronics,
+		/obj/item/access_control,
+		/obj/item/tracker_electronics,
+		/obj/item/stock_parts,
+		/obj/item/vending_refill,
+		/obj/item/mounted/frame/light_fixture,
+		/obj/item/mounted/frame/apc_frame,
+		/obj/item/mounted/frame/alarm_frame,
+		/obj/item/mounted/frame/firealarm,
+		/obj/item/mounted/frame/newscaster_frame,
+		/obj/item/mounted/frame/intercom,
+		/obj/item/mounted/frame/extinguisher,
+		/obj/item/mounted/frame/light_switch,
+		/obj/item/mounted/frame/door_control,
+		/obj/item/assembly/control,
+		/obj/item/rack_parts,
+		/obj/item/camera_assembly,
+		/obj/item/tank,
+		/obj/item/circuitboard,
+		/obj/item/stack/tile/light,
+		/obj/item/stack/ore/bluespace_crystal,
+		/obj/item/organ,
+		/obj/item/reagent_containers/iv_bag,
+		/obj/item/robot_parts/head,
+		/obj/item/robot_parts/l_arm,
+		/obj/item/robot_parts/r_arm,
+		/obj/item/robot_parts/l_leg,
+		/obj/item/robot_parts/r_leg,
+		/obj/item/robot_parts/chest,
+		/obj/item/stack/sheet/mineral/plasma,
+		/obj/item/card,
+		/obj/item/camera_film,
+		/obj/item/paper,
+		/obj/item/photo,
+		/obj/item/toy/plushie,
+		/obj/item/reagent_containers/food,
+		/obj/item/seeds,
+		/obj/item/disk/plantgene)
+
 /obj/item/gripper/nuclear
 	name = "Nuclear gripper"
 	desc = "Designed for all your nuclear needs."
@@ -291,7 +339,7 @@
 		module = new /obj/item/robot_module/drone(src)
 
 	var/dat = {"<meta charset="UTF-8"><HEAD><TITLE>Drone modules</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"}
-	dat += {"<A HREF='?src=[UID()];mach_close=robotmod'>Close</A>
+	dat += {"<a href='byond://?src=[UID()];mach_close=robotmod'>Close</A>
 	<BR>
 	<BR>
 	<B>Activated Modules</B>

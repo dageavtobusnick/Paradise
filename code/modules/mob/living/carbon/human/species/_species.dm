@@ -109,9 +109,6 @@
 	var/list/default_genes
 	/// Species movement speed. Positive numbers make it move slower, negative numbers make it move faster
 	var/speed_mod = 0
-	/// Allows species to have ventcrawl trait defined here.
-	/// Values are: TRAIT_VENTCRAWLER_ALWAYS / TRAIT_VENTCRAWLER_NUDE
-	var/ventcrawler_trait
 
 	var/has_fine_manipulation = 1 // Can use small items.
 	var/fingers_count = 10
@@ -121,7 +118,11 @@
 
 	var/list/allowed_consumed_mobs = list() //If a species can consume mobs, put the type of mobs it can consume here.
 
-	var/list/species_traits = list()
+	/// Generic traits tied to having the species.
+	var/list/inherent_traits
+
+	/// Bitflags of all the disabilities blacklisted for this species in character creation screen
+	var/blacklisted_disabilities = DISABILITY_FLAG_WINGDINGS
 
 	var/breathid = "o2"
 
@@ -253,10 +254,16 @@
 	var/toxic_food = TOXIC
 	var/disliked_food = GROSS
 	var/liked_food = FRIED | JUNKFOOD | SUGAR
+	/// Here are going material types. If material type in your diet, and item has eatable component - you will eat it.
+	var/special_diet = NONE
 
 	var/list/autohiss_basic_map = null
 	var/list/autohiss_extra_map = null
 	var/list/autohiss_exempt = null
+
+	/// Contains info for all age related preferences.
+	var/list/age_sheet
+
 
 /datum/species/New()
 	unarmed = new unarmed_type()
@@ -264,6 +271,28 @@
 /datum/species/proc/get_random_name(gender)
 	var/datum/language/species_language = GLOB.all_languages[language]
 	return species_language.get_random_name(gender)
+
+/datum/species/proc/is_allowed_hair_style(mob/living/carbon/human/human, datum/robolimb/robohead, datum/sprite_accessory/style)
+	return TRUE
+
+/proc/get_age_limits(datum/species/species, list/tags)
+	if(!islist(tags))
+		tags = list(tags)
+
+	var/list/result = list()
+	for(var/tag in tags)
+		if(species)
+			result[tag] = LAZYACCESS(species.age_sheet, tag)
+
+		if(!isnum(result[tag]))
+			result[tag] = AGE_SHEET[tag]
+
+	return length(result) > 1 ? result : result[tags[1]]
+
+
+/proc/get_rand_age(datum/species/species)
+	var/age_limits = get_age_limits(species, list(SPECIES_AGE_MIN, SPECIES_AGE_MAX))
+	return rand(age_limits[SPECIES_AGE_MIN], age_limits[SPECIES_AGE_MAX])
 
 
 /**
@@ -316,10 +345,12 @@
 
 	// and now we need to recheck our limbs conditions
 	target.recalculate_limbs_status()
+	// also we need to recheck for no scan trait, if the brain was changed
+	target.on_no_scan()
 
 
 /datum/species/proc/breathe(mob/living/carbon/human/user)
-	if((NO_BREATHE in species_traits) || HAS_TRAIT(user, TRAIT_NO_BREATH))
+	if(HAS_TRAIT(user, TRAIT_NO_BREATH))
 		return TRUE
 	return FALSE
 
@@ -336,27 +367,15 @@
 	if(surgeryspeedmod)
 		H.add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/species_surgery_mod, multiplicative_slowdown = surgeryspeedmod)
 
-	if(ventcrawler_trait)
-		var/static/list/ventcrawler_sanity = list(
-			TRAIT_VENTCRAWLER_ALWAYS,
-			TRAIT_VENTCRAWLER_NUDE,
-		)
-		if(ventcrawler_trait in ventcrawler_sanity)
-			ADD_TRAIT(H, ventcrawler_trait, SPECIES_TRAIT)
-		else
-			stack_trace("Species [type] has improper ventcrawler_trait value.")
+	if(length(inherent_traits))
+		H.add_traits(inherent_traits, SPECIES_TRAIT)
 
 	if(inherent_factions)
 		for(var/i in inherent_factions)
 			H.faction += i //Using +=/-= for this in case you also gain the faction from a different source.
 
-	if((VIRUSIMMUNE in species_traits) && (LAZYLEN(H.diseases)))
-		for(var/datum/disease/D in H.diseases)
-			if(!D.ignore_immunity)
-				D.cure()
-
 	for(var/obj/item/item as anything in H.get_equipped_items())
-		if(QDELETED(item) || item.loc != H)	// wad deleted or dropped already
+		if(QDELETED(item) || item.loc != H)	// was deleted or dropped already
 			continue
 		var/item_slot = H.get_slot_by_item(item)
 		if(item_slot in no_equip)
@@ -408,9 +427,10 @@
 	if(surgeryspeedmod)
 		H.remove_actionspeed_modifier(/datum/actionspeed_modifier/species_surgery_mod)
 
-	H.meatleft = initial(H.meatleft)
+	if(length(inherent_traits))
+		H.remove_traits(inherent_traits, SPECIES_TRAIT)
 
-	REMOVE_TRAIT(H, ventcrawler_trait, SPECIES_TRAIT)
+	H.meatleft = initial(H.meatleft)
 
 	H.hud_used?.update_locked_slots()
 
@@ -436,13 +456,11 @@
 // (Slime People changing color based on the reagents they consume)
 /datum/species/proc/handle_life(mob/living/carbon/human/H)
 	var/regenerate = TRUE
-	if((NO_BREATHE in species_traits) || HAS_TRAIT(H, TRAIT_NO_BREATH))
-		var/takes_crit_damage = (!(NOCRITDAMAGE in species_traits))
-		if((H.health <= HEALTH_THRESHOLD_CRIT) && takes_crit_damage)
-			regenerate = FALSE
-			H.adjustBruteLoss(1)
+	if(HAS_TRAIT(H, TRAIT_NO_BREATH) && H.health <= HEALTH_THRESHOLD_CRIT)
+		regenerate = FALSE
+		H.adjustBruteLoss(1)
 
-	if(regenerate && (H.blood_volume > BLOOD_VOLUME_REGENERATION) && (HAVE_REGENERATION in species_traits) && (H.getBruteLoss() || H.getFireLoss()))
+	if(regenerate && (H.blood_volume > BLOOD_VOLUME_REGENERATION) && HAS_TRAIT(H, TRAIT_HAS_REGENERATION) && (H.getBruteLoss() || H.getFireLoss()))
 		H.heal_overall_damage(0.1, 0.1)
 
 /**
@@ -498,36 +516,19 @@
 	//Vampire code
 	var/datum/antagonist/vampire/vamp = user?.mind?.has_antag_datum(/datum/antagonist/vampire)
 	if(vamp && !vamp.draining && user.zone_selected == BODY_ZONE_HEAD && target != user)
-		if((NO_BLOOD in target.dna.species.species_traits) || target.dna.species.exotic_blood || !target.blood_volume)
-			to_chat(user, "<span class='warning'>They have no blood!</span>")
+		if(HAS_TRAIT(target, TRAIT_NO_BLOOD) || HAS_TRAIT(target, TRAIT_EXOTIC_BLOOD) || !target.blood_volume)
+			to_chat(user, span_warning("Отсутствует кровь!"))
 			return
 		if(target.mind && (target.mind.has_antag_datum(/datum/antagonist/vampire) || target.mind.has_antag_datum(/datum/antagonist/mindslave/thrall)))
-			to_chat(user, "<span class='warning'>Your fangs fail to pierce [target.name]'s cold flesh</span>")
+			to_chat(user, span_warning("[pluralize_ru(user.gender,"Твои","Ваши")] клыки не могут пронзить холодную плоть [target.declent_ru(GENITIVE)]."))
 			return
 		if(HAS_TRAIT(target, TRAIT_SKELETON))
-			to_chat(user, "<span class='warning'>There is no blood in a skeleton!</span>")
+			to_chat(user, span_warning("В скелете нет ни капли крови!"))
 			return
 		//we're good to suck the blood, blaah
 		vamp.handle_bloodsucking(target)
 		add_attack_logs(user, target, "vampirebit")
 		return
-
-	//Goon Vampire Dupe code
-	var/datum/antagonist/goon_vampire/g_vamp = user?.mind?.has_antag_datum(/datum/antagonist/goon_vampire)
-	if(g_vamp && !g_vamp.draining && user.zone_selected == BODY_ZONE_HEAD && target != user)
-		if((NO_BLOOD in target.dna.species.species_traits) || target.dna.species.exotic_blood || !target.blood_volume)
-			to_chat(user, "<span class='warning'>Отсутствует кровь!</span>")
-			return
-		if(target.mind?.has_antag_datum(/datum/antagonist/goon_vampire))
-			to_chat(user, "<span class='warning'>[pluralize_ru(user.gender,"Твои","Ваши")] клыки не могут пронзить холодную плоть [target.declent_ru(GENITIVE)].</span>")
-			return
-		if(HAS_TRAIT(target, TRAIT_SKELETON))
-			to_chat(user, "<span class='warning'>В скелете нет ни капли крови!</span>")
-			return
-		g_vamp.handle_bloodsucking(target)
-		add_attack_logs(user, target, "vampirebit")
-		return
-		//end vampire codes
 
 	var/message = "<span class='warning'>[target.declent_ru(NOMINATIVE)] блокиру[pluralize_ru(target.gender,"ет","ют")] атаку [user.declent_ru(GENITIVE)]!</span>"
 	if(target.check_martial_art_defense(target, user, null, message))
@@ -1093,15 +1094,6 @@ It'll return null if the organ doesn't correspond, so include null checks when u
 			H.nightvision += 1 // base of 2, 2+1 is 3
 			H.lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 
-	var/datum/antagonist/goon_vampire/g_vamp = H.mind?.has_antag_datum(/datum/antagonist/goon_vampire)
-	if(g_vamp)
-		if(g_vamp.get_ability(/datum/goon_vampire_passive/full))
-			H.add_sight(SEE_TURFS|SEE_MOBS|SEE_OBJS)
-			H.nightvision = 8
-			H.lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
-		else if(g_vamp.get_ability(/datum/goon_vampire_passive/vision))
-			H.add_sight(SEE_MOBS)
-			H.lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 
 	for(var/obj/item/organ/internal/cyberimp/eyes/cyber_eyes in H.internal_organs)
 		H.add_sight(cyber_eyes.vision_flags)
@@ -1222,3 +1214,6 @@ It'll return null if the organ doesn't correspond, so include null checks when u
 		var/obj/item/organ/external/head/HD = H.get_organ(BODY_ZONE_HEAD)
 		return HD.hair_colour
 
+/datum/species/proc/get_emote_pitch(mob/living/carbon/human/H, tolerance)
+	var/age_limits = get_age_limits(src, list(SPECIES_AGE_MIN, SPECIES_AGE_MAX))
+	return 1 + 0.5 * (age_limits[SPECIES_AGE_MIN] + 10 - H.age) / age_limits[SPECIES_AGE_MAX] + (0.01 * rand(-tolerance, tolerance))

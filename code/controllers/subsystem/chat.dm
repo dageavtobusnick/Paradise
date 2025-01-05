@@ -37,13 +37,19 @@ SUBSYSTEM_DEF(chat)
 		var/oldest = text2num(client_history[1])
 		for(var/index in 2 to length(client_history))
 			var/test = text2num(client_history[index])
+
 			if(test < oldest)
 				oldest = test
+
 		client_history -= "[oldest]"
+
 	return payload
 
 /datum/controller/subsystem/chat/proc/send_payload_to_client(client/target, datum/chat_payload/payload)
-	target.tgui_panel.window.send_message("chat/message", payload.into_message())
+	if(!target || !payload)
+		return
+
+	target.tgui_panel?.window?.send_message("chat/message", payload.into_message())
 	SEND_TEXT(target, payload.get_content_as_html())
 
 /datum/controller/subsystem/chat/fire()
@@ -60,7 +66,9 @@ SUBSYSTEM_DEF(chat)
 		if(MC_TICK_CHECK)
 			return
 
-/datum/controller/subsystem/chat/proc/queue(queue_target, list/message_data)
+/datum/controller/subsystem/chat/proc/queue(queue_target, list/message_data, confidential = FALSE)
+	if(!confidential)
+		SSdemo.write_chat(queue_target, message_data)
 	var/list/targets = islist(queue_target) ? queue_target : list(queue_target)
 	for(var/target in targets)
 		var/client/client = CLIENT_FROM_VAR(target)

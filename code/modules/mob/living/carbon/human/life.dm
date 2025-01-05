@@ -39,12 +39,6 @@
 	if(vamp && life_tick == 1)
 		regenerate_icons() // Make sure the inventory updates
 
-	var/datum/antagonist/goon_vampire/g_vamp = mind?.has_antag_datum(/datum/antagonist/goon_vampire)
-	if(g_vamp)
-		g_vamp.handle_vampire()
-		if(life_tick == 1)
-			regenerate_icons()
-
 	var/datum/antagonist/ninja/ninja = mind?.has_antag_datum(/datum/antagonist/ninja)
 	if(ninja)
 		ninja.handle_ninja()
@@ -200,7 +194,8 @@
 						reagents.add_reagent("radium", 1)
 						radiation = max(radiation-50, 0)
 						return
-		if(!(RADIMMUNE in dna.species.species_traits))
+
+		if(!HAS_TRAIT(src, TRAIT_RADIMMUNE))
 			radiation = clamp(radiation, 0, 200)
 
 			var/autopsy_damage = 0
@@ -265,20 +260,20 @@
 	if(!lungs || (lungs && lungs.is_dead()))
 		if(health >= HEALTH_THRESHOLD_CRIT)
 			adjustOxyLoss(HUMAN_MAX_OXYLOSS + 1)
-		else if(!(NOCRITDAMAGE in dna.species.species_traits))
+		else
 			adjustOxyLoss(HUMAN_MAX_OXYLOSS)
 
 		if(dna.species)
 			var/datum/species/species = dna.species
 
 			if(species.breathid == "o2")
-				throw_alert("not_enough_oxy", /atom/movable/screen/alert/not_enough_oxy)
+				throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
 			else if(species.breathid == "tox")
-				throw_alert("not_enough_tox", /atom/movable/screen/alert/not_enough_tox)
+				throw_alert(ALERT_NOT_ENOUGH_TOX, /atom/movable/screen/alert/not_enough_tox)
 			else if(species.breathid == "co2")
-				throw_alert("not_enough_co2", /atom/movable/screen/alert/not_enough_co2)
+				throw_alert( ALERT_NOT_ENOUGH_CO2, /atom/movable/screen/alert/not_enough_co2)
 			else if(species.breathid == "n2")
-				throw_alert("not_enough_nitro", /atom/movable/screen/alert/not_enough_nitro)
+				throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
 
 		return FALSE
 	else if(istype(lungs, /obj/item/organ/internal/lungs))
@@ -296,8 +291,10 @@
 	if(!environment)
 		return
 
+	SEND_SIGNAL(src, COMSIG_HUMAN_EARLY_HANDLE_ENVIRONMENT, environment)
+	
 	var/loc_temp = get_temperature(environment)
-//	to_chat(world, "Loc temp: [loc_temp] - Body temp: [bodytemperature] - Fireloss: [getFireLoss()] - Thermal protection: [get_thermal_protection()] - Fire protection: [thermal_protection + add_fire_protection(loc_temp)] - Heat capacity: [environment_heat_capacity] - Location: [loc] - src: [src]")
+//	to_chat(world, "Loc temp: [loc_temp] - Body temp: [bodytemperature] - Fireloss: [getFireLoss()] - Thermal protection: [get_main_thermal_protection()] - Fire protection: [thermal_protection + add_fire_protection(loc_temp)] - Heat capacity: [environment_heat_capacity] - Location: [loc] - src: [src]")
 
 	//Body temperature is adjusted in two steps. Firstly your body tries to stabilize itself a bit.
 	if(stat != DEAD)
@@ -321,7 +318,7 @@
 	// +/- 50 degrees from 310.15K is the 'safe' zone, where no damage is dealt.
 	if(bodytemperature > dna.species.heat_level_1)
 		//Body temperature is too hot.
-		if(status_flags & GODMODE)
+		if(HAS_TRAIT(src, TRAIT_GODMODE))
 			return TRUE	//godmode
 		var/mult = dna.species.heatmod * physiology.heat_mod
 		if(mult>0)
@@ -347,7 +344,7 @@
 				heal_overall_damage(burn=mult*HEAT_DAMAGE_LEVEL_3)
 
 	else if(bodytemperature < dna.species.cold_level_1)
-		if(status_flags & GODMODE)
+		if(HAS_TRAIT(src, TRAIT_GODMODE))
 			return TRUE
 		if(stat == DEAD)
 			return TRUE
@@ -389,7 +386,7 @@
 
 	var/pressure = environment.return_pressure()
 	var/adjusted_pressure = calculate_affecting_pressure(pressure) //Returns how much pressure actually affects the mob.
-	if(status_flags & GODMODE)
+	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return TRUE	//godmode
 
 	if(adjusted_pressure >= dna.species.hazard_high_pressure)
@@ -420,21 +417,23 @@
 	. = ..()
 	if(!. || HAS_TRAIT(src, TRAIT_RESIST_HEAT))
 		return
-	var/thermal_protection = get_thermal_protection()
+	var/thermal_protection_main = get_main_thermal_protection()
+	var/thermal_protection_secondary = get_secondary_thermal_protection()
 
-	if(thermal_protection >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
+	if(thermal_protection_main >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
 		return
-	if(thermal_protection >= FIRE_SUIT_MAX_TEMP_PROTECT)
-		adjust_bodytemperature(11)
+
+	if(thermal_protection_main >= FIRE_SUIT_MAX_TEMP_PROTECT)
+		adjust_bodytemperature(11 * (1 - thermal_protection_secondary))
 	else
-		adjust_bodytemperature(BODYTEMP_HEATING_MAX + (fire_stacks * 12))
+		adjust_bodytemperature((BODYTEMP_HEATING_MAX + (fire_stacks * 12)) * (1 - thermal_protection_secondary))
 		var/datum/antagonist/vampire/vamp = mind?.has_antag_datum(/datum/antagonist/vampire)
 		if(vamp && !vamp.get_ability(/datum/vampire_passive/full) && stat != DEAD)
 			vamp.bloodusable = max(vamp.bloodusable - 5, 0)
 
 
-/mob/living/carbon/human/proc/get_thermal_protection()
-	if(HAS_TRAIT(src, RESISTHOT))
+/mob/living/carbon/human/proc/get_main_thermal_protection()
+	if(HAS_TRAIT(src, TRAIT_RESIST_HEAT))
 		return FIRE_IMMUNITY_MAX_TEMP_PROTECT
 
 	var/thermal_protection = 0 //Simple check to estimate how protected we are against multiple temperatures
@@ -446,6 +445,25 @@
 			thermal_protection += (head.max_heat_protection_temperature*THERMAL_PROTECTION_HEAD)
 	thermal_protection = round(thermal_protection)
 	return thermal_protection
+
+/mob/living/carbon/human/proc/get_secondary_thermal_protection()
+	var/result = 0
+
+	result += getarmor(BODY_ZONE_HEAD, FIRE) / 100 * THERMAL_PROTECTION_HEAD
+	result += getarmor(BODY_ZONE_CHEST, FIRE) / 100 * THERMAL_PROTECTION_UPPER_TORSO
+	result += getarmor(BODY_ZONE_PRECISE_GROIN, FIRE) / 100 * THERMAL_PROTECTION_LOWER_TORSO
+
+	result += getarmor(BODY_ZONE_L_ARM, FIRE) / 100 * THERMAL_PROTECTION_ARM_LEFT
+	result += getarmor(BODY_ZONE_PRECISE_L_HAND, FIRE) / 100 * THERMAL_PROTECTION_HAND_LEFT
+	result += getarmor(BODY_ZONE_R_ARM, FIRE) / 100 * THERMAL_PROTECTION_ARM_RIGHT
+	result += getarmor(BODY_ZONE_PRECISE_R_HAND, FIRE) / 100 * THERMAL_PROTECTION_HAND_RIGHT
+
+	result += getarmor(BODY_ZONE_L_LEG, FIRE) / 100 * THERMAL_PROTECTION_LEG_LEFT
+	result += getarmor(BODY_ZONE_PRECISE_L_FOOT, FIRE) / 100 * THERMAL_PROTECTION_FOOT_LEFT
+	result += getarmor(BODY_ZONE_R_LEG, FIRE) / 100 * THERMAL_PROTECTION_LEG_RIGHT
+	result += getarmor(BODY_ZONE_PRECISE_R_FOOT, FIRE) / 100 * THERMAL_PROTECTION_FOOT_RIGHT
+
+	return result
 
 //END FIRE CODE
 
@@ -623,18 +641,18 @@
 /mob/living/carbon/human/handle_chemicals_in_body()
 	..()
 
-	if(status_flags & GODMODE)
+	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return 0	//godmode
 
 	var/is_vamp = isvampire(src)
 
-	if(!(NO_HUNGER in dna.species.species_traits) || is_vamp)
-		if(HAS_TRAIT(src, TRAIT_FAT))
+	if(!HAS_TRAIT(src, TRAIT_NO_HUNGER) || is_vamp)
+		if(HAS_TRAIT_FROM(src, TRAIT_FAT, FATNESS_TRAIT))
 			if(overeatduration < 100)
-				becomeSlim()
+				REMOVE_TRAIT(src, TRAIT_FAT, FATNESS_TRAIT)
 		else
-			if(overeatduration > 500 && !(NO_OBESITY in dna.species.species_traits))
-				becomeFat()
+			if(overeatduration > 500 && !HAS_TRAIT(src, TRAIT_NO_FAT))
+				ADD_TRAIT(src, TRAIT_FAT, FATNESS_TRAIT)
 
 		// nutrition decrease
 		if(nutrition >= 0 && stat != DEAD)
@@ -681,7 +699,7 @@
 				to_chat(src, "<span class='notice'>You no longer feel vigorous.</span>")
 			metabolism_efficiency = 1
 
-	if(NO_INTORGANS in dna.species.species_traits)
+	if(HAS_TRAIT(src, TRAIT_NO_INTORGANS))
 		return
 
 	handle_trace_chems()
@@ -694,7 +712,7 @@
 	return 0
 
 /mob/living/carbon/human/handle_critical_condition()
-	if(status_flags & GODMODE)
+	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return 0
 
 	var/guaranteed_death_threshold = health + (getOxyLoss() * 0.5) - (getFireLoss() * 0.67) - (getBruteLoss() * 0.67)
@@ -763,6 +781,7 @@
 						to_chat(src, "<span class='userdanger'>You feel [pick("terrible", "awful", "like shit", "sick", "numb", "cold", "sweaty", "tingly", "horrible")]!</span>")
 						Weaken(6 SECONDS)
 
+
 #define BODYPART_PAIN_REDUCTION 5
 
 /mob/living/carbon/human/update_health_hud()
@@ -771,9 +790,13 @@
 	if(dna.species.update_health_hud())
 		return
 	else
-		var/shock_reduction = shock_reduction()
-		if(NO_PAIN_FEEL in dna.species.species_traits)
+		if(SEND_SIGNAL(src, COMSIG_HUMAN_UPDATING_HEALTH_HUD, health) & COMPONENT_OVERRIDE_HEALTH_HUD)
+			return
+		var/shock_reduction = 0
+		if(HAS_TRAIT(src, TRAIT_NO_PAIN_HUD))
 			shock_reduction = INFINITY
+		else
+			shock_reduction = shock_reduction()
 
 		if(healths)
 			var/health_amount = get_perceived_trauma(shock_reduction)
@@ -823,13 +846,15 @@
 				healthdoll.cut_overlay(cached_overlays - new_overlays)
 				healthdoll.cached_healthdoll_overlays = new_overlays
 
+		if(health <= HEALTH_THRESHOLD_CRIT)
+			throw_alert("succumb", /atom/movable/screen/alert/succumb)
+		else
+			clear_alert("succumb")
+
 #undef BODYPART_PAIN_REDUCTION
 
 
 /mob/living/carbon/human/proc/handle_nutrition_alerts() //This is a terrible abuse of the alert system; something like this should be a HUD element
-	if((NO_HUNGER in dna.species.species_traits) && !isvampire(src))
-		return
-
 	var/new_hunger
 	switch(nutrition)
 		if(NUTRITION_LEVEL_FULL to INFINITY)
@@ -845,6 +870,9 @@
 		else
 			new_hunger = "starving"
 
+	if(HAS_TRAIT(src, TRAIT_NO_HUNGER) && !isvampire(src))
+		new_hunger = "full"
+
 	if(dna.species.hunger_type)
 		new_hunger += "/[dna.species.hunger_type]"
 
@@ -852,18 +880,6 @@
 		dna.species.hunger_level = new_hunger
 		throw_alert(ALERT_NUTRITION, text2path("/atom/movable/screen/alert/hunger/[new_hunger]"), icon_override = dna.species.hunger_icon)
 		med_hud_set_status()
-
-
-/mob/living/carbon/human/handle_random_events()
-	// Puke if toxloss is too high
-	if(!stat)
-		if(getToxLoss() >= 45 && nutrition > 20)
-			lastpuke ++
-			if(lastpuke >= 25) // about 25 second delay I guess
-				vomit(20, 0, 8 SECONDS, 0, 1)
-				adjustToxLoss(-3)
-				lastpuke = 0
-
 
 /mob/living/carbon/human/proc/handle_embedded_objects()
 	for(var/obj/item/organ/external/bodypart as anything in bodyparts)
@@ -885,7 +901,7 @@
 	if(times_fired % 5 == 1)
 		return pulse	//update pulse every 5 life ticks (~1 tick/sec, depending on server load)
 
-	if(NO_BLOOD in dna.species.species_traits)
+	if(HAS_TRAIT(src, TRAIT_NO_BLOOD))
 		return PULSE_NONE //No blood, no pulse.
 
 	if(stat == DEAD)
@@ -925,7 +941,7 @@
 /mob/living/carbon/human/proc/handle_decay()
 	var/decaytime = world.time - timeofdeath
 
-	if(NO_DECAY in dna.species.species_traits)
+	if(HAS_TRAIT(src, TRAIT_NO_DECAY))
 		return
 
 	if(reagents.has_reagent("formaldehyde")) //embalming fluid stops decay
@@ -959,7 +975,7 @@
 			var/obj/item/clothing/mask/M = H.wear_mask
 			if(M && (M.flags_cover & MASKCOVERSMOUTH))
 				continue
-			if(NO_BREATHE in H.dna.species.species_traits)
+			if(HAS_TRAIT(H, TRAIT_NO_BREATH))
 				continue //no puking if you can't smell!
 			// Humans can lack a mind datum, y'know
 			if(H.mind && (H.mind.assigned_role == JOB_TITLE_DETECTIVE || H.mind.assigned_role == JOB_TITLE_CORONER))
@@ -1013,9 +1029,9 @@
 */
 
 /mob/living/carbon/human/proc/can_heartattack()
-	if((NO_BLOOD in dna.species.species_traits) && !dna.species.forced_heartattack)
+	if(HAS_TRAIT(src, TRAIT_NO_BLOOD) && !dna.species.forced_heartattack)
 		return FALSE
-	if(NO_INTORGANS in dna.species.species_traits)
+	if(HAS_TRAIT(src, TRAIT_NO_INTORGANS))
 		return FALSE
 	return TRUE
 

@@ -4,6 +4,7 @@
 #define COCOON_NUTRITION_REQUIREMENT 201
 #define COCOON_NUTRITION_AMOUNT -200
 #define FLYSWATTER_DAMAGE_MULTIPLIER 10
+#define MOTH_PITCH_SHIFT 0.15 // a bit higher emotes
 
 /datum/species/moth
 	name = SPECIES_MOTH
@@ -12,7 +13,9 @@
 	icobase = 'icons/mob/human_races/r_moth.dmi'
 	deform = 'icons/mob/human_races/r_moth.dmi'
 	inherent_factions = list("moth")
-	species_traits = list(HAVE_REGENERATION)
+	inherent_traits = list(
+		TRAIT_HAS_REGENERATION,
+	)
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT
 	bodyflags = HAS_HEAD_ACCESSORY | HAS_HEAD_MARKINGS | HAS_BODY_MARKINGS | HAS_WING | HAS_SKIN_COLOR
 	reagent_tag = PROCESS_ORG
@@ -68,8 +71,6 @@
 
 	optional_body_accessory = FALSE
 
-	var/datum/action/innate/cocoon/cocoon
-
 	suicide_messages = list(
 		"откусывает свои усики!",
 		"вспарывает себе живот!",
@@ -79,9 +80,17 @@
 	toxic_food = MEAT | JUNKFOOD
 	disliked_food = FRIED | RAW | EGG
 	liked_food = SUGAR | GROSS | FRUIT | VEGETABLES
+	special_diet = MATERIAL_CLASS_CLOTH
+
+	age_sheet = list(
+		SPECIES_AGE_MIN = 3,
+		SPECIES_AGE_MAX = 60,
+		JOB_MIN_AGE_HIGH_ED = 15,
+		JOB_MIN_AGE_COMMAND = 15,
+	)
 
 /datum/species/moth/on_species_gain(mob/living/carbon/human/H)
-	..()
+	. = ..()
 	H.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/limbless)
 	add_verb(H, /mob/living/carbon/human/proc/emote_flap)
 	add_verb(H, /mob/living/carbon/human/proc/emote_aflap)
@@ -96,15 +105,15 @@
 	RegisterSignal(H, COMSIG_HUMAN_CHANGE_HEAD_ACCESSORY, PROC_REF(on_change_head_accessory))
 	RegisterSignal(H, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(damage_weakness))
 
+
 /datum/species/moth/on_species_loss(mob/living/carbon/human/H)
-	..()
+	. = ..()
 	H.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/limbless)
 	remove_verb(H, /mob/living/carbon/human/proc/emote_flap)
 	remove_verb(H, /mob/living/carbon/human/proc/emote_aflap)
 	remove_verb(H, /mob/living/carbon/human/proc/emote_flutter)
 	var/datum/action/innate/cocoon/cocoon = locate() in H.actions
-	if(cocoon)
-		cocoon.Remove(H)
+	cocoon?.Remove(H)
 	UnregisterSignal(H, COMSIG_LIVING_FIRE_TICK)
 	UnregisterSignal(H, COMSIG_LIVING_AHEAL)
 	UnregisterSignal(H, COMSIG_HUMAN_CHANGE_BODY_ACCESSORY)
@@ -250,9 +259,14 @@
 	owner.UpdateAppearance()
 	return ..()
 
+/datum/species/moth/get_emote_pitch(mob/living/carbon/human/H, tolerance)
+	. = ..()
+	. += MOTH_PITCH_SHIFT
+
 
 #undef COCOON_WEAVE_DELAY
 #undef COCOON_EMERGE_DELAY
 #undef COCOON_HARM_AMOUNT
 #undef COCOON_NUTRITION_AMOUNT
 #undef FLYSWATTER_DAMAGE_MULTIPLIER
+#undef MOTH_PITCH_SHIFT

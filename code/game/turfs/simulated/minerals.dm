@@ -47,6 +47,9 @@
 				if(istype(T, /turf/simulated/mineral/random))
 					Spread(T)
 
+/turf/simulated/mineral/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/blob_turf_consuming, 2)
 
 /// Generates typecache of tools allowed to dig this mineral
 /turf/simulated/mineral/proc/generate_picks()
@@ -86,7 +89,8 @@
 	I.play_tool_sound(src)
 	to_chat(user, span_notice("You start picking..."))
 	if(!do_after(user, mine_time * I.toolspeed, src, category = DA_CAT_TOOL))
-		COOLDOWN_RESET(src, last_act)
+		if(istype(src, /turf/simulated/mineral))
+			COOLDOWN_RESET(src, last_act)
 		return .
 
 	to_chat(user, span_notice("You finish cutting into the rock."))
@@ -196,6 +200,9 @@
 				attempt_drill(null,TRUE,1)
 		if(1)
 			attempt_drill(null,TRUE,3)
+
+/turf/simulated/mineral/blob_consume()
+	gets_drilled()
 
 /turf/simulated/mineral/ancient
 	name = "ancient rock"

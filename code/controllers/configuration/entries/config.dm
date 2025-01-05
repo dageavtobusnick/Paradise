@@ -397,8 +397,6 @@
 
 /datum/config_entry/number/simultaneous_pm_warning_timeout
 	default = 100
-///Do assistants get maint access?
-/datum/config_entry/flag/assistant_maint
 
 ///How long the gateway takes before it activates. Default is 10 minutes. Only matters if roundstart_away is enabled.
 /datum/config_entry/number/gateway_delay
@@ -700,6 +698,9 @@
 
 /datum/config_entry/flag/config_errors_runtime
 
+/// Whether demos are written, if not set demo SS never initializes
+/datum/config_entry/flag/demos_enabled
+
 //Needs proper testing
 /datum/config_entry/keyed_list/probability
 	key_mode = KEY_MODE_TEXT
@@ -831,3 +832,6 @@
 	protection = CONFIG_ENTRY_LOCKED | CONFIG_ENTRY_HIDDEN
 
 /datum/config_entry/str_list/lobby_music
+
+/datum/config_entry/string/override_away_mission
+	default = null

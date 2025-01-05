@@ -6,7 +6,15 @@
 	dangerous_existence = TRUE //So so much
 	//language = "Clatter"
 
-	species_traits = list(RADIMMUNE, NO_BLOOD, NO_HUNGER, NOTRANSSTING, NO_PAIN, VIRUSIMMUNE, NO_GERMS, NO_DECAY)
+	inherent_traits = list(
+		TRAIT_NO_BLOOD,
+		TRAIT_NO_PAIN,
+		TRAIT_RADIMMUNE,
+		TRAIT_VIRUSIMMUNE,
+		TRAIT_NO_GERMS,
+		TRAIT_NO_DECAY,
+		TRAIT_NO_HUNGER,
+	)
 	forced_heartattack = TRUE // Plasmamen have no blood, but they should still get heart-attacks
 	skinned_type = /obj/item/stack/sheet/mineral/plasma // We're low on plasma, R&D! *eyes plasmaman co-worker intently*
 	reagent_tag = PROCESS_ORG
@@ -52,15 +60,22 @@
 	disliked_food = NONE
 	liked_food = NONE
 
+	age_sheet = list(
+		SPECIES_AGE_MIN = 4,
+		SPECIES_AGE_MAX = 150,
+		JOB_MIN_AGE_HIGH_ED = 25,
+		JOB_MIN_AGE_COMMAND = 25,
+	)
+
 
 /datum/species/plasmaman/on_species_gain(mob/living/carbon/human/H)
-	..()
+	. = ..()
 	add_verb(H, /mob/living/carbon/human/proc/emote_rattle)
 	RegisterSignal(H, COMSIG_CARBON_RECEIVE_FRACTURE, PROC_REF(on_fracture))
 
 
 /datum/species/plasmaman/on_species_loss(mob/living/carbon/human/H)
-	..()
+	. = ..()
 	remove_verb(H, /mob/living/carbon/human/proc/emote_rattle)
 	UnregisterSignal(H, COMSIG_CARBON_RECEIVE_FRACTURE)
 
@@ -125,14 +140,26 @@
 		if(JOB_TITLE_HOS)
 			O = new /datum/outfit/plasmaman/hos
 
-		if(JOB_TITLE_CARGOTECH, JOB_TITLE_QUARTERMASTER)
+		if(JOB_TITLE_CARGOTECH)
 			O = new /datum/outfit/plasmaman/cargo
+
+		if(JOB_TITLE_QUARTERMASTER)
+			O = new /datum/outfit/plasmaman/qm
 
 		if(JOB_TITLE_MINER)
 			O = new /datum/outfit/plasmaman/mining
 
-		if(JOB_TITLE_DOCTOR, JOB_TITLE_INTERN, JOB_TITLE_BRIGDOC, JOB_TITLE_PARAMEDIC, JOB_TITLE_CORONER)
+		if(JOB_TITLE_DOCTOR, JOB_TITLE_INTERN)
 			O = new /datum/outfit/plasmaman/medical
+
+		if(JOB_TITLE_BRIGDOC)
+			O = new /datum/outfit/plasmaman/brigdoc
+
+		if(JOB_TITLE_PARAMEDIC)
+			O = new /datum/outfit/plasmaman/paramedic
+
+		if(JOB_TITLE_CORONER)
+			O = new /datum/outfit/plasmaman/coroner
 
 		if(JOB_TITLE_CMO)
 			O = new /datum/outfit/plasmaman/cmo

@@ -171,16 +171,17 @@
 /obj/item/stack/medical/bruise_pack/attackby(obj/item/I, mob/user, params)
 	if(is_sharp(I))
 		add_fingerprint(user)
-		var/atom/cached_loc = loc
+		var/atom/drop_loc = drop_location()
 		if(!use(2))
 			to_chat(user, span_warning("You need at least two gauzes to do this!"))
 			return ATTACK_CHAIN_PROCEED
-		new /obj/item/stack/sheet/cloth(cached_loc.drop_location())
+		var/obj/item/stack/sheet/cloth/cloth = new(drop_loc)
+		cloth.add_fingerprint(user)
 		user.visible_message(
 			span_notice("[user] cuts [src] into pieces of cloth with [I]."),
 			span_notice("You cut [src] into pieces of cloth with [I]."),
 			span_italics("You hear cutting."),
-			)
+		)
 		return ATTACK_CHAIN_PROCEED_SUCCESS
 
 	return ..()
@@ -237,6 +238,17 @@
 		return ATTACK_CHAIN_PROCEED
 	return ..()
 
+/obj/item/stack/medical/bruise_pack/extended
+	name = "extended trauma kit"
+	singular_name = "extended trauma kit"
+	desc = "An extended trauma kit for severe injuries."
+	icon_state = "extended_trauma_kit"
+	item_state = "extended_trauma_kit"
+	belt_icon = "advanced_trauma_kit"
+	heal_brute = 30
+	stop_bleeding = 0
+	amount = 12
+	max_amount = 12
 
 //Ointment//
 
@@ -291,6 +303,16 @@
 		return ATTACK_CHAIN_PROCEED
 	return ..()
 
+/obj/item/stack/medical/ointment/extended
+	name = "extended burn kit"
+	singular_name = "extended burn kit"
+	desc = "An extended treatment kit for severe burns."
+	icon_state = "extended_burn_kit"
+	item_state = "extended_burn_kit"
+	belt_icon = "advanced_burn_kit"
+	heal_burn = 30
+	amount = 12
+	max_amount = 12
 
 //Medical Herbs//
 /obj/item/stack/medical/bruise_pack/comfrey

@@ -1,6 +1,6 @@
 /obj/machinery/computer/robotics
 	name = "robotics control console"
-	desc = "Used to remotely lockdown or detonate linked Cyborgs."
+	desc = "Используется для дистанционной блокировки или подрыва привязанных киборгов."
 	icon = 'icons/obj/machines/computer.dmi'
 	icon_keyboard = "tech_key"
 	icon_screen = "robot"
@@ -242,7 +242,7 @@
 			R.SetLockdown(!R.lockcharge)
 			to_chat(R, "[!R.lockcharge ? span_notice("Your lockdown has been lifted!") : span_alert("You have been locked down!")]")
 			if(R.connected_ai)
-				to_chat(R.connected_ai, "[!R.lockcharge ? span_notice("NOTICE - Cyborg lockdown lifted") : span_alert("ALERT - Cyborg lockdown detected")]: <a href='?src=[R.connected_ai.UID()];track=[html_encode(R.name)]'>[R.name]</a></span><br>")
+				to_chat(R.connected_ai, "[!R.lockcharge ? span_notice("NOTICE - Cyborg lockdown lifted") : span_alert("ALERT - Cyborg lockdown detected")]: <a href='byond://?src=[R.connected_ai.UID()];track=[html_encode(R.name)]'>[R.name]</a></span><br>")
 			. = TRUE
 		if("hackbot") // AIs hacking/emagging a borg
 			var/mob/living/silicon/robot/R = locateUID(params["uid"])

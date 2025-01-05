@@ -5,6 +5,7 @@
 	deform = 'icons/mob/human_races/r_wryn.dmi'
 	blacklisted = TRUE
 	tail = "wryntail"
+	eyes = "wryn_eyes_s"
 	punchdamagelow = 0
 	punchdamagehigh = 1
 	speed_mod = 1
@@ -53,9 +54,14 @@
 		BODY_ZONE_TAIL = list("path" = /obj/item/organ/external/tail/wryn),
 	)
 
-	species_traits = list(LIPS, NO_BREATHE, NO_SCAN, HIVEMIND, HAVE_REGENERATION)
+	inherent_traits = list(
+		TRAIT_HAS_LIPS,
+		TRAIT_HAS_REGENERATION,
+		TRAIT_NO_BREATH,
+		TRAIT_NO_SCAN,
+	)
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT | HAS_SOCKS
-	bodyflags = HAS_SKIN_COLOR
+	bodyflags = HAS_SKIN_COLOR | HAS_BODY_ACCESSORY
 
 	dies_at_threshold = TRUE
 
@@ -65,31 +71,35 @@
 	blood_color = "#FFFF99"
 	blood_species = "Wryn"
 	//Default styles for created mobs.
-	default_hair = "Antennae"
+	default_hair = "Normal antennae"
+	default_fhair = "Default mane"
+	default_bodyacc = "Bee Tail"
+	default_fhair_colour = "#704300"
+	age_sheet = list(
+		SPECIES_AGE_MIN = 15,
+		SPECIES_AGE_MAX = 55,
+		JOB_MIN_AGE_HIGH_ED = 22,
+		JOB_MIN_AGE_COMMAND = 22,
+	)
 
 /datum/species/wryn/on_species_gain(mob/living/carbon/human/H)
-	..()
+	. = ..()
 	var/datum/action/innate/wryn_sting/wryn_sting = locate() in H.actions
 	if(!wryn_sting)
 		wryn_sting = new
 		wryn_sting.Grant(H)
 
 /datum/species/wryn/on_species_loss(mob/living/carbon/human/H)
-	..()
+	. = ..()
 	var/datum/action/innate/wryn_sting/wryn_sting = locate() in H.actions
-	if(wryn_sting)
-		wryn_sting.Remove(H)
+	wryn_sting?.Remove(H)
 
 /datum/species/wryn/after_equip_job(datum/job/J, mob/living/carbon/human/H)
 	var/comb_deafness = H.client.prefs.speciesprefs
+
 	if(comb_deafness)
 		var/obj/item/organ/internal/wryn/hivenode/node = H.get_int_organ(/obj/item/organ/internal/wryn/hivenode)
-		node.remove(H)
 		qdel(node)
-	else
-		var/obj/item/organ/external/head/head_organ = H.get_organ(BODY_ZONE_HEAD)
-		head_organ.h_style = "Antennae"
-		H.update_hair()
 
 /* Wryn Sting Action Begin */
 

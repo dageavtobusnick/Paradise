@@ -79,19 +79,19 @@
 
 					body += "</td><td align='center'>";
 
-					body += "<a href='?src=[UID()];adminplayeropts="+mobUID+"'>PP</a> - "
-					body += "<a href='?src=[UID()];shownoteckey="+key+"'>N</a> - "
-					body += "<a href='?_src_=vars;Vars="+mobUID+"'>VV</a> - "
-					body += "<a href='?src=[UID()];traitor="+mobUID+"'>TP</a> - "
-					body += "<a href='?src=[usr.UID()];priv_msg="+client_ckey+"'>PM</a> - "
-					body += "<a href='?src=[UID()];subtlemessage="+mobUID+"'>SM</a> - "
-					body += "<a href='?src=[UID()];adminplayerobservefollow="+mobUID+"'>FLW</a> - "
-					body += "<a href='?src=[UID()];adminalert="+mobUID+"'>ALERT</a>"
+					body += "<a href='byond://?src=[UID()];adminplayeropts="+mobUID+"'>PP</a> - "
+					body += "<a href='byond://?src=[UID()];shownoteckey="+key+"'>N</a> - "
+					body += "<a href='byond://?_src_=vars;Vars="+mobUID+"'>VV</a> - "
+					body += "<a href='byond://?src=[UID()];traitor="+mobUID+"'>TP</a> - "
+					body += "<a href='byond://?src=[usr.UID()];priv_msg="+client_ckey+"'>PM</a> - "
+					body += "<a href='byond://?src=[UID()];subtlemessage="+mobUID+"'>SM</a> - "
+					body += "<a href='byond://?src=[UID()];adminplayerobservefollow="+mobUID+"'>FLW</a> - "
+					body += "<a href='byond://?src=[UID()];adminalert="+mobUID+"'>ALERT</a>"
 					if(eyeUID)
-						body += "|<a href='?src=[UID()];adminplayerobservefollow="+eyeUID+"'>EYE</a>"
+						body += "|<a href='byond://?src=[UID()];adminplayerobservefollow="+eyeUID+"'>EYE</a>"
 					body += "<br>"
 					if(antagonist > 0)
-						body += "<font size='2'><a href='?src=[UID()];check_antagonist=1'><font color='red'><b>Antagonist</b></font></a></font>";
+						body += "<font size='2'><a href='byond://?src=[UID()];check_antagonist=1'><font color='red'><b>Antagonist</b></font></a></font>";
 
 					body += "</td></tr></table>";
 
@@ -202,7 +202,7 @@
 			<tr id='title_tr'>
 				<td align='center'>
 					<font size='5'><b>Player panel</b></font><br>
-					Hover over a line to see more information | [check_rights(R_ADMIN,0) ? "<a href='?src=[UID()];check_antagonist=1'>Check antagonists</a> | Kick <a href='?_src_=holder;kick_all_from_lobby=1;afkonly=0'>everyone</a>/<a href='?_src_=holder;kick_all_from_lobby=1;afkonly=1'>AFKers</a> in lobby" : "" ]
+					Hover over a line to see more information | [check_rights(R_ADMIN,0) ? "<a href='byond://?src=[UID()];check_antagonist=1'>Check antagonists</a> | Kick <a href='byond://?_src_=holder;kick_all_from_lobby=1;afkonly=0'>everyone</a>/<a href='byond://?_src_=holder;kick_all_from_lobby=1;afkonly=1'>AFKers</a> in lobby" : "" ]
 					<p>
 				</td>
 			</tr>
@@ -344,8 +344,8 @@
 	if(!dname)
 		dname = M
 
-	return {"<tr><td><a href='?src=[UID()];adminplayeropts=[M.UID()]'>[dname]</a><b>[caption]</b>[logout_status][istype(A, /area/security/permabrig) ? "<b><font color=red> (PERMA) </b></font>" : ""][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>
-		<td><A href='?src=[usr.UID()];priv_msg=[M.client?.ckey]'>PM</A> [ADMIN_FLW(M, "FLW")] </td>[close ? "</tr>" : ""]"}
+	return {"<tr><td><a href='byond://?src=[UID()];adminplayeropts=[M.UID()]'>[dname]</a><b>[caption]</b>[logout_status][istype(A, /area/security/permabrig) ? "<b><font color=red> (PERMA) </b></font>" : ""][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>
+		<td><a href='byond://?src=[usr.UID()];priv_msg=[M.client?.ckey]'>PM</A> [ADMIN_FLW(M, "FLW")] </td>[close ? "</tr>" : ""]"}
 
 /datum/admins/proc/check_antagonists()
 	if(!check_rights(R_ADMIN))
@@ -355,27 +355,27 @@
 		dat += "Current Game Mode: <B>[SSticker.mode.name]</B><BR>"
 		dat += "Round Duration: <B>[ROUND_TIME_TEXT()]</B><BR>"
 		dat += "<B>Emergency shuttle</B><BR>"
-		if(SSshuttle.emergency.mode < SHUTTLE_CALL)
-			dat += "<a href='?src=[UID()];call_shuttle=1'>Call Shuttle</a><br>"
+		if(SSshuttle.emergency.mode == SHUTTLE_IDLE)
+			dat += "<a href='byond://?src=[UID()];call_shuttle=1'>Call Shuttle</a><br>"
 		else
 			var/timeleft = SSshuttle.emergency.timeLeft()
-			if(SSshuttle.emergency.mode < SHUTTLE_DOCKED)
-				dat += "ETA: <a href='?_src_=holder;edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
-				dat += "<a href='?_src_=holder;call_shuttle=2'>Send Back</a><br>"
+			if(SSshuttle.emergency.mode == SHUTTLE_CALL)
+				dat += "ETA: <a href='byond://?_src_=holder;edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
+				dat += "<a href='byond://?_src_=holder;call_shuttle=2'>Send Back</a><br>"
 			else
-				dat += "ETA: <a href='?_src_=holder;edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
+				dat += "ETA: <a href='byond://?_src_=holder;edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
 		if(!SSshuttle.emergencyNoEscape)
-			dat += "<a href='?src=[UID()];lockdown_shuttle=1'>Lockdown Shuttle</a><br>"
+			dat += "<a href='byond://?src=[UID()];lockdown_shuttle=1'>Lockdown Shuttle</a><br>"
 		else
 			if(SSshuttle.emergency.mode == SHUTTLE_STRANDED)
 				dat += span_danger("<B>Emergency shuttle stranded</B>")
-				dat += "<BR><a href='?src=[UID()];stop_lockdown=1'>Stop lockdown and De-Strandise</a><br>"
+				dat += "<BR><a href='byond://?src=[UID()];stop_lockdown=1'>Stop lockdown and De-Strandise</a><br>"
 			else
 				dat += span_danger("<B>Emergency shuttle lockdowned</B>")
-				dat += "<BR><a href='?src=[UID()];stop_lockdown=1'>Stop lockdown</a><br>"
-		dat += "<a href='?src=[UID()];delay_round_end=1'>[SSticker.delay_end ? "End Round Normally" : "Delay Round End"]</a><br>"
+				dat += "<BR><a href='byond://?src=[UID()];stop_lockdown=1'>Stop lockdown</a><br>"
+		dat += "<a href='byond://?src=[UID()];delay_round_end=1'>[SSticker.delay_end ? "End Round Normally" : "Delay Round End"]</a><br>"
 		dat += "<br><b>Antagonist Teams</b><br>"
-		dat += "<a href='?src=[UID()];check_teams=1'>View Teams</a><br>"
+		dat += "<a href='byond://?src=[UID()];check_teams=1'>View Teams</a><br>"
 		if(SSticker.mode.syndicates.len)
 			dat += "<br><table cellspacing=5><tr><td><B>Syndicates</B></td><td></td></tr>"
 			for(var/datum/mind/N in SSticker.mode.syndicates)
@@ -391,7 +391,7 @@
 				while(!istype(disk_loc, /turf))
 					if(istype(disk_loc, /mob))
 						var/mob/M = disk_loc
-						dat += "carried by <a href='?src=[UID()];adminplayeropts=[M.UID()]'>[M.real_name]</a> "
+						dat += "carried by <a href='byond://?src=[UID()];adminplayeropts=[M.UID()]'>[M.real_name]</a> "
 					if(isobj(disk_loc))
 						var/obj/O = disk_loc
 						dat += "in \a [O.name] "
@@ -425,19 +425,22 @@
 		if(blob_infected && blob_infected.len)
 			var/datum/game_mode/mode = SSticker.mode
 			dat += "<br><table cellspacing=5><tr><td><B>Blob</B></td><td></td><td></td></tr>"
-			dat += "<tr><td><i>Progress: [GLOB.blobs.len]/[mode.blob_win_count]</i></td></tr>"
-			dat += "<tr><td><a href='?src=[UID()];edit_blob_win_count=1'>Edit Win Count</a><br></tr>"
-			dat += "<tr><td><a href='?src=[UID()];send_warning=1'>Send warning to all living blobs</a><br></td></tr>"
-			dat += "<tr><td><a href='?src=[UID()];burst_all_blobs=1'>Burst all blobs</a><br></td></tr>"
+			dat += "<tr><td><i>Progress: [mode.legit_blobs.len]/[mode.blob_win_count]</i></td></tr>"
+			dat += "<tr><td><a href='byond://?src=[UID()];edit_blob_win_count=1'>Edit Win Count</a><br></tr>"
+			dat += "<tr><td><a href='byond://?src=[UID()];send_warning=1'>Send warning to all living blobs</a><br></td></tr>"
+			dat += "<tr><td><a href='byond://?src=[UID()];burst_all_blobs=1'>Burst all blobs</a><br></td></tr>"
 			if(check_rights(R_EVENT))
-				dat += "<tr><td><a href='?src=[UID()];delay_blob_end=1'>Delay blob end</a><br></td></tr>"
+				dat += "<tr><td><a href='byond://?src=[UID()];delay_blob_end=1'>Delay blob end</a> Now: [mode.delay_blob_end? "ON" : "OFF"]<br></td></tr>"
+				dat += "<tr><td><a href='byond://?src=[UID()];toggle_auto_gamma=1'>Toggle auto GAMMA</a> Now: [mode.off_auto_gamma? "OFF" : "ON"]<br></td></tr>"
+			dat += "<tr><td><a href='byond://?src=[UID()];toggle_auto_nuke_codes=1'>Toggle auto nuke codes</a> Now: [mode.off_auto_nuke_codes? "OFF" : "ON"]<br></td></tr>"
+			dat += "<tr><td><a href='byond://?src=[UID()];toggle_blob_infinity_points=1'>Toggle blob infinity points</a> Now: [mode.is_blob_infinity_points? "ON" : "OFF"]<br></td></tr>"
 			dat += "</table>"
 			dat += "<br><table cellspacing=5><tr><td><B>Blobs</B></td><td></td></tr>"
 			for(var/datum/mind/blob in mode.blobs["infected"])
 				var/mob/M = blob.current
 				if(M)
 					dat += "<tr><td>[ADMIN_PP(M,"[M.real_name]")][M.client ? "" : " <i>(ghost)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
-					dat += "<td><A href='?priv_msg=[M.client?.ckey]'>PM</A></td>"
+					dat += "<td><a href='byond://?priv_msg=[M.client?.ckey]'>PM</A></td>"
 				else
 					dat += "<tr><td><i>Blob not found!</i></td></tr>"
 			dat += "</table>"
@@ -446,20 +449,20 @@
 				var/mob/M = blob.current
 				if(M)
 					dat += "<tr><td>[ADMIN_PP(M,"[M.real_name]")][M.client ? "" : " <i>(ghost)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
-					dat += "<td><A href='?priv_msg=[M.client?.ckey]'>PM</A></td>"
+					dat += "<td><a href='byond://?priv_msg=[M.client?.ckey]'>PM</A></td>"
 				else
 					dat += "<tr><td><i>Offspring not found!</i></td></tr>"
 
 			dat += "</table>"
 
-			dat += "<br><table cellspacing=5><tr><td><B>Blobernauts</B></td><td></td></tr>"
-			for(var/datum/mind/blob in mode.blobs["blobernauts"])
+			dat += "<br><table cellspacing=5><tr><td><B>Minions</B></td><td></td></tr>"
+			for(var/datum/mind/blob in mode.blobs["minions"])
 				var/mob/M = blob.current
 				if(M)
 					dat += "<tr><td>[ADMIN_PP(M,"[M.real_name]")][M.client ? "" : " <i>(ghost)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
-					dat += "<td><A href='?priv_msg=[M.client?.ckey]'>PM</A></td>"
+					dat += "<td><a href='byond://?priv_msg=[M.client?.ckey]'>PM</A></td>"
 				else
-					dat += "<tr><td><i>Blobernauts not found!</i></td></tr>"
+					dat += "<tr><td><i>Minions not found!</i></td></tr>"
 
 			dat += "</table>"
 
@@ -495,17 +498,17 @@
 			dat += "<br>Sacrifice objectives completed: [gamemode.cult_objs.sacrifices_done]"
 			dat += "<br>Sacrifice objectives needed for summoning: [gamemode.cult_objs.sacrifices_required]"
 			dat += "<br>Summoning locations: [english_list(gamemode.cult_objs.obj_summon.summon_spots)]"
-			dat += "<br><a href='?src=[UID()];cult_mindspeak=[UID()]'>Cult Mindspeak</a>"
+			dat += "<br><a href='byond://?src=[UID()];cult_mindspeak=[UID()]'>Cult Mindspeak</a>"
 
 			if(gamemode.cult_objs.cult_status == NARSIE_DEMANDS_SACRIFICE)
-				dat += "<br><a href='?src=[UID()];cult_adjustsacnumber=[UID()]'>Modify amount of sacrifices required</a>"
-				dat += "<br><a href='?src=[UID()];cult_newtarget=[UID()]'>Reroll sacrifice target</a>"
+				dat += "<br><a href='byond://?src=[UID()];cult_adjustsacnumber=[UID()]'>Modify amount of sacrifices required</a>"
+				dat += "<br><a href='byond://?src=[UID()];cult_newtarget=[UID()]'>Reroll sacrifice target</a>"
 			else
 				dat += "<br>Modify amount of sacrifices required (Summon available!)</a>"
 				dat += "<br>Reroll sacrifice target (Summon available!)</a>"
 
-			dat += "<br><a href='?src=[UID()];cult_newsummonlocations=[UID()]'>Reroll summoning locations</a>"
-			dat += "<br><a href='?src=[UID()];cult_unlocknarsie=[UID()]'>Unlock Nar'Sie summoning</a>"
+			dat += "<br><a href='byond://?src=[UID()];cult_newsummonlocations=[UID()]'>Reroll summoning locations</a>"
+			dat += "<br><a href='byond://?src=[UID()];cult_unlocknarsie=[UID()]'>Unlock Nar'Sie summoning</a>"
 
 		if(length(SSticker.mode.clockwork_cult))
 			var/datum/game_mode/gamemode = SSticker.mode
@@ -525,17 +528,17 @@
 			dat += "<br>Beacons needed: [length(GLOB.clockwork_beacons)]/[gamemode.clocker_objs.beacon_goal]"
 			dat += "<br>Clockers needed: [SSticker.mode.get_clockers()]/[gamemode.clocker_objs.clocker_goal] Reveal:[SSticker.mode.crew_reveal_number]"
 			dat += "<br>Summoning locations: [english_list(gamemode.clocker_objs.obj_summon.ritual_spots)]"
-			dat += "<br><a href='?src=[UID()];clock_mindspeak=[UID()]'>Clock Cult Mindspeak</a>"
+			dat += "<br><a href='byond://?src=[UID()];clock_mindspeak=[UID()]'>Clock Cult Mindspeak</a>"
 
 			if(gamemode.clocker_objs.clock_status == RATVAR_DEMANDS_POWER)
-				dat += "<br><a href='?src=[UID()];clock_adjustpower=[UID()]'>POWER CHANGE</a>"
-				dat += "<br><a href='?src=[UID()];clock_adjustbeacon=[UID()]'>BEACON CHANGE</a>"
-				dat += "<br><a href='?src=[UID()];clock_adjustclocker=[UID()]'>CLOCKER CHANGE</a>"
+				dat += "<br><a href='byond://?src=[UID()];clock_adjustpower=[UID()]'>POWER CHANGE</a>"
+				dat += "<br><a href='byond://?src=[UID()];clock_adjustbeacon=[UID()]'>BEACON CHANGE</a>"
+				dat += "<br><a href='byond://?src=[UID()];clock_adjustclocker=[UID()]'>CLOCKER CHANGE</a>"
 			else
 				dat += "<br>The cult reached power demand! Summon available!</a>"
 
-			dat += "<br><a href='?src=[UID()];clock_newsummonlocations=[UID()]'>Reroll summoning locations</a>"
-			dat += "<br><a href='?src=[UID()];clock_unlockratvar=[UID()]'>Unlock Ratvar summoning</a>"
+			dat += "<br><a href='byond://?src=[UID()];clock_newsummonlocations=[UID()]'>Reroll summoning locations</a>"
+			dat += "<br><a href='byond://?src=[UID()];clock_unlockratvar=[UID()]'>Unlock Ratvar summoning</a>"
 
 		if(SSticker.mode.traitors.len)
 			dat += check_role_table("Traitors", SSticker.mode.traitors)
@@ -642,9 +645,60 @@
 	if(show_objectives)
 		txt += {"
 			<td>
-				<a href='?src=[UID()];traitor=[M.UID()]'>Show Objective</a>
+				<a href='byond://?src=[UID()];traitor=[M.UID()]'>Show Objective</a>
 			</td>
 		"}
 
+	txt += "</tr>"
+	return txt
+
+/datum/admins/proc/check_security_line(mob/living/human, close = 1)
+	var/logout_status = human.client ? "" : " <i>(logged out)</i>"
+	var/list/coords = ATOM_COORDS(human)
+	var/job = issilicon(human) ? "Cyborg" : human.job // || need because maybe ert robots with null in job
+	return {"<tr><td><a href='byond://?src=[UID()];adminplayeropts=[human.UID()]'>[human.real_name]</a>[logout_status]</td><td>[job][human.stat == DEAD ? " <b><font color=red>(Dead)</font></b>" : "<font color=green> [human.health]%</font>"] <b>[get_area_name(human)]</b> [coords[1]],[coords[2]],[coords[3]]</td><td><a href='byond://?src=[usr.UID()];priv_msg=[human.client?.ckey]'>PM</A> [ADMIN_FLW(human, "FLW")]</td>[close ? "</tr>" : ""]"}
+
+/datum/admins/proc/check_security()
+	if(!check_rights(R_ADMIN))
+		return
+	if(!SSticker || SSticker.current_state < GAME_STATE_PLAYING)
+		return
+
+	var/dat = {"<html><meta charset="UTF-8"><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"}
+	var/list/sec_list = check_active_security_force()
+	dat += "<br><table cellspacing=5><tr><td><b>Security</b></td><td></td></tr>"
+	dat += "<tr><td>Total: </td><td>[sec_list[1]]</td>"
+	dat += "<tr><td>Active: </td><td>[sec_list[2]]</td>"
+	dat += "<tr><td>Dead: </td><td>[sec_list[3]]</td>"
+	dat += "<tr><td>Antag: </td><td>[sec_list[4]]</td>"
+	dat += "</table>"
+	dat += "</body></html>"
+
+	dat += "<br><table cellspacing=5><tr><td><B>Security</B></td><td></td></tr>"
+	for(var/datum/mind/mind in SSticker.mode.get_all_sec())
+		if(mind.current)
+			dat += check_security_line(mind.current)
+	dat += "</table>"
+
+	if(SSticker.mode.ert.len)
+		dat += check_role_table_sec("ERT", SSticker.mode.ert)
+
+	usr << browse(dat, "window=roundstatus;size=600x800")
+
+/datum/admins/proc/check_role_table_sec(name, list/members, show_objectives=0)
+	var/txt = "<br><table cellspacing=5><tr><td><b>[name]</b></td><td></td></tr>"
+	for(var/datum/mind/mind in members)
+		txt += check_role_table_row_sec(mind.current, show_objectives)
+	txt += "</table>"
+	return txt
+
+/datum/admins/proc/check_role_table_row_sec(mob/mob, show_objectives)
+	var/txt = check_security_line(mob, close = 0)
+	if(show_objectives)
+		txt += {"
+			<td>
+				<a href='byond://?src=[UID()];traitor=[mob.UID()]'>Show Objective</a>
+			</td>
+		"}
 	txt += "</tr>"
 	return txt

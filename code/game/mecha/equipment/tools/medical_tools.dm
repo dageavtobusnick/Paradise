@@ -111,7 +111,7 @@
 
 /obj/item/mecha_parts/mecha_equipment/medical/sleeper/get_module_equip_info()
 	if(patient)
-		return " <br />\[Occupant: [patient] ([patient.stat > 1 ? "*DECEASED*" : "Health: [patient.health]%"])\]<br /><a href='?src=[UID()];view_stats=1'>View stats</a>|<a href='?src=[UID()];eject=1'>Eject</a>"
+		return " <br />\[Occupant: [patient] ([patient.stat > 1 ? "*DECEASED*" : "Health: [patient.health]%"])\]<br /><a href='byond://?src=[UID()];view_stats=1'>View stats</a>|<a href='byond://?src=[UID()];eject=1'>Eject</a>"
 
 /obj/item/mecha_parts/mecha_equipment/medical/sleeper/Topic(href,href_list)
 	..()
@@ -304,7 +304,7 @@
 	return FALSE
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/get_module_equip_info()
-	return " \[<a href=\"?src=[UID()];toggle_mode=1\">[analyze_mode? "Analyze" : "Launch"]</a>\]<br />\[Syringes: [syringes.len]/[max_syringes] | Reagents: [reagents.total_volume]/[reagents.maximum_volume]\]<br /><a href='?src=[UID()];show_reagents=1'>Reagents list</a>"
+	return " \[<a href=\"?src=[UID()];toggle_mode=1\">[analyze_mode? "Analyze" : "Launch"]</a>\]<br />\[Syringes: [syringes.len]/[max_syringes] | Reagents: [reagents.total_volume]/[reagents.maximum_volume]\]<br /><a href='byond://?src=[UID()];show_reagents=1'>Reagents list</a>"
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/action(atom/movable/target)
 	if(!action_checks(target))
@@ -639,3 +639,57 @@
 		if(M.equipment.len < M.max_equip)
 			return TRUE
 	return FALSE
+
+/obj/item/mecha_parts/mecha_equipment/medical/beamgun
+	name = "Medical Beamgun"
+	ru_names = list(
+		NOMINATIVE = "Медицинская Лучпушка",
+		GENITIVE = "Медицинской Лучпушки",
+		DATIVE = "Медицинской Лучпушке",
+		ACCUSATIVE = "Медицинскую Лучпушку",
+		INSTRUMENTAL = "Медицинской Лучпушкой",
+		PREPOSITIONAL = "Медицинская Лучпушке"
+	)
+	desc = "Передает целебные наниты своим сфокусированным лучом прямо из вашего уютного меха. Не скрещивайте лучи!"
+	icon_state = "mech_beamgun"
+	origin_tech = "bluespace=6;biotech=6;powerstorage=6"
+	equip_cooldown = 1.5 SECONDS
+	energy_drain = 50
+	range = MECHA_MELEE | MECHA_RANGED
+	var/obj/item/gun/medbeam/mech/mbeam
+
+/obj/item/mecha_parts/mecha_equipment/medical/beamgun/Initialize(mapload)
+	. = ..()
+	mbeam = new(src)
+
+/obj/item/mecha_parts/mecha_equipment/medical/beamgun/Destroy(force)
+	QDEL_NULL(mbeam)
+	return ..()
+
+/obj/item/mecha_parts/mecha_equipment/medical/beamgun/process()
+	. = ..()
+
+	if(.)
+		return TRUE
+
+	if(!chassis.use_power(energy_drain))
+		set_ready_state(TRUE)
+		log_message("Deactivated.")
+		occupant_message("[src] deactivated - no power.")
+		return TRUE
+
+/obj/item/mecha_parts/mecha_equipment/medical/beamgun/action(mob/target)
+	if(!mbeam.process_fire(target, loc))
+		STOP_PROCESSING(SSobj, src)
+		return
+
+	START_PROCESSING(SSobj, src)
+
+/obj/item/mecha_parts/mecha_equipment/medical/beamgun/detach()
+    STOP_PROCESSING(SSobj, src)
+    mbeam.LoseTarget()
+    return ..()
+
+/obj/item/mecha_parts/mecha_equipment/medical/beamgun/handle_occupant_exit()
+	. = ..()
+	mbeam.LoseTarget()

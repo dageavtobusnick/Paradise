@@ -546,7 +546,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 
 
 /datum/objective/hijack/check_completion()
-	if(SSshuttle.emergency.mode < SHUTTLE_ENDGAME)
+	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return FALSE
 
 	for(var/datum/mind/player in get_owners())
@@ -568,7 +568,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
  * We're fine to use `owner` instead of `get_owners()`.
  */
 /datum/objective/hijackclone/check_completion()
-	if(SSshuttle.emergency.mode < SHUTTLE_ENDGAME || !owner.current)
+	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME || !owner.current)
 		return FALSE
 
 	var/area/shuttle_area = SSshuttle.emergency.areaInstance
@@ -609,7 +609,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 	if(SSticker.mode.station_was_nuked)
 		return TRUE
 
-	if(SSshuttle.emergency.mode < SHUTTLE_ENDGAME)
+	if(!EMERGENCY_ESCAPED_OR_ENDGAMED)
 		return FALSE
 
 	var/area/shuttle_area = SSshuttle.emergency.areaInstance
@@ -645,7 +645,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 	if(SSticker.mode.station_was_nuked) // If they escaped the blast somehow, let them win.
 		return TRUE
 
-	if(SSshuttle.emergency.mode < SHUTTLE_ENDGAME)
+	if(!EMERGENCY_ESCAPED_OR_ENDGAMED)
 		return FALSE
 
 	for(var/datum/mind/player in owners)
@@ -687,7 +687,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 	if(..() || !possible_target.current.client)
 		return TRUE
 	// If the target is geneless, then it's an invalid target.
-	return has_no_DNA(possible_target.current)
+	return HAS_TRAIT(possible_target.current, TRAIT_NO_DNA)
 
 
 /datum/objective/escape/escape_with_identity/find_target(list/target_blacklist)
@@ -705,7 +705,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 
 /datum/objective/escape/escape_with_identity/proc/special_objective_checking_target(datum/source, datum/mind/possible_target)
 	SIGNAL_HANDLER
-	if(!possible_target.current.client || has_no_DNA(possible_target.current))
+	if(!possible_target.current.client || HAS_TRAIT(possible_target.current, TRAIT_NO_DNA))
 		// Stop our linked special objective from choosing a clientless/geneless target.
 		return OBJECTIVE_INVALID_TARGET
 	return OBJECTIVE_VALID_TARGET
@@ -1002,7 +1002,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 
 		else if(SSticker.current_state == GAME_STATE_PLAYING)
 			for(var/mob/living/carbon/human/player in GLOB.player_list)
-				if(has_no_DNA(player))
+				if(HAS_TRAIT(player, TRAIT_NO_DNA))
 					continue
 
 				if(player.client && !(player.mind in SSticker.mode.changelings) && !(player.mind in get_owners()))
@@ -1140,10 +1140,6 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 	for(var/datum/mind/player in get_owners())
 		var/datum/antagonist/vampire/vampire = player.has_antag_datum(/datum/antagonist/vampire)
 		if(vampire && (vampire.bloodtotal >= target_amount))
-			return TRUE
-
-		var/datum/antagonist/goon_vampire/g_vampire = player.has_antag_datum(/datum/antagonist/goon_vampire)
-		if(g_vampire && (g_vampire.bloodtotal >= target_amount))
 			return TRUE
 
 		return FALSE
@@ -1408,7 +1404,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 	///Where we should KABOOM
 	var/area/detonation_location
 	var/list/area_blacklist = list(
-		/area/engine/engineering, /area/engine/supermatter,
+		/area/engineering/engine, /area/engineering/supermatter,
 		/area/toxins/test_area, /area/turret_protected/ai)
 	needs_target = FALSE
 
@@ -1426,7 +1422,7 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 
 /datum/objective/plant_explosive/proc/choose_target_area()
 	for(var/sanity in 1 to 100) // 100 checks at most.
-		var/area/selected_area = pick(return_sorted_areas())
+		var/area/selected_area = pick(get_sorted_areas())
 		if(selected_area && is_station_level(selected_area.z) && selected_area.valid_territory) //Целью должна быть зона на станции!
 			if(selected_area in area_blacklist)
 				continue
@@ -1755,3 +1751,15 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 /datum/objective/blob_find_place_to_burst
 	needs_target = FALSE
 	explanation_text = "Найдите укромное место на станции, в котором вас не смогут найти после вылупления до тех пор, пока вы не наберетесь сил."
+
+/datum/objective/blob_minion
+	name = "protect the blob core"
+	explanation_text = "Защищайте ядро блоба и исполняйте приказы надразумов. Любой ценой."
+	var/datum/weakref/overmind
+
+
+/datum/objective/blob_minion/check_completion()
+	var/mob/camera/blob/resolved_overmind = overmind.resolve()
+	if(!resolved_overmind)
+		return FALSE
+	return resolved_overmind.stat != DEAD

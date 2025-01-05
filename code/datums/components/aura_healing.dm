@@ -174,8 +174,8 @@
 			var/mob/living/simple_animal/animal_candidate = candidate
 			animal_candidate.adjustHealth(-simple_heal * seconds_per_tick, updating_health = FALSE)
 
-		if(candidate.blood_volume < BLOOD_VOLUME_NORMAL && !isdiona(candidate))
-			candidate.blood_volume += blood_heal * seconds_per_tick
+		if(!HAS_TRAIT(candidate, TRAIT_NO_BLOOD_RESTORE) && candidate.blood_volume < BLOOD_VOLUME_NORMAL)
+			candidate.AdjustBlood(blood_heal * seconds_per_tick)
 
 		var/external_organ_heal_done = FALSE
 		if(ishuman(candidate))

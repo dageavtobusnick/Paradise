@@ -165,6 +165,10 @@
 	for (var/datum/lighting_corner/corner as anything in effect_str)
 		REMOVE_CORNER(corner)
 		LAZYREMOVE(corner.affecting, src)
+		SSdemo.mark_turf(corner.master_NE)
+		SSdemo.mark_turf(corner.master_SE)
+		SSdemo.mark_turf(corner.master_SW)
+		SSdemo.mark_turf(corner.master_NW)
 
 	effect_str = null
 
@@ -269,8 +273,6 @@
 
 	if(source_turf)
 		var/uses_multiz = !!GET_LOWEST_STACK_OFFSET(source_turf.z)
-		var/oldlum = source_turf.luminosity
-		source_turf.luminosity = CEILING(light_range, 1)
 		if(uses_multiz)
 			for(var/turf/T in view(CEILING(light_range, 1), source_turf))
 				if(IS_OPAQUE_TURF(T))
@@ -305,8 +307,7 @@
 				if(IS_OPAQUE_TURF(T))
 					continue
 				INSERT_CORNERS(corners, T)
-
-		source_turf.luminosity = oldlum
+				SSdemo.mark_turf(T)
 
 	SETUP_CORNERS_CACHE(src)
 

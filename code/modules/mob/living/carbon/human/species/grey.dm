@@ -29,7 +29,11 @@
 
 	default_genes = list(/datum/dna/gene/basic/grant_spell/remotetalk)
 
-	species_traits = list(LIPS, CAN_WINGDINGS, HAVE_REGENERATION)
+	inherent_traits = list(
+		TRAIT_HAS_LIPS,
+		TRAIT_HAS_REGENERATION,
+	)
+	blacklisted_disabilities = NONE
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT | HAS_SOCKS
 	bodyflags =  HAS_BODY_MARKINGS
 	has_gender = FALSE
@@ -41,14 +45,21 @@
 	disliked_food = SUGAR | FRIED
 	liked_food = VEGETABLES | GRAIN | MEAT
 
+	age_sheet = list(
+		SPECIES_AGE_MIN = 3,
+		SPECIES_AGE_MAX = 150,
+		JOB_MIN_AGE_HIGH_ED = 13,
+		JOB_MIN_AGE_COMMAND = 13,
+	)
+
 
 /datum/species/grey/on_species_gain(mob/living/carbon/human/H)
-	..()
+	. = ..()
 	H.gene_stability += GENE_INSTABILITY_MODERATE
 
 
 /datum/species/grey/on_species_loss(mob/living/carbon/human/H)
-	..()
+	. = ..()
 	H.gene_stability -= GENE_INSTABILITY_MODERATE
 
 

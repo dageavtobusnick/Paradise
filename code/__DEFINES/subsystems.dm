@@ -95,7 +95,8 @@
 #define INIT_ORDER_OVERLAY -6
 #define INIT_ORDER_XKEYSCORE -10
 #define INIT_ORDER_TICKETS -11
-#define INIT_ORDER_LIGHTING -21
+#define INIT_ORDER_LIGHTING -20
+#define INIT_ORDER_CAPITALISM -21
 #define INIT_ORDER_SHUTTLE -22
 #define INIT_ORDER_CARGO_QUESTS -23
 #define INIT_ORDER_NIGHTSHIFT -24
@@ -103,6 +104,7 @@
 #define INIT_ORDER_PATH -50
 #define INIT_ORDER_PERSISTENCE -95
 #define INIT_ORDER_STATPANELS -98
+#define INIT_ORDER_DEMO	-99 // To avoid a bunch of changes related to initialization being written, do this last
 #define INIT_ORDER_CHAT -100 // Should be last to ensure chat remains smooth during init.
 
 // Subsystem fire priority, from lowest to highest priority
@@ -128,6 +130,7 @@
 #define FIRE_PRIORITY_BURNING		40
 #define FIRE_PRIORITY_DEFAULT		50
 #define FIRE_PRIORITY_PARALLAX		65
+#define FIRE_PRIORITY_FLUIDS 		80
 #define FIRE_PRIORITY_MOBS			100
 #define FIRE_PRIORITY_ASSETS 		105
 #define FIRE_PRIORITY_TGUI			110
@@ -156,3 +159,26 @@
 #define SS_CPUDISPLAY_LOW 1
 #define SS_CPUDISPLAY_DEFAULT 2
 #define SS_CPUDISPLAY_HIGH 3
+
+// Truly disgusting, TG. Truly disgusting.
+//! ## Overlays subsystem
+
+#define POST_OVERLAY_CHANGE(changed_on) \
+	if(length(changed_on.overlays) >= MAX_ATOM_OVERLAYS) { \
+		var/text_lays = overlays2text(changed_on.overlays); \
+		stack_trace("Too many overlays on [changed_on.type] - [length(changed_on.overlays)], refusing to update and cutting.\
+			\n What follows is a printout of all existing overlays at the time of the overflow \n[text_lays]"); \
+		changed_on.overlays.Cut(); \
+		changed_on.add_overlay(mutable_appearance('icons/Testing/greyscale_error.dmi')); \
+	} \
+	if(alternate_appearances) { \
+		for(var/I in changed_on.alternate_appearances){\
+			var/datum/atom_hud/alternate_appearance/AA = changed_on.alternate_appearances[I];\
+			if(AA.transfer_overlays){\
+				AA.copy_overlays(changed_on, TRUE);\
+			}\
+		} \
+	}\
+	if(isturf(changed_on)){SSdemo.mark_turf(changed_on);}\
+	if(isobj(changed_on) || ismob(changed_on)){SSdemo.mark_dirty(changed_on);}\
+

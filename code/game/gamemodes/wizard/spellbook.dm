@@ -242,13 +242,13 @@
 
 /datum/spellbook_entry/sacred_flame/LearnSpell(mob/living/carbon/human/user, obj/item/spellbook/book, obj/effect/proc_holder/spell/newspell)
 	to_chat(user, "<span class='notice'>You feel fireproof.</span>")
-	ADD_TRAIT(user, RESISTHOT, MAGIC_TRAIT)
+	ADD_TRAIT(user, TRAIT_RESIST_HEAT, MAGIC_TRAIT)
 	//ADD_TRAIT(user, TRAIT_RESISTHIGHPRESSURE, MAGIC_TRAIT)
 	return ..()
 
 /datum/spellbook_entry/sacred_flame/Refund(mob/living/carbon/human/user, obj/item/spellbook/book)
 	to_chat(user, "<span class='warning'>You no longer feel fireproof.</span>")
-	REMOVE_TRAIT(user, RESISTHOT, MAGIC_TRAIT)
+	REMOVE_TRAIT(user, TRAIT_RESIST_HEAT, MAGIC_TRAIT)
 	//REMOVE_TRAIT(user, TRAIT_RESISTHIGHPRESSURE, MAGIC_TRAIT)
 	return ..()
 
@@ -767,6 +767,17 @@
 	initialize()
 
 
+/obj/item/spellbook/magic_charge_act(mob/user)
+	. = RECHARGE_SUCCESSFUL|RECHARGE_BURNOUT
+
+	to_chat(user, span_caution("Glowing red letters appear on the front cover..."))
+	to_chat(user, span_warning(pick("NICE TRY BUT NO!", \
+				"CLEVER BUT NOT CLEVER ENOUGH!", \
+				"SUCH FLAGRANT CHEESING IS WHY WE ACCEPTED YOUR APPLICATION!", \
+				"CUTE!", \
+				"YOU DIDN'T THINK IT'D BE THAT EASY, DID YOU?")))
+
+
 /obj/item/spellbook/attackby(obj/item/I, mob/living/user, params)
 	if(user.a_intent == INTENT_HARM || skip_refunds)
 		return ..()
@@ -1015,6 +1026,23 @@
 	name = "spellbook of "
 	uses = 1
 	desc = "This template spellbook was never meant for the eyes of man..."
+
+
+/obj/item/spellbook/oneuse/magic_charge_act(mob/user)
+	. = NONE
+
+	if(!used)
+		return
+
+	used = FALSE
+	. |= RECHARGE_SUCCESSFUL
+
+	if(prob(80))
+		visible_message(span_warning("[src] catches fire!"))
+		user.temporarily_remove_item_from_inventory(src)
+		qdel(src)
+		. |= RECHARGE_BURNOUT
+
 
 /obj/item/spellbook/oneuse/New()
 	..()

@@ -162,7 +162,6 @@
 		return
 	default_unfasten_wrench(user, I)
 
-
 /obj/machinery/reagentgrinder/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
@@ -232,7 +231,36 @@
 	updateUsrDialog()
 	return ATTACK_CHAIN_BLOCKED_ALL
 
+/obj/machinery/reagentgrinder/examine(mob/user)
+	. = ..()
+	if(in_range(src, user))
+		. += "<span class='info'>Alt-click to activate it.<br/>Ctrl-Shift-click to dispose content.</span>"
 
+/obj/machinery/reagentgrinder/AltClick(mob/living/carbon/human/human)
+	if(!istype(human) || !human.Adjacent(src))
+		return
+
+	if(human.incapacitated() || HAS_TRAIT(human, TRAIT_HANDS_BLOCKED))
+		return
+
+	if(operating)
+		return
+
+	add_fingerprint(human)
+	grind()
+
+/obj/machinery/reagentgrinder/CtrlShiftClick(mob/living/carbon/human/human)
+	if(!istype(human) || !human.Adjacent(src))
+		return
+
+	if(human.incapacitated() || HAS_TRAIT(human, TRAIT_HANDS_BLOCKED))
+		return
+
+	if(operating)
+		return
+
+	add_fingerprint(human)
+	detach(human)
 
 /obj/machinery/reagentgrinder/attack_ai(mob/user)
 	return FALSE
@@ -248,7 +276,7 @@
 		var/is_beaker_ready = 0
 		var/processing_chamber = ""
 		var/beaker_contents = ""
-		var/dat = {"<meta charset="UTF-8">"}
+		var/dat = {"<!DOCTYPE html><meta charset="UTF-8">"}
 
 		if(!operating)
 				for (var/obj/item/O in holdingitems)
@@ -276,12 +304,12 @@
 		[beaker_contents]<hr>
 		"}
 				if (is_beaker_ready && !is_chamber_empty && !(stat & (NOPOWER|BROKEN)))
-						dat += "<A href='?src=[src.UID()];action=grind'>Grind the reagents</a><BR>"
-						dat += "<A href='?src=[src.UID()];action=juice'>Juice the reagents</a><BR><BR>"
+						dat += "<a href='byond://?src=[src.UID()];action=grind'>Grind the reagents</a><BR>"
+						dat += "<a href='byond://?src=[src.UID()];action=juice'>Juice the reagents</a><BR><BR>"
 				if(holdingitems && holdingitems.len > 0)
-						dat += "<A href='?src=[src.UID()];action=eject'>Eject the reagents</a><BR>"
+						dat += "<a href='byond://?src=[src.UID()];action=eject'>Eject the reagents</a><BR>"
 				if (beaker)
-						dat += "<A href='?src=[src.UID()];action=detach'>Detach the beaker</a><BR>"
+						dat += "<a href='byond://?src=[src.UID()];action=detach'>Detach the beaker</a><BR>"
 		else
 				dat += "Please wait..."
 
@@ -305,18 +333,20 @@
 		if("eject")
 			eject()
 		if ("detach")
-			detach()
+			detach(usr)
 
-/obj/machinery/reagentgrinder/proc/detach()
+/obj/machinery/reagentgrinder/proc/detach(mob/user)
+	if(user.stat)
+		return
 
-		if (usr.stat != 0)
-				return
-		if (!beaker)
-				return
-		beaker.loc = src.loc
-		beaker = null
-		update_icon(UPDATE_ICON_STATE)
-		updateUsrDialog()
+	if(!beaker)
+		return
+
+	beaker.forceMove(get_turf(src))
+	beaker = null
+
+	update_icon(UPDATE_ICON_STATE)
+	updateUsrDialog()
 
 /obj/machinery/reagentgrinder/proc/eject()
 

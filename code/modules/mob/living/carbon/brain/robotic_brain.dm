@@ -100,7 +100,7 @@
 /obj/item/mmi/robotic_brain/proc/request_player()
 	for(var/mob/dead/observer/O in GLOB.player_list)
 		if(check_observer(O))
-			to_chat(O, "<span class='boldnotice'>\A [src] has been activated. (<a href='?src=[O.UID()];jump=\ref[src]'>Teleport</a> | <a href='?src=[UID()];signup=\ref[O]'>Sign Up</a>)</span>")
+			to_chat(O, "<span class='boldnotice'>\A [src] has been activated. (<a href='byond://?src=[O.UID()];jump=\ref[src]'>Teleport</a> | <a href='byond://?src=[UID()];signup=\ref[O]'>Sign Up</a>)</span>")
 
 /obj/item/mmi/robotic_brain/proc/check_observer(mob/dead/observer/O)
 	if(cannotPossess(O))
@@ -265,7 +265,7 @@
 	brainmob.dna.species = new /datum/species/machine() // Else it will default to human. And we don't want to clone IRC humans now do we?
 	brainmob.dna.ResetSE()
 	brainmob.dna.ResetUI()
-	GLOB.dead_mob_list -= brainmob
+	brainmob.remove_from_dead_mob_list()
 	..()
 
 /obj/item/mmi/robotic_brain/attack_ghost(mob/dead/observer/O)

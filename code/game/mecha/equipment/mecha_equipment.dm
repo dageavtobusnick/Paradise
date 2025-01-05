@@ -61,7 +61,7 @@
 	if(chassis.selected == src)
 		txt += "<b>[name]</b>"
 	else if(selectable == MODULE_SELECTABLE_FULL)
-		txt += "<a href='?src=[chassis.UID()];select_equip=\ref[src]'>[name]</a>"
+		txt += "<a href='byond://?src=[chassis.UID()];select_equip=\ref[src]'>[name]</a>"
 	else
 		txt += "[name]"
 
@@ -199,9 +199,13 @@
 /obj/item/mecha_parts/mecha_equipment/proc/remove_targeted_action()
 	if(!selectable)
 		return
+
 	if(chassis.module_actions[src])
 		var/datum/action/innate/mecha/module_action = chassis.module_actions[src]
 		module_action.Remove(chassis.occupant)
+
+/obj/item/mecha_parts/mecha_equipment/proc/handle_occupant_exit()
+	return
 
 /obj/item/mecha_parts/mecha_equipment/Topic(href,href_list)
 	if(href_list["detach"])

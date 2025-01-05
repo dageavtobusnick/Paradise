@@ -7,6 +7,7 @@ GLOBAL_LIST_INIT(admin_verbs_default, list(
 ))
 GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	/client/proc/check_antagonists,		/*shows all antags*/
+	/client/proc/check_security,		/*shows all security*/
 	/datum/admins/proc/show_player_panel,
 	/client/proc/fax_panel,
 	/client/proc/player_panel_new,		/*shows an interface for all players, with links to various panels*/
@@ -64,7 +65,8 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	/client/proc/ccbdb_lookup_ckey,
 	/client/proc/toggle_pacifism_gt,
 	/client/proc/toogle_ghost_vision,
-	/datum/admins/proc/changetitlescreen,
+	/client/proc/admin_change_title_screen,
+	/client/proc/change_title_screen_notice,
 	/client/proc/debugstatpanel,
 	/client/proc/openAdminTicketUI,
 	/client/proc/openMentorTicketUI,
@@ -110,6 +112,7 @@ GLOBAL_LIST_INIT(admin_verbs_event, list(
 	/client/proc/cmd_admin_headset_message,
 	/client/proc/force_hijack,
 	/client/proc/requests,
+	/client/proc/centcom_podlauncher, /*Open a window to launch a Supplypod and configure it or it's contents*/
 ))
 GLOBAL_LIST_INIT(admin_verbs_spawn, list(
 	/datum/admins/proc/spawn_atom,		/*allows us to spawn instances*/
@@ -161,6 +164,7 @@ GLOBAL_LIST_INIT(admin_verbs_debug, list(
 	/client/proc/view_runtimes,
 	/client/proc/admin_serialize,
 	/client/proc/jump_to_ruin,
+	/client/proc/clear_dynamic_transit,
 	/client/proc/toggle_medal_disable,
 	/client/proc/uid_log,
 	/client/proc/visualise_active_turfs,
@@ -181,6 +185,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug, list(
 	/client/proc/toggle_npcpool_suspension,
 	/client/proc/debug_atom_init,
 	/client/proc/debugstatpanel,
+	/client/proc/allow_browser_inspect, // XSS prevention
+	/client/proc/change_title_screen_html
 ))
 GLOBAL_LIST_INIT(admin_verbs_possess, list(
 	/proc/possess,
@@ -201,6 +207,7 @@ GLOBAL_LIST_INIT(admin_verbs_mod, list(
 	/datum/admins/proc/PlayerNotes,
 	/client/proc/admin_ghost,			/*allows us to ghost/reenter body at will*/
 	/client/proc/cmd_mentor_say,
+	/client/proc/cmd_admin_say,			/*admin-only ooc chat*/
 	/datum/admins/proc/show_player_notes,
 	/client/proc/player_panel_new,
 	/client/proc/dsay,
@@ -308,7 +315,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 	))
 	add_verb(src, /client/proc/show_verbs)
 
-	to_chat(src, "<span class='interface'>Almost all of your adminverbs have been hidden.</span>")
+	to_chat(src, "<span class='interface'>Almost all of your adminverbs have been hidden.</span>", confidential=TRUE)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Hide Admin Verbs") //If you are copy-pasting this, ensure the 4th parameter is unique to the new proc!
 	return
 
@@ -322,7 +329,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 	remove_verb(src, /client/proc/show_verbs)
 	add_admin_verbs()
 
-	to_chat(src, "<span class='interface'>All of your adminverbs are now visible.</span>")
+	to_chat(src, "<span class='interface'>All of your adminverbs are now visible.</span>", confidential=TRUE)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Admin Verbs") //If you are copy-pasting this, ensure the 4th parameter is unique to the new proc!
 
 /client/proc/admin_ghost()
@@ -343,7 +350,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 			var/mob/living/carbon/human/H = mob
 			H.regenerate_icons() // workaround for #13269
 	else if(isnewplayer(mob))
-		to_chat(src, "<font color='red'>Error: Aghost: Can't admin-ghost whilst in the lobby. Join or observe first.</font>")
+		to_chat(src, "<font color='red'>Error: Aghost: Can't admin-ghost whilst in the lobby. Join or observe first.</font>", confidential=TRUE)
 	else
 		//ghostize
 		var/mob/body = mob
@@ -367,12 +374,12 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 	if(mob.invisibility == INVISIBILITY_OBSERVER)
 		mob.invisibility = initial(mob.invisibility)
 		mob.add_to_all_human_data_huds()
-		to_chat(mob, "<span class='danger'>Invisimin off. Invisibility reset.</span>")
+		to_chat(mob, "<span class='danger'>Invisimin off. Invisibility reset.</span>", confidential=TRUE)
 		log_admin("[key_name(mob)] has turned Invisimin OFF")
 	else
 		mob.invisibility = INVISIBILITY_OBSERVER
 		mob.remove_from_all_data_huds()
-		to_chat(mob, "<span class='notice'>Invisimin on. You are now as invisible as a ghost.</span>")
+		to_chat(mob, "<span class='notice'>Invisimin on. You are now as invisible as a ghost.</span>", confidential=TRUE)
 		log_admin("[key_name(mob)] has turned Invisimin ON")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Invisimin")
 
@@ -398,6 +405,17 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 	log_admin("[key_name(usr)] checked antagonists")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Check Antags") //If you are copy-pasting this, ensure the 4th parameter is unique to the new proc!
 	return
+
+/client/proc/check_security()
+	set name = "Check Security"
+	set category = "Admin"
+
+	if(!check_rights(R_ADMIN))
+		return
+
+	holder.check_security()
+	log_admin("[key_name(usr)] checked security")
+	SSblackbox.record_feedback("tally", "admin_verb", 1, "Check Secs") //If you are copy-pasting this, ensure the 4th parameter is unique to the new proc!
 
 /client/proc/ban_panel()
 	set name = "Ban Panel"
@@ -496,34 +514,34 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 /client/proc/drop_bomb() // Some admin dickery that can probably be done better -- TLE
 	set category = "Event"
 	set name = "Drop Bomb"
-	set desc = "Cause an explosion of varying strength at your location."
+	set desc = "Вызвать взрыв различной силы под вами."
 
 	if(!check_rights(R_EVENT))
 		return
 
 	var/turf/epicenter = mob.loc
-	var/list/choices = list("Small Bomb", "Medium Bomb", "Big Bomb", "Custom Bomb")
-	var/choice = input("What size explosion would you like to produce?") as null|anything in choices
+	var/list/choices = list("Маленькая бомба", "Средняя бомба", "Большая бомба", "Настраиваемая бомба")
+	var/choice = tgui_input_list(src, "Взрыв какого размера вы хотели бы произвести? ПРИМЕЧАНИЕ. Вы можете сделать все это в IC поле (используя крылатые ракеты!) с помощью кнопки Event/Launch Supplypod.", items = choices)
 	switch(choice)
 		if(null)
 			return 0
-		if("Small Bomb")
+		if("Маленькая бомба")
 			explosion(epicenter, 1, 2, 3, 3, cause = "Admin Drop Bomb")
-		if("Medium Bomb")
+		if("Средняя бомба")
 			explosion(epicenter, 2, 3, 4, 4, cause = "Admin Drop Bomb")
-		if("Big Bomb")
+		if("Большая бомба")
 			explosion(epicenter, 3, 5, 7, 5, cause = "Admin Drop Bomb")
-		if("Custom Bomb")
-			var/devastation_range = tgui_input_number(src, "Devastation range (in tiles):", "Custom Bomb", max_value = 255)
+		if("Настраиваемая бомба")
+			var/devastation_range = tgui_input_number(src, "Дальность тотального разрушения. (в тайлах):", "Настраиваемая бомба", max_value = 255)
 			if(isnull(devastation_range))
 				return
-			var/heavy_impact_range = tgui_input_number(src, "Heavy impact range (in tiles):", "Custom Bomb", max_value = 255)
+			var/heavy_impact_range = tgui_input_number(src, "Дальность сильного удара. (в тайлах):", "Настраиваемая бомба", max_value = 255)
 			if(isnull(heavy_impact_range))
 				return
-			var/light_impact_range = tgui_input_number(src, "Light impact range (in tiles):", "Custom Bomb", max_value = 255)
+			var/light_impact_range = tgui_input_number(src, "Дальность легкого удара. (в тайлах):", "Настраиваемая бомба", max_value = 255)
 			if(isnull(light_impact_range))
 				return
-			var/flash_range = tgui_input_number(src, "Flash range (in tiles):", "Custom Bomb", max_value = 255)
+			var/flash_range = tgui_input_number(src, "Дальность вспышки. (в тайлах):", "Настраиваемая бомба", max_value = 255)
 			if(isnull(flash_range))
 				return
 			explosion(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, 1, 1, cause = "Admin Drop Bomb")
@@ -537,7 +555,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 	if(!check_rights(R_EVENT))
 		return
 	if(!istype(M))
-		to_chat(usr, "<span class='warning'>This can only be used on instances of type /mob/living</span>")
+		to_chat(usr, "<span class='warning'>This can only be used on instances of type /mob/living</span>", confidential=TRUE)
 		return
 	var/btypes = list("To Arrivals", "Moderate Heal")
 	var/mob/living/carbon/human/H
@@ -570,7 +588,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 			logmsg = "spawn cookie."
 		if("To Arrivals")
 			M.forceMove(pick(GLOB.latejoin))
-			to_chat(M, "<span class='userdanger'>You are abruptly pulled through space!</span>")
+			to_chat(M, "<span class='userdanger'>You are abruptly pulled through space!</span>", confidential=TRUE)
 			logmsg = "a teleport to arrivals."
 		if("Moderate Heal")
 			var/update = NONE
@@ -578,7 +596,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 			update |= M.heal_damages(tox = 25, oxy = 25, updating_health = FALSE)
 			if(update)
 				M.updatehealth()
-			to_chat(M,"<span class='userdanger'>You feel invigorated!</span>")
+			to_chat(M,"<span class='userdanger'>You feel invigorated!</span>", confidential=TRUE)
 			logmsg = "a moderate heal."
 		if("Heal Over Time")
 			H.reagents.add_reagent("salglu_solution", 30)
@@ -642,7 +660,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 							P.mind.name = newname
 				logmsg = "pet ([P])."
 			else
-				to_chat(usr, "<span class='warning'>WARNING: Nobody volunteered to play the special event pet.</span>")
+				to_chat(usr, "<span class='warning'>WARNING: Nobody volunteered to play the special event pet.</span>", confidential=TRUE)
 				logmsg = "pet (no volunteers)."
 		if("Human Protector")
 			usr.client.create_eventmob_for(H, 0)
@@ -656,7 +674,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 						// don't have it - add it
 						I.access |= this_access
 			else
-				to_chat(usr, "<span class='warning'>ERROR: [H] is not wearing an ID card.</span>")
+				to_chat(usr, "<span class='warning'>ERROR: [H] is not wearing an ID card.</span>", confidential=TRUE)
 			logmsg = "all access."
 	if(logmsg)
 		log_and_message_admins("blessed [key_name_log(M)] with: [logmsg]")
@@ -668,7 +686,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 		return
 	var/mob/living/carbon/human/H
 	if(!istype(M))
-		to_chat(usr, "<span class='warning'>This can only be used on instances of type /mob/living</span>")
+		to_chat(usr, "<span class='warning'>This can only be used on instances of type /mob/living</span>", confidential=TRUE)
 		return
 	var/ptypes = list("Lightning bolt", "Fire Death", "Gib")
 	if(ishuman(M))
@@ -762,7 +780,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 			logmsg = "hunter."
 		if("Crew Traitor")
 			if(!H.mind)
-				to_chat(usr, "<span class='warning'>ERROR: This mob ([H]) has no mind!</span>")
+				to_chat(usr, "<span class='warning'>ERROR: This mob ([H]) has no mind!</span>", confidential=TRUE)
 				return
 			var/list/possible_traitors = list()
 			for(var/mob/living/player in GLOB.alive_mob_list)
@@ -787,7 +805,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 				to_chat(newtraitormind.current, "<b>Goal: <span class='danger'>KILL [H.real_name]</span>, currently in [get_area(H.loc)]</b>")
 				newtraitormind.add_antag_datum(T)
 			else
-				to_chat(usr, "<span class='warning'>ERROR: Unable to find any valid candidate to send after [H].</span>")
+				to_chat(usr, "<span class='warning'>ERROR: Unable to find any valid candidate to send after [H].</span>", confidential=TRUE)
 				return
 			logmsg = "crew traitor."
 		if("Floor Cluwne")
@@ -945,7 +963,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 	add_verb(src, /client/proc/readmin)
 	GLOB.deadmins += ckey
 	update_active_keybindings()
-	to_chat(src, "<span class='interface'>You are now a normal player.</span>")
+	to_chat(src, "<span class='interface'>You are now a normal player.</span>", confidential=TRUE)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "De-admin") //If you are copy-pasting this, ensure the 4th parameter is unique to the new proc!
 
 /client/proc/readmin()
@@ -972,7 +990,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 
 	else
 		if(!SSdbcore.IsConnected())
-			to_chat(src, "Warning, MYSQL database is not connected.")
+			to_chat(src, "Warning, MYSQL database is not connected.", confidential=TRUE)
 			return
 
 		var/datum/db_query/rank_read = SSdbcore.NewQuery(
@@ -992,13 +1010,13 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 		if(CONFIG_GET(flag/admin_legacy_system))
 			if(GLOB.admin_ranks[rank] == null)
 				error("Error while re-adminning [src], admin rank ([rank]) does not exist.")
-				to_chat(src, "Error while re-adminning, admin rank ([rank]) does not exist.")
+				to_chat(src, "Error while re-adminning, admin rank ([rank]) does not exist.", confidential=TRUE)
 				return
 
 			D = new(rank, GLOB.admin_ranks[rank], ckey)
 		else
 			if(!SSdbcore.IsConnected())
-				to_chat(src, "Warning, MYSQL database is not connected.")
+				to_chat(src, "Warning, MYSQL database is not connected.", confidential=TRUE)
 				return
 
 			var/datum/db_query/admin_read = SSdbcore.NewQuery(
@@ -1015,11 +1033,11 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 				var/admin_rank = admin_read.item[2]
 				var/flags = admin_read.item[3]
 				if(!admin_ckey)
-					to_chat(src, "Error while re-adminning, ckey [admin_ckey] was not found in the admin database.")
+					to_chat(src, "Error while re-adminning, ckey [admin_ckey] was not found in the admin database.", confidential=TRUE)
 					qdel(admin_read)
 					return
 				if(admin_rank == "Удален") //This person was de-adminned. They are only in the admin list for archive purposes.
-					to_chat(src, "Error while re-adminning, ckey [admin_ckey] is not an admin.")
+					to_chat(src, "Error while re-adminning, ckey [admin_ckey] is not an admin.", confidential=TRUE)
 					qdel(admin_read)
 					return
 
@@ -1039,7 +1057,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 		SSblackbox.record_feedback("tally", "admin_verb", 1, "Re-admin")
 		return
 	else
-		to_chat(src, "You are already an admin.")
+		to_chat(src, "You are already an admin.", confidential=TRUE)
 		remove_verb(src, /client/proc/readmin)
 		GLOB.deadmins -= ckey
 		return
@@ -1070,10 +1088,10 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 	if(config)
 		if(CONFIG_GET(flag/log_hrefs))
 			CONFIG_SET(flag/log_hrefs, FALSE)
-			to_chat(src, "<b>Stopped logging hrefs</b>")
+			to_chat(src, "<b>Stopped logging hrefs</b>", confidential=TRUE)
 		else
 			CONFIG_SET(flag/log_hrefs, TRUE)
-			to_chat(src, "<b>Started logging hrefs</b>")
+			to_chat(src, "<b>Started logging hrefs</b>", confidential=TRUE)
 
 /client/proc/toggle_twitch_censor()
 	set name = "Toggle Twitch censor"
@@ -1084,7 +1102,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 
 	if(config)
 		CONFIG_SET(flag/twitch_censor, !CONFIG_GET(flag/twitch_censor))
-		to_chat(src, "<b>Twitch censor is [CONFIG_GET(flag/twitch_censor) ? "enabled" : "disabled"]</b>")
+		to_chat(src, "<b>Twitch censor is [CONFIG_GET(flag/twitch_censor) ? "enabled" : "disabled"]</b>", confidential=TRUE)
 
 /client/proc/check_ai_laws()
 	set name = "Check AI Laws"
@@ -1150,7 +1168,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 			return
 
 	if(!H.client)
-		to_chat(usr, "Only mobs with clients can alter their own appearance.")
+		to_chat(usr, "Only mobs with clients can alter their own appearance.", confidential=TRUE)
 		return
 
 	switch(alert("Do you wish for [H] to be allowed to select non-whitelisted races?","Alter Mob Appearance","Yes","No","Cancel"))
@@ -1174,7 +1192,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 		if(J.current_positions >= J.total_positions && J.total_positions != -1)
 			jobs += J.title
 	if(!jobs.len)
-		to_chat(usr, "There are no fully staffed jobs.")
+		to_chat(usr, "There are no fully staffed jobs.", confidential=TRUE)
 		return
 	var/job = input("Please select job slot to free", "Free Job Slot") as null|anything in jobs
 	if(job)
@@ -1247,8 +1265,8 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 				return
 			message = strip_html(message, 500)
 
-			var/message_color = input(src, "Input your message color:", "Color Selector") as color|null
-			if(!message_color)
+			var/message_color = tgui_input_color(src, "Input your message color:", "Color Selector")
+			if(isnull(message_color))
 				return
 
 			var/alert_type2 = alert(src, "Do you wish to change speed of an admin alert to? (No - default speed)",,"Yes", "No")

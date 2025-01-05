@@ -101,7 +101,7 @@
 
 		if(filtering > 0 && beaker)
 			// To prevent runtimes from drawing blood from runtime, and to prevent getting IPC blood.
-			if(!istype(occupant) || !occupant.dna || (NO_BLOOD in occupant.dna.species.species_traits))
+			if(!istype(occupant) || HAS_TRAIT(occupant, TRAIT_NO_BLOOD))
 				filtering = 0
 				return
 
@@ -192,9 +192,10 @@
 				occupantData["temperatureSuitability"] = 1
 		else if(isanimal(occupant))
 			var/mob/living/simple_animal/silly = occupant
-			if(silly.bodytemperature < silly.minbodytemp)
+			var/datum/component/animal_temperature/temp = silly.GetComponent(/datum/component/animal_temperature)
+			if(silly.bodytemperature < temp?.minbodytemp)
 				occupantData["temperatureSuitability"] = -3
-			else if(silly.bodytemperature > silly.maxbodytemp)
+			else if(silly.bodytemperature > temp?.maxbodytemp)
 				occupantData["temperatureSuitability"] = 3
 		// Blast you, imperial measurement system
 		occupantData["btCelsius"] = occupant.bodytemperature - T0C
@@ -204,7 +205,7 @@
 		crisis = (occupant.health < min_health)
 		// I'm not sure WHY you'd want to put a simple_animal in a sleeper, but precedent is precedent
 		// Runtime is aptly named, isn't she?
-		if(ishuman(occupant) && !(NO_BLOOD in occupant.dna.species.species_traits))
+		if(ishuman(occupant) && !HAS_TRAIT(occupant, TRAIT_NO_BLOOD))
 			occupantData["pulse"] = occupant.get_pulse(GETPULSE_TOOL)
 			occupantData["hasBlood"] = 1
 			occupantData["bloodLevel"] = round(occupant.blood_volume)

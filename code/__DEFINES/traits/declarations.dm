@@ -26,6 +26,11 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_CHASM_STOPPER "chasm_stopper"
 /// `do_teleport` will not allow this atom to teleport
 #define TRAIT_NO_TELEPORT "no-teleport"
+
+/// This atom is a secluded location, which is counted as out of bounds.
+/// Anything that enters this atom's contents should react if it wants to stay in bounds.
+#define TRAIT_SECLUDED_LOCATION "secluded_loc"
+
 #define TRAIT_SILENT_FOOTSTEPS "silent_footsteps"
 
 //turf traits
@@ -41,6 +46,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_LAVA_STOPPED "lava_stopped"
 
 //mob traits
+#define TRAIT_GODMODE "godmode"
 #define TRAIT_PACIFISM "pacifism"
 #define TRAIT_WATERBREATH "waterbreathing"
 #define TRAIT_BLOODCRAWL "bloodcrawl"
@@ -54,22 +60,42 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_FAKEDEATH "fakedeath"	//Makes the owner appear as dead to most forms of medical examination
 #define TRAIT_XENO_HOST "xeno_host"	//Tracks whether we're gonna be a baby alien's mummy.
 #define TRAIT_LEGION_TUMOUR "legion_tumour" //used in huds for special icon
+#define TRAIT_NO_SPELLS "no_spells"	// Used to prevent cast or use any spells
 /// Are we immune to shocks?
 #define TRAIT_SHOCKIMMUNE "shock_immunity"
 /// Are we immune to specifically tesla / SM shocks?
 #define TRAIT_TESLA_SHOCKIMMUNE "tesla_shock_immunity"
+/// Are we immune to wet effect
+#define TRAIT_WET_IMMUNITY "wet_immunity"
+
+/// We place people into a fireman carry quicker than standard
+#define TRAIT_QUICK_CARRY "quick-carry"
+/// We place people into a fireman carry especially quickly compared to quick_carry
+#define TRAIT_QUICKER_CARRY "quicker-carry"
+/// Prevents mob from riding mobs when buckled onto something
+#define TRAIT_CANT_RIDE "cant_ride"
 #define TRAIT_CHUNKYFINGERS "chunkyfingers"	//means that you can't use weapons with normal trigger guards.
+
+/// Means that you can't use weapons with normal trigger guards.
+#define TRAIT_NO_GUNS "no_guns"
 #define TRAIT_FORCE_DOORS "force_doors"
 #define TRAIT_EMOTE_MUTE "emote_mute"
 #define TRAIT_IGNORESLOWDOWN "ignoreslow"
 #define TRAIT_IGNOREDAMAGESLOWDOWN "ignoredamageslowdown"
 #define TRAIT_STRONG_GRABBER "strong_grabber"
 #define TRAIT_PUSHIMMUNE "push_immunity"
+#define TRAIT_AI_PAUSED "TRAIT_AI_PAUSED"
+#define TRAIT_FLATTENED	"flattened"
+
 /// Not a genetic obesity but just a mob who overate
 #define	TRAIT_FAT "trait_fat"
 #define TRAIT_HUSK "husk"
 #define TRAIT_SKELETON "skeleton"
 #define TRAIT_NO_CLONE "no_clone"
+/// Isn't attacked harmfully by blob structures
+#define TRAIT_BLOB_ALLY "blob_ally"
+/// Objects with this trait are deleted if they fall into chasms, rather than entering abstract storage
+#define TRAIT_CHASM_DESTROYED "chasm_destroyed"
 
 /// "Magic" trait that blocks the mob from moving or interacting with anything. Used for transient stuff like mob transformations or incorporality in special cases.
 /// Will block movement, `Life()` (!!!), and other stuff based on the mob.
@@ -163,6 +189,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// This trait makes it so that an item literally cannot be removed at all, or at least that's how it should be. Only deleted.
 #define TRAIT_NODROP "nodrop"
 
+#define TRAIT_SHRAPNEL "shrapnel"
+
 
 ///Movement type traits for movables. See elements/movetype_handler.dm
 #define TRAIT_MOVE_GROUND "move_ground"
@@ -174,7 +202,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Disables the floating animation. See above.
 #define TRAIT_NO_FLOATING_ANIM "no-floating-animation"
 
-// all the old mutation traits
+// old mutation traits
 #define	TRAIT_TELEKINESIS "telekinesis"
 #define TRAIT_RESIST_COLD "cold_resistance"
 #define TRAIT_RESIST_HEAT "heat_resistance"
@@ -197,3 +225,61 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_BLIND "blind"
 #define TRAIT_COLORBLIND "colorblind"
 
+// old species traits
+/// This human mob doesn't bleed
+#define TRAIT_NO_BLOOD "no_blood"
+/// This human mob will only regenerate blood through the transfusion
+#define TRAIT_NO_BLOOD_RESTORE "no_blood_restore"
+/// This human mob has non-blood reagent in their veins
+#define TRAIT_EXOTIC_BLOOD "exotic_blood"
+/// This human mob has lips
+#define TRAIT_HAS_LIPS "has_lips"
+/// This human mob can passively regenerate small amount of brute and burn damage (0.1, 0.1)
+#define TRAIT_HAS_REGENERATION "has_regeneration"
+/// This human mob acts like it has no DNA, but it actually has
+/// Its dumb I know, we should switch to biotypes already
+#define TRAIT_NO_DNA "no_dna"
+/// This human cannot be scanned via cloning machine, also stops replica pod cloning
+/// Actually it applies the same trait to the human's brain
+#define TRAIT_NO_SCAN "no_scan"
+/// This human mob will not visually and vocally react to the damage consequences
+/// Also allows surgeries without anesthetics
+#define TRAIT_NO_PAIN "no_pain"
+/// This human mob will not feedback user about the damage done via HUD alerts
+#define TRAIT_NO_PAIN_HUD "no_pain_hud"
+/// Another biotype thing
+#define TRAIT_PLANT_ORIGIN "plant_origin"
+/// Another damn biotype
+#define TRAIT_NO_INTORGANS "no_internal_organs"
+/// This mob is completely immune to the radiation damage and effects
+#define TRAIT_RADIMMUNE "rad_immunity"
+/// This mob is completely immune to viruses and diseases, unless they ignore us
+#define TRAIT_VIRUSIMMUNE "virus_immunity"
+/// This human mob will not show its species on examine
+#define TRAIT_NO_SPECIES_EXAMINE "no_examine"
+/// This human mob will never become fat, does not affect genetic obesity
+#define TRAIT_NO_FAT "no_fat"
+/// This human mob's internal organs will not accumulate germs
+#define TRAIT_NO_GERMS "no_germs"
+/// This human mob's internal organs will not decay after death
+#define TRAIT_NO_DECAY "no_decay"
+/// This human mob will not be affected by piercing, such as caltrops, prickles, needles etc.
+#define TRAIT_PIERCEIMMUNE "pierce_immunity"
+/// This human mob will not be affected by embedding of the thrown items
+#define TRAIT_EMBEDIMMUNE "embed_immunity"
+/// This human mob will never suffer from the malnutrition
+#define TRAIT_NO_HUNGER "no_hunger"
+/// This human mob can repats surgeris attempts indefinitely
+#define TRAIT_MASTER_SURGEON "master_surgeon"
+/// Prohibits the installation of robotic limbs, cybernetic organs, augments
+#define TRAIT_NO_ROBOPARTS "no_roboparts"
+/// Prohibits the injection of all the biochips, except mindslave and mindshield
+#define TRAIT_NO_BIOCHIPS "no_biochips"
+/// Prohibits the installation of cybernetic implants
+#define TRAIT_NO_CYBERIMPLANTS "no_cyberimplants"
+/// Prohibits the installation of the limbs, which do not belong to our species
+#define TRAIT_SPECIES_LIMBS "only_species_limbs"
+/// Phohibits using the "Book Of Babel"
+#define TRAIT_NO_BABEL "cannot_use_babel"
+
+#define TRAIT_BLOB_ZOMBIFIED "blob_zombified"
