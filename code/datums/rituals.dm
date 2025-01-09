@@ -81,14 +81,14 @@
 		return FALSE
 
 	var/list/shaman_invokers = list()
-	
+
 	if(extra_shaman_invokers)
 		for(var/mob/living/carbon/human/human as anything in invokers)
 			if(!isashwalkershaman(human))
 				continue
 
 			LAZYADD(shaman_invokers, human)
-				
+
 		if(LAZYLEN(shaman_invokers) < (extra_shaman_invokers + 1))
 			ritual_object.balloon_alert(invoker, "требуется больше шаманов!")
 			return FALSE
@@ -203,7 +203,7 @@
 /datum/ritual/ashwalker/transformation/disaster(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	invoker.adjustBrainLoss(15)
 	invoker.SetKnockdown(5 SECONDS)
-	
+
 	var/mob/living/carbon/human/human = locate() in used_things
 
 	if(QDELETED(human))
@@ -262,7 +262,7 @@
 
 /datum/ritual/ashwalker/summon/proc/deal_damage()
 	for(var/mob/living/carbon/human/summoner in range(finding_range, ritual_object))
-		summoner.blood_volume -= (summoner.blood_volume * 0.20)
+		summoner.AdjustBlood(-(summoner.blood_volume * 0.20))
 		summoner.apply_damage(25, def_zone = pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
 
 	return TRUE
@@ -333,7 +333,7 @@
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
 		if(!isashwalker(human))
 			LAZYADD(humans, human)
-			
+
 	if(!LAZYLEN(humans))
 		return RITUAL_FAILED_ON_PROCEED
 
@@ -817,7 +817,7 @@
 	var/mob/living/carbon/human/human = locate() in used_things
 	if(!human || QDELETED(human))
 		return RITUAL_FAILED_ON_PROCEED
-		
+
 	if(human.stat == DEAD || !human.mind)
 		to_chat(invoker, "Гуманоид должен быть жив и иметь разум.")
 		return FALSE
@@ -966,7 +966,7 @@
 
 /datum/ritual/ashwalker/command/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	var/mob/living/simple_animal/animal = locate() in used_things
-	
+
 	if(QDELETED(animal))
 		return RITUAL_FAILED_ON_PROCEED
 
@@ -1003,7 +1003,7 @@
 		var/datum/effect_system/smoke_spread/smoke = new
 		smoke.set_up(5, FALSE, get_turf(human.loc))
 		smoke.start()
-		
+
 	var/mob/living/simple_animal/mob = locate() in used_things
 	qdel(mob)
 
