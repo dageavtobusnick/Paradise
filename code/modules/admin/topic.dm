@@ -90,6 +90,10 @@
 				log_admin("[key_name(usr)] has spawned a blob.")
 				if(!makeBlobs())
 					to_chat(usr, "<span class='warning'>Unfortunately there weren't enough candidates available.</span>", confidential=TRUE)
+			if("13")
+				log_admin("[key_name(usr)] has spawned a terror spiders.")
+				if(!makeTerrorSpiders())
+					to_chat(usr, "<span class='warning'>Unfortunately there weren't enough candidates available.</span>", confidential=TRUE)
 
 	else if(href_list["dbsearchckey"] || href_list["dbsearchadmin"] || href_list["dbsearchip"] || href_list["dbsearchcid"] || href_list["dbsearchbantype"])
 		var/adminckey = href_list["dbsearchadmin"]

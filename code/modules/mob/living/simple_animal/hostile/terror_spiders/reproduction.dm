@@ -27,15 +27,14 @@
 	GLOB.ts_spiderling_list += src
 	if(is_away_level(z))
 		spider_awaymission = TRUE
+	else
+		SSticker?.mode?.terror_eggs |= src
 
 /obj/structure/spider/spiderling/terror_spiderling/Destroy()
 	GLOB.ts_spiderling_list -= src
-	return ..()
-
-
-/obj/structure/spider/spiderling/terror_spiderling/Destroy()
 	for(var/obj/structure/spider/spiderling/terror_spiderling/S in view(7, src))
 		S.immediate_ventcrawl = TRUE
+	SSticker?.mode?.terror_eggs -= src
 	return ..()
 
 /obj/structure/spider/spiderling/terror_spiderling/proc/score_surroundings(atom/A = src)
@@ -177,6 +176,8 @@
 	C.spider_myqueen = spider_myqueen
 	C.spider_mymother = src
 	C.enemies = enemies
+	if(mind)
+		SSticker?.mode?.terror_eggs |= C
 	if(spider_growinstantly)
 		C.amount_grown = 250
 		C.spider_growinstantly = TRUE
@@ -188,6 +189,7 @@
 	desc = "A cluster of tiny spider eggs. They pulse with a strong inner life, and appear to have sharp thorns on the sides."
 	icon_state = "egg"
 	max_integrity = 40
+	grown_tick_count = 140
 	var/spider_growinstantly = FALSE
 	var/mob/living/simple_animal/hostile/poison/terror_spider/queen/spider_myqueen = null
 	var/mob/living/simple_animal/hostile/poison/terror_spider/spider_mymother = null
@@ -199,7 +201,6 @@
 	. = ..()
 	GLOB.ts_egg_list += src
 	spiderling_type = lay_type
-
 	switch(spiderling_type)
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/knight)
 			name = "knight of terror eggs"
@@ -228,11 +229,12 @@
 
 /obj/structure/spider/eggcluster/terror_eggcluster/Destroy()
 	GLOB.ts_egg_list -= src
+	SSticker?.mode?.terror_eggs -= src
 	return ..()
 
 /obj/structure/spider/eggcluster/terror_eggcluster/process()
 	amount_grown += 1
-	if(amount_grown >= 140)  //x2 time for egg process, spiderlings grows instantly
+	if(amount_grown >= grown_tick_count)  //x2 time for egg process, spiderlings grows instantly
 		var/num = spiderling_number
 		playsound(src, 'sound/creatures/terrorspiders/eggburst.ogg', 100)
 		for(var/i=0, i<num, i++)
@@ -245,6 +247,31 @@
 			if(spider_growinstantly)
 				S.amount_grown = 250
 		qdel(src)
+
+/obj/structure/spider/eggcluster/terror_eggcluster/empress
+	name = "empress egg cluster"
+	desc = "A cluster of tiny spider eggs. They pulse with a strong inner life, and appear to have sharp thorns on the sides."
+	spiderling_type = /mob/living/simple_animal/hostile/poison/terror_spider/queen/empress
+	max_integrity = 1000
+	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 100, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50)
+	explosion_block = 100
+	grown_tick_count = 150
+	explosion_vertical_block = 100
+	var/save_burst = FALSE
+
+
+/obj/structure/spider/eggcluster/terror_eggcluster/empress/Initialize(mapload, lay_type)
+	. = ..(mapload, spiderling_type)
+
+/obj/structure/spider/eggcluster/terror_eggcluster/empress/Destroy()
+	. = ..()
+	if(!save_burst)
+		SSticker?.mode?.on_empress_egg_destroyed()
+
+/obj/structure/spider/eggcluster/terror_eggcluster/empress/process()
+	if(amount_grown >= grown_tick_count)
+		save_burst = TRUE
+	. = ..()
 
 /obj/structure/spider/royaljelly
 	name = "royal jelly"

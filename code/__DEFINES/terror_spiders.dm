@@ -1,9 +1,3 @@
-
-#define SPINNING_WEB 1
-#define LAYING_EGGS 2
-#define MOVING_TO_TARGET 3
-#define SPINNING_COCOON 4
-
 #define TS_DAMAGE_SIMPLE 0
 #define TS_DAMAGE_POISON 1
 #define TS_DAMAGE_BRUTE 2
@@ -31,3 +25,10 @@
 #define TS_TIER_3 3
 #define TS_TIER_4 4
 #define TS_TIER_5 5
+
+#define TERROR_QUEEN "Королева Ужаса"
+#define TERROR_PRINCE "Принц Ужаса"
+#define TERROR_PRINCESS "Принцесса Ужаса"
+#define TERROR_DEFILER "Осквернитель Ужаса"
+#define TERROR_OTHER "Пауки Ужаса"
+#define SPAWN_TERROR_TYPES list(TERROR_QUEEN, TERROR_PRINCE, TERROR_PRINCESS, TERROR_DEFILER)

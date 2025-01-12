@@ -277,10 +277,12 @@
 						if(iscarbon(L))
 							apply_status_effect(STATUS_EFFECT_TERROR_FOOD_REGEN)
 							fed++
-							visible_message("<span class='danger'>[src] sticks a proboscis into [L] and sucks a viscous substance out.</span>")
-							to_chat(src, "<span class='notice'>You begin to regenerate quickly!</span>")
+							visible_message(span_danger("[src] sticks a proboscis into [L] and sucks a viscous substance out."))
+							to_chat(src, span_notice("You begin to regenerate quickly!"))
+							if(L.mind && ishuman(L))
+								SEND_SIGNAL(mind, COMSIG_HUMAN_EATEN)
 						else
-							visible_message("<span class='danger'>[src] wraps [L] in a web.</span>")
+							visible_message(span_danger("[src] wraps [L] in a web."))
 						large_cocoon = 1
 						last_cocoon_object = 0
 						L.forceMove(C)

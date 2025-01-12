@@ -28,8 +28,8 @@
 		error_on_humanize = "Dead spiders are not player-controllable."
 	else if(!(user in GLOB.respawnable_list))
 		error_on_humanize = "You are not able to rejoin the round."
-	if(jobban_isbanned(user, "Syndicate") || jobban_isbanned(user, "alien"))
-		to_chat(user,"You are jobbanned from role of syndicate and/or alien lifeform.")
+	if(jobban_isbanned(user, ROLE_SYNDICATE) || jobban_isbanned(user,	ROLE_TERROR_SPIDER))
+		to_chat(user,"You are jobbanned from role of syndicate and/or terror spider lifeform.")
 		return
 	if(error_on_humanize == "")
 		var/spider_ask = tgui_alert(user, humanize_prompt, "Join as Terror Spider?", list("Yes", "No"))
@@ -42,6 +42,11 @@
 		to_chat(user, "<span class='notice'>Someone else already took this spider.</span>")
 		return
 	key = user.key
-	give_intro_text()
+	add_datum_if_not_exist()
 	for(var/mob/dead/observer/G in GLOB.player_list)
 		G.show_message("<i>A ghost has taken control of <b>[src]</b>. ([ghost_follow_link(src, ghost=G)]).</i>")
+
+
+/mob/living/simple_animal/hostile/poison/terror_spider/proc/add_datum_if_not_exist()
+	if(mind && !mind.has_antag_datum(/datum/antagonist/terror_spider))
+		mind.add_antag_datum(datum_type)

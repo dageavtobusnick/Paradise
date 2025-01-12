@@ -55,6 +55,9 @@
 	var/awaymission_checked = FALSE
 	var/awaymission_infection = FALSE // TRUE if infection occurred inside gateway
 
+/obj/item/organ/internal/body_egg/terror_eggs/Initialize(mapload)
+	. = ..()
+	SSticker.mode.on_terror_infection_created(src)
 
 /obj/item/organ/internal/body_egg/terror_eggs/on_life()
 	// Safety first.
@@ -119,6 +122,7 @@
 
 /obj/item/organ/internal/body_egg/terror_eggs/remove(mob/living/carbon/M, special = ORGAN_MANIPULATION_DEFAULT)
 	..()
+	SSticker.mode.on_terror_infection_removed(src)
 	if(!QDELETED(src))
 		qdel(src) // prevent people re-implanting them into others
 	return null

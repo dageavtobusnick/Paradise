@@ -91,13 +91,14 @@
 				var/datum/mind/mind = M.mind
 				var/list/other_antags = list()
 
-				if(GLOB.ts_spiderlist.len && M.ckey)
+				var/list/spider_list = SSticker?.mode?.terror_spiders
+				if(spider_list?.len && M.ckey)
 					var/list/spider_minds = list()
-					for(var/mob/living/simple_animal/hostile/poison/terror_spider/S in GLOB.ts_spiderlist)
+					for(var/mob/living/simple_animal/hostile/poison/terror_spider/S in spider_list)
 						if(S.key)
 							spider_minds += S.mind
 					other_antags += list(
-						"Terror Spiders ([spider_minds.len])" = (mind.current in GLOB.ts_spiderlist),
+						"Terror Spiders ([spider_minds.len])" = (mind.current in spider_list),
 					)
 
 				if(user.antagHUD)

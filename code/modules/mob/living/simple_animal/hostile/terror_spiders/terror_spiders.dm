@@ -138,6 +138,9 @@ GLOBAL_LIST_EMPTY(ts_spiderling_list)
 	var/datum/action/innate/terrorspider/web/web_action
 	var/datum/action/innate/terrorspider/wrap/wrap_action
 
+	// DATUM
+	var/datum_type = /datum/antagonist/terror_spider
+
 	// DEBUG OPTIONS & COMMANDS
 	var/spider_growinstantly = FALSE
 	var/spider_debug = FALSE
@@ -241,7 +244,7 @@ GLOBAL_LIST_EMPTY(ts_spiderling_list)
 			. += "<span class='warning'>[p_they(TRUE)] has many injuries.</span>"
 		else if(health > (maxHealth*0.25))
 			. += "<span class='warning'>[p_they(TRUE)] is barely clinging on to life!</span>"
-		if(degenerate)
+		if(degenerate || !spider_awaymission && SSticker?.mode?.global_degenerate)
 			. += "<span class='warning'>[p_they(TRUE)] appears to be dying.</span>"
 		if(killcount >= 1)
 			. += "<span class='warning'>[p_they(TRUE)] has blood dribbling from [p_their()] mouth.</span>"
@@ -312,7 +315,7 @@ GLOBAL_LIST_EMPTY(ts_spiderling_list)
 	else
 		if(health < maxHealth)
 			adjustBruteLoss(-regeneration)
-		if(degenerate)
+		if(degenerate || !spider_awaymission && SSticker?.mode?.global_degenerate)
 			adjustBruteLoss(6)
 		if(prob(5))
 			CheckFaction()
@@ -327,17 +330,13 @@ GLOBAL_LIST_EMPTY(ts_spiderling_list)
 		else
 			GLOB.ts_count_alive_station--
 
-/mob/living/simple_animal/hostile/poison/terror_spider/proc/give_intro_text()
-	to_chat(src, "<center><span class='userdanger'>Вы паук ужаса!</span></center>")
-	to_chat(src, "<center>Работайте сообща, помогайте своим братьям и сёстрам, саботируйте станцию, убивайте экипаж, превратите это место в своё гнездо!</center>")
-	to_chat(src, "<center><span class='big'>[spider_intro_text]</span></center><br>")
-	SEND_SOUND(src, sound('sound/ambience/antag/terrorspider.ogg'))
-
 /mob/living/simple_animal/hostile/poison/terror_spider/death(gibbed)
 	if(can_die())
 		if(!gibbed)
 			msg_terrorspiders("[src] has died in [get_area(src)].")
 		handle_dying()
+		if(mind)
+			SEND_SIGNAL(mind, COMSIG_TERROR_SPIDER_DIED)
 	return ..()
 
 /mob/living/simple_animal/hostile/poison/terror_spider/proc/spider_special_action()
@@ -406,7 +405,7 @@ GLOBAL_LIST_EMPTY(ts_spiderling_list)
 	var/list/status_tab_data = ..()
 	. = status_tab_data
 	if(ckey && stat == CONSCIOUS)
-		if(degenerate)
+		if(degenerate || !spider_awaymission && SSticker?.mode?.global_degenerate)
 			status_tab_data[++status_tab_data.len] = list("Link:", "<font color='#eb4034'>Hivemind Connection Severed! Dying...</font>") // color=red
 
 /mob/living/simple_animal/hostile/poison/terror_spider/proc/DoRemoteView()

@@ -27,6 +27,7 @@
 	spider_tier = TS_TIER_3
 	move_resist = MOVE_FORCE_STRONG // no more pushing a several hundred if not thousand pound spider
 	spider_intro_text = "Будучи Принцессой Ужаса, ваша задача - откладывать яйца и охранять их. Хоть вы и умеете плеваться кислотой, а также обладаете визгом, помогающим в бою, вам не стоит сражаться намеренно, ведь для этого есть другие пауки."
+	datum_type = /datum/antagonist/terror_spider/main_spider/princess
 	ranged = 1
 	projectiletype = /obj/item/projectile/terrorspider/princess
 	ranged_cooldown_time = 30
