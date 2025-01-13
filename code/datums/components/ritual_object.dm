@@ -210,15 +210,12 @@
 	if(!ritual.extra_invokers)
 		return ritual.check_invokers(invoker, list(invoker)) // remember about checks on invoker in rituals
 
-	for(var/mob/living/carbon/human/human in range(ritual.finding_range, parent))
-		if(ritual.require_allowed_species && !is_type_in_list(human.dna.species, ritual.allowed_species))
+	for(var/atom/atom in range(ritual.finding_range, parent))
+		if(!ritual.is_valid_invoker(atom))
 			continue
 
-		if(ritual.require_allowed_special_role && !LAZYIN(ritual.allowed_special_role, human.mind?.special_role))
-			continue
+		LAZYADD(invokers, atom)
 
-		LAZYADD(invokers, human)
-				
 	if(LAZYLEN(invokers) < (ritual.extra_invokers + 1))
 		var/atom/atom = parent
 		atom.balloon_alert(invoker, "требуется больше участников!")

@@ -11,10 +11,6 @@
 	var/list/allowed_special_role
 	/// Required to ritual invoke things are located here
 	var/list/required_things
-	/// If true - only whitelisted species will be added as invokers
-	var/require_allowed_species = TRUE
-	/// Same as require_allowed_species, but requires special role to be counted as invoker.
-	var/require_allowed_special_role = FALSE
 	/// We search for humans in that radius
 	var/finding_range = DEFAULT_RITUAL_RANGE_FIND
 	/// Amount of maximum ritual uses.
@@ -38,6 +34,18 @@
 	ritual_object = null
 	LAZYNULL(required_things)
 	return ..()
+
+/datum/ritual/proc/is_valid_invoker(mob/living/carbon/human/human)
+	if(!istype(human))
+		return FALSE
+
+	if(LAZYLEN(allowed_species) && !is_type_in_list(human.dna.species, allowed_species))
+		return FALSE
+
+	if(LAZYLEN(allowed_special_role) && !LAZYIN(ritual.allowed_special_role, human.mind?.special_role))
+		return FALSE
+
+	return TRUE
 
 /datum/ritual/proc/handle_ritual_object(stage, silent = FALSE)
 	switch(stage)
@@ -70,6 +78,9 @@
 	var/shaman_only = FALSE
 	allowed_species = list(/datum/species/unathi/ashwalker, /datum/species/unathi/draconid)
 
+/datum/ritual/ashwalker/is_valid_invoker(atom/atom)
+	return istype(atom, /obj/structure/grace_of_lazis) || ..()
+
 /datum/ritual/ashwalker/check_invokers(mob/living/carbon/human/invoker, list/invokers)
 	. = ..()
 
@@ -83,7 +94,7 @@
 	var/list/shaman_invokers = list()
 
 	if(extra_shaman_invokers)
-		for(var/mob/living/carbon/human/human as anything in invokers)
+		for(var/mob/living/carbon/human/human in invokers)
 			if(!isashwalkershaman(human))
 				continue
 
@@ -135,7 +146,7 @@
 	if(!.)
 		return FALSE
 
-	for(var/mob/living/carbon/human/human as anything in invokers)
+	for(var/mob/living/carbon/human/human in invokers)
 		if(!human.fire_stacks)
 			to_chat(invoker, "Участники ритуала должны быть в воспламеняемой субстанции.")
 			return FALSE
@@ -398,7 +409,7 @@
 /datum/ritual/ashwalker/power/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	LAZYADD(invokers, invoker)
 
-	for(var/mob/living/carbon/human/human as anything in invokers)
+	for(var/mob/living/carbon/human/human in invokers)
 		if(LAZYIN(human.dna?.default_blocks, GLOB.weakblock))
 			human.force_gene_block(GLOB.weakblock)
 
@@ -419,7 +430,7 @@
 		return
 
 	invoker.force_gene_block(pick(GLOB.bad_blocks), TRUE)
-	for(var/mob/living/carbon/human/human as anything in invokers)
+	for(var/mob/living/carbon/human/human in invokers)
 		human.force_gene_block(pick(GLOB.bad_blocks), TRUE)
 
 	var/mob/living/carbon/human/human = pick(targets)
@@ -875,7 +886,7 @@
 	if(!.)
 		return FALSE
 
-	for(var/mob/living/carbon/human/human as anything in invokers)
+	for(var/mob/living/carbon/human/human in invokers)
 		if(human.stat != UNCONSCIOUS)
 			disaster_prob += 20
 			fail_chance += 20
