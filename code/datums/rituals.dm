@@ -42,7 +42,7 @@
 	if(LAZYLEN(allowed_species) && !is_type_in_list(human.dna.species, allowed_species))
 		return FALSE
 
-	if(LAZYLEN(allowed_special_role) && !LAZYIN(ritual.allowed_special_role, human.mind?.special_role))
+	if(LAZYLEN(allowed_special_role) && !LAZYIN(allowed_special_role, human.mind?.special_role))
 		return FALSE
 
 	return TRUE
