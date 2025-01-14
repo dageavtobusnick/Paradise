@@ -98,3 +98,50 @@
 /obj/item/paper/food_scroll/update_icon_state()
 	return
 
+/obj/structure/fluff/ash_statue //used to mark point of interest
+	name = "ash totem"
+	desc = "Массивный каменный столб с прикрепленным к нему черепом убитого зверя. Кажется вы зашли в охотничьи угодья пеплоходцев."
+	icon = 'icons/obj/lavaland/grace_of_lazis.dmi'
+	icon_state = "totem_stone"
+	anchored = TRUE
+	density = TRUE
+	deconstructible = FALSE
+
+/obj/structure/ash_totem
+	name = "totem"
+	icon = 'icons/obj/lavaland/grace_of_lazis.dmi'
+	icon_state = "totem_wooden"
+	desc = "совершенно обычный тотем! Выглядит прикольно. Вы не должны видеть это."
+	max_integrity = 1000
+	anchored = TRUE
+	density = TRUE
+	var/applied_dye = null
+	var/applied_dye_fluff_name = null
+
+/obj/structure/ash_totem/examine(mob/user)
+	. = ..()
+	. += span_notice("Эта статуя может использоваться вместо полноценного пеплоходца, если будет построена у ритуальной руны.")
+
+	if(applied_dye && applied_dye_fluff_name) //jeez this is so hard to make it in russian holy fuck
+		. += span_notice("На эту статую нанесена [applied_dye_fluff_name] краска.")
+
+/obj/structure/ash_totem/update_overlays()
+	. = ..()
+	if(applied_dye)
+		. += "[icon_state]_[applied_dye]"
+
+
+/obj/structure/ash_totem/wooden
+	name = "wooden totem"
+	icon_state = "totem_wooden"
+	desc = "Массивная статуя, сделанная из цельного куска древесины. Рисунок на статуе отдаленно напоминает человеческое лицо, искаженное в гримасе ужаса."
+
+/obj/structure/ash_totem/stone
+	name = "stone totem"
+	icon_state = "totem_stone"
+	desc = "Массивная каменная статуя с прикрепленным к ней черепом убитого животного. Сухожилия, держащие череп на месте, медленно покачиваются на ветру."
+
+/obj/structure/ash_totem/bone
+	name = "bone totem"
+	icon_state = "totem_bone"
+	desc = "Массивная статуя, сделанная из огромной кости. Вы не знаете, какому именно животному принадлежит эта кость, и вы явно не хотите это узнавать."
