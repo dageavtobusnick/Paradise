@@ -75,3 +75,26 @@
 			icon_state = "grace_of_lazis3"
 		if(31 to INFINITY)
 			icon_state = "grace_of_lazis4"
+
+//**********Food Scroll**********//
+/obj/item/paper/food_scroll
+	name = "cooking scroll"
+	icon = 'icons/obj/library.dmi'
+	icon_state = "food_scroll"
+	item_state = "food_scroll"
+	desc = "Пергамент, изготовленный из человеческой кожи. На нем нанесена информация о том, как прокормить голодное племя."
+	language = LANGUAGE_UNATHI
+	info = "<BR> КАК ГОТОВИТЬ МЯСО \
+			<BR> Надо: \
+			<BR> 1 Огонь чтобы готовить \
+			<BR> Много мяса \
+			<BR> ГОТОВКА: \
+			<BR> Шаг 1: Сунь мясо в огонь \
+			<BR> Шаг два: Вынь мясо из огня \
+			<BR> 3: Ешь мясо \
+			<BR> Советы: не ешь других пеплоходцев, пока они живы. \
+			<BR> Если мясо не кричит, готовить проще"
+
+/obj/item/paper/food_scroll/update_icon_state()
+	return
+
