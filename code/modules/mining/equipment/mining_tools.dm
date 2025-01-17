@@ -1,6 +1,7 @@
 /*****************Pickaxes & Drills & Shovels****************/
 /obj/item/pickaxe
 	name = "pickaxe"
+	desc = "Стандартная кирка, предназначенная для разрушения камней."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "pickaxe"
 	flags = CONDUCT
@@ -23,19 +24,24 @@
 
 /obj/item/pickaxe/emergency
 	name = "emergency disembarkation tool"
-	desc = "For extracting yourself from rough landings."
+	desc = "Кирка, предназначенная для спасения из затруднительных ситуаций."
+	icon_state = "emergency_disembarkation_tool"
+	item_state = "emergency_disembarkation_tool"
 
 /obj/item/pickaxe/safety
 	name = "safety pickaxe"
-	desc = "A pickaxe designed to be only effective at digging rock and ore, very ineffective as a weapon."
+	desc = "Кирка, специально спроектированная исключительно для добычи ресурсов. Крайне неэффективна в качестве оружия."
+	icon_state = "safety_pickaxe"
+	item_state = "safety_pickaxe"
 	force = 1
 	throwforce = 1
 	attack_verb = list("ineffectively hit")
 
 /obj/item/pickaxe/mini
 	name = "compact pickaxe"
-	desc = "A smaller, compact version of the standard pickaxe."
-	icon_state = "minipick"
+	desc = "Сильно уменьшенная версия стандартной кирки."
+	icon_state = "compact_pickaxe"
+	item_state = "compact_pickaxe"
 	force = 10
 	throwforce = 7
 	w_class = WEIGHT_CLASS_NORMAL
@@ -48,7 +54,7 @@
 	belt_icon = "silver-plated pickaxe"
 	origin_tech = "materials=3;engineering=4"
 	toolspeed = 0.4 //mines faster than a normal pickaxe, bought from mining vendor
-	desc = "A silver-plated pickaxe that mines slightly faster than standard-issue."
+	desc = "Кирка, сделанная из серебра. Она показывает себя слегка лучше в добыче ресурсов, чем стандартная."
 	force = 17
 
 /obj/item/pickaxe/gold
@@ -58,7 +64,7 @@
 	belt_icon = "golden pickaxe"
 	origin_tech = "materials=4;engineering=4"
 	toolspeed = 0.3
-	desc = "A gold-plated pickaxe that mines faster than standard-issue."
+	desc = "Кирка, сделанная из золота. Она показывает себя значительно лучше в добыче ресурсов, чем стандартная."
 	force = 18
 
 /obj/item/pickaxe/diamond
@@ -68,7 +74,7 @@
 	belt_icon = "diamond-tipped pickaxe"
 	origin_tech = "materials=5;engineering=4"
 	toolspeed = 0.2
-	desc = "A pickaxe with a diamond pick head. Extremely robust at cracking rock walls and digging up dirt."
+	desc = "Кирка с алмазным наконечником. Крайне эффективна в добыче камня и вскапывании земли."
 	force = 19
 
 /obj/item/pickaxe/drill
@@ -80,10 +86,11 @@
 	usesound = 'sound/weapons/drill.ogg'
 	origin_tech = "materials=2;powerstorage=2;engineering=3"
 	desc = "An electric mining drill for the especially scrawny."
+	desc = "Электрическая буровая дрелль, используемая теми, для кого кирка слишком тяжела в обращении."
 
 /obj/item/pickaxe/drill/cyborg
 	name = "cyborg mining drill"
-	desc = "An integrated electric mining drill."
+	desc = "Встроенная электрическая буровая дрелль."
 
 
 /obj/item/pickaxe/drill/cyborg/Initialize(mapload)
@@ -95,7 +102,7 @@
 	name = "diamond-tipped mining drill"
 	icon_state = "diamonddrill"
 	origin_tech = "materials=6;powerstorage=4;engineering=4"
-	desc = "Yours is the drill that will pierce the heavens!"
+	desc = "У тебя есть дрелль, которая пронзит небеса!"
 	toolspeed = 0.1
 
 /obj/item/pickaxe/drill/cyborg/diamond //This is the BORG version!
@@ -110,13 +117,13 @@
 	origin_tech = "materials=6;powerstorage=4;engineering=5;magnets=4"
 	hitsound = 'sound/weapons/sonic_jackhammer.ogg'
 	usesound = 'sound/weapons/sonic_jackhammer.ogg'
-	desc = "Cracks rocks with sonic blasts, and doubles as a demolition power tool for smashing walls."
+	desc = "Уничтожает камни с использованием звука, может использоваться как инструмент для сноса стен."
 	toolspeed = 0.0 //the epitome of powertools, literally instant
 	var/wall_toolspeed = 0.1 //instant wall breaking is bad.
 
 /obj/item/shovel
 	name = "shovel"
-	desc = "A large tool for digging and moving dirt."
+	desc = "Массивный инструмент для вскапывания и перемещения земли."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "shovel"
 	flags = CONDUCT
@@ -134,7 +141,7 @@
 
 /obj/item/shovel/spade
 	name = "spade"
-	desc = "A small tool for digging and moving dirt."
+	desc = "Маленький инструмент для вскапывания и перемещения земли."
 	icon_state = "spade"
 	item_state = "spade"
 	belt_icon = "spade"
@@ -144,7 +151,9 @@
 
 /obj/item/shovel/safety
 	name = "safety shovel"
-	desc = "A large tool for digging and moving dirt. Was modified with extra safety, making it ineffective as a weapon."
+	icon_state = "safety_shovel"
+	item_state = "safety_shovel"
+	desc = "Массивный инструмент для вскапывания и перемещения земли. Данная версия была модифицирована для большей безопасности и крайне неэффективна в качестве оружия."
 	force = 1
 	throwforce = 1
 	attack_verb = list("ineffectively hit")
