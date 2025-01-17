@@ -84,7 +84,7 @@
 
 				for(var/obj/O in T)
 					var/the_block = O.explosion_block
-					dist += the_block == EXPLOSION_BLOCK_PROC ? O.GetExplosionBlock() : the_block
+					dist += the_block == EXPLOSION_BLOCK_PROC ? O.get_explosion_block() : the_block
 
 		if(dist < dev)
 			T.color = "red"

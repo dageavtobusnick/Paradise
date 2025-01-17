@@ -252,7 +252,7 @@ SUBSYSTEM_DEF(explosions)
 
 		for(var/atom/O as anything in T)
 			var/the_block = O.explosion_block
-			cached_exp_block[T] += the_block == EXPLOSION_BLOCK_PROC ? O.GetExplosionBlock() : the_block
+			cached_exp_block[T] += the_block == EXPLOSION_BLOCK_PROC ? O.get_explosion_block() : the_block
 
 /datum/explosion_data/proc/explosion_log(cause)
 	var/cause_str
