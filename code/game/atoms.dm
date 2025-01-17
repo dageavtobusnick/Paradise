@@ -1750,5 +1750,5 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	return !(SEND_SIGNAL(src, COMSIG_RIDDEN_DRIVER_MOVE, user, direction) & COMPONENT_DRIVER_BLOCK_MOVE)
 
 ///returns how much the object blocks an explosion. Used by subtypes.
-/atom/proc/GetExplosionBlock()
-	CRASH("Unimplemented GetExplosionBlock()")
+/atom/proc/get_explosion_block()
+	CRASH("Unimplemented get_explosion_block()")

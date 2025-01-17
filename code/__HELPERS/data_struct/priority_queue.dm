@@ -34,17 +34,18 @@
             break
 
 /priority_queue/proc/bubble_down(index)
-    while (index * 2 <= heap.len)
-        var/child = index * 2
+	while(index * 2 <= heap.len)
+		var/child = index * 2
 
-        if (child + 1 <= heap.len && heap[child + 1][1] < heap[child][1])
-            child++
+		if (child + 1 <= heap.len && heap[child + 1][1] < heap[child][1])
+			child++
 
-        if (heap[child][1] < heap[index][1])
-            swap(index, child)
-            index = child
-        else
-            break
+		if (heap[child][1] >= heap[index][1])
+			break
+
+		swap(index, child)
+		index = child
+
 
 /priority_queue/proc/swap(a, b)
     var/list/temp = heap[a]
