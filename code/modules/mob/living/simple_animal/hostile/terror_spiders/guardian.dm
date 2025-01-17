@@ -10,8 +10,16 @@
 
 /mob/living/simple_animal/hostile/poison/terror_spider/guardian
 	name = "Guardian of Terror"
-	desc = "An ominous-looking purple spider. It looks about warily, as if waiting for something."
+	desc = "Зловещего вида фиолетовый паук. Он смотрит по сторонам настороженно, словно чего-то ожидая."
 	ai_target_method = TS_DAMAGE_BRUTE
+	ru_names = list(
+		NOMINATIVE = "защитник Ужаса",
+		GENITIVE = "защитника Ужаса",
+		DATIVE = "защитнику Ужаса",
+		ACCUSATIVE = "защитника Ужаса",
+		INSTRUMENTAL = "защитником Ужаса",
+		PREPOSITIONAL = "защитнике Ужаса",
+	)
 	icon_state = "terror_purple"
 	icon_living = "terror_purple"
 	icon_dead = "terror_purple_dead"
@@ -53,7 +61,7 @@
 
 	L.apply_damage(15, STAMINA)
 	if(prob(20))
-		visible_message("<span class='danger'>[src] rams into [L], knocking [L.p_them()] to the floor!</span>")
+		visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] врезается в [L.declent_ru(ACCUSATIVE)], сбивая с ног!"))
 		L.adjustBruteLoss(20)
 		L.Weaken(4 SECONDS)
 
@@ -64,7 +72,7 @@
 				if(!degenerate && !spider_myqueen.degenerate)
 					degenerate = TRUE
 					spider_myqueen.DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/guardian, 1)
-					visible_message("<span class='notice'>[src] chitters in the direction of [spider_myqueen]!</span>")
+					visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] стрекочет в направлении [spider_myqueen.declent_ru(GENITIVE)]!"))
 	return ..()
 
 /mob/living/simple_animal/hostile/poison/terror_spider/guardian/Life(seconds, times_fired)
@@ -81,7 +89,7 @@
 			if(Q.stat == DEAD)
 				spider_myqueen = null
 				degenerate = TRUE
-				to_chat(src, "<span class='userdanger'>[Q] has died! Her power no longer sustains you!</span>")
+				to_chat(src, span_userdanger("[capitalize(Q.declent_ru(NOMINATIVE))] умерла! Ее сила больше не поддерживает вас!"))
 				return
 
 			if(get_dist(src, Q) < vision_range)
@@ -92,23 +100,23 @@
 			if(queen_visible)
 				cycles_noqueen = 0
 				if(spider_debug)
-					to_chat(src, "<span class='notice'>[Q] visible.</span>")
+					to_chat(src, span_notice("[capitalize(Q.declent_ru(NOMINATIVE))] в зоне видимости."))
 			else
 				cycles_noqueen++
 				if(spider_debug)
-					to_chat(src, "<span class='danger'>[Q] NOT visible. Cycles: [cycles_noqueen].</span>")
+					to_chat(src, span_danger("[capitalize(Q.declent_ru(NOMINATIVE))] НЕ в зоне видимости. Цикл: [cycles_noqueen]."))
 			var/area/A = get_area(spider_myqueen)
 			switch(cycles_noqueen)
 				if(6)
 					// one minute without queen sighted
-					to_chat(src, "<span class='danger'>You have become separated from [Q]. Return to her in [A].</span>")
+					to_chat(src, span_danger("Вы отделились от [Q.declent_ru(GENITIVE)]. Вернитесь к ней в [A.declent_ru(PREPOSITIONAL)]."))
 				if(12)
 					// two minutes without queen sighted
-					to_chat(src, "<span class='danger'>Your long separation from [Q] weakens you. Return to her in [A].</span>")
+					to_chat(src, span_danger("Ваша долгая разлука с [Q.declent_ru(INSTRUMENTAL)] ослабляет вас. Вернитесь к ней в [A.declent_ru(PREPOSITIONAL)]."))
 				if(18)
 					// three minutes without queen sighted, kill them.
 					degenerate = TRUE
-					to_chat(src, "<span class='userdanger'>Your link to [Q] has been broken! Your life force starts to drain away!</span>")
+					to_chat(src, span_userdanger("Ваша связ с [Q] разорвана! Ваша жизненная сила начинает угасать!"))
 					melee_damage_lower = 5
 					melee_damage_upper = 10
 
@@ -121,16 +129,24 @@
 		if(spider_myqueen)
 			var/area/A = get_area(spider_myqueen)
 			if(degenerate)
-				status_tab_data[++status_tab_data.len] = list("Link:", "<font color='#eb4034'>BROKEN</font>") // color=red
+				status_tab_data[++status_tab_data.len] = list("Связь:", "<font color='#eb4034'>РАЗРУШЕНА</font>") // color=red
 			else if(queen_visible)
-				status_tab_data[++status_tab_data.len] = list("Link:", "<font color='#32a852'>[spider_myqueen] is near</font>") // color=green
+				status_tab_data[++status_tab_data.len] = list("Связь:", "<font color='#32a852'>[capitalize(spider_myqueen.declent_ru(NOMINATIVE))] рядом</font>") // color=green
 			else if(cycles_noqueen >= 18)
-				status_tab_data[++status_tab_data.len] = list("Link:", "<font color='#eb4034'>Critical - return to [spider_myqueen] in [A]</font>") // color=red
+				status_tab_data[++status_tab_data.len] = list("Связь:", "<font color='#eb4034'>Критическая - вернитесь к [spider_myqueen.declent_ru(DATIVE)] в [A.declent_ru(PREPOSITIONAL)]</font>") // color=red
 			else
-				status_tab_data[++status_tab_data.len] = list("Link:", "<font color='#fcba03'>Warning - return to [spider_myqueen] in [A]</font>") // color=orange
+				status_tab_data[++status_tab_data.len] = list("Связь:", "<font color='#fcba03'>Опасаная - вернитесь к  [spider_myqueen.declent_ru(DATIVE)] в [A.declent_ru(PREPOSITIONAL)]</font>") // color=orange
 
 /obj/structure/spider/terrorweb/purple
 	name = "thick web"
-	desc = "This web is so thick, most cannot see beyond it."
+	desc = "Эта паутина настолько толстая, что большинство не может видеть сквозь нее."
 	opacity = TRUE
 	max_integrity = 40
+	ru_names = list(
+		NOMINATIVE = "толстая паутина",
+		GENITIVE = "толстой паутины",
+		DATIVE = "толстой паутине",
+		ACCUSATIVE = "толстую паутину",
+		INSTRUMENTAL = "толстой паутиной",
+		PREPOSITIONAL = "толстой паутине",
+	)

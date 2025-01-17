@@ -1,7 +1,15 @@
 
 /mob/living/simple_animal/hostile/poison/terror_spider/reaper
 	name = "Reaper of Terror"
-	desc = "A terrible-looking spider, she appears to have sharp claws and jaws, and her body is covered with tumors. You can see agony and thirst for blood in her glowing eyes.."
+	desc = "Ужасного вида паук, у него острые когти и челюсти, а тело покрыто опухолями. В его светящихся глазах можно увидеть агонию и жажду крови.."
+	ru_names = list(
+		NOMINATIVE = "жнец Ужаса",
+		GENITIVE = "жнеца Ужаса",
+		DATIVE = "жнецу Ужаса",
+		ACCUSATIVE = "жнеца Ужаса",
+		INSTRUMENTAL = "жнецом Ужаса",
+		PREPOSITIONAL = "жнеце Ужаса",
+	)
 	ai_target_method = TS_DAMAGE_BRUTE
 	icon_state = "terror_reaper"
 	icon_living = "terror_reaper"

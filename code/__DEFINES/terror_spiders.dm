@@ -3,22 +3,22 @@
 #define TS_DAMAGE_BRUTE 2
 
 //TIER 1
-#define TS_DESC_KNIGHT "Knight - ASSAULT"
-#define TS_DESC_LURKER "Lurker - AMBUSH"
-#define TS_DESC_HEALER "Healer - NURSE"
-#define TS_DESC_REAPER "Reaper - BRAWL"
-#define TS_DESC_BUILDER "Drone - BUILD"
+#define TS_DESC_KNIGHT "Рыцарь - ШТУРМОВИК"
+#define TS_DESC_LURKER "Наблюдатель - ЗАСАДНИК"
+#define TS_DESC_HEALER "Лекарь - МЕДСЕСТРА"
+#define TS_DESC_REAPER "Жнец - БОЕЦ"
+#define TS_DESC_BUILDER "Дрон - СТРОИТЕЛЬ"
 //TIER 2
-#define TS_DESC_WIDOW "Widow - POISON"
-#define TS_DESC_GUARDIAN "Guardian - GUARD"
-#define TS_DESC_DESTROYER "Destroyer - BREACHER"
+#define TS_DESC_WIDOW "Вдова - ОТРАВИТЕЛЬ"
+#define TS_DESC_GUARDIAN "Защитник - СТРАЖ"
+#define TS_DESC_DESTROYER "Разрушитель - САБОТАЖНИК"
 //TIER 3
-#define TS_DESC_PRINCE "Prince - HERO"
-#define TS_DESC_PRINCESS "Princess - HORDE"
-#define TS_DESC_MOTHER "Mother - SUPPORT"
-#define TS_DESC_DEFILER "Defiler - INFECT"
+#define TS_DESC_PRINCE "Принц - ГЕРОЙ"
+#define TS_DESC_PRINCESS "Принцесса - ОРДА"
+#define TS_DESC_MOTHER "Мать - ПОДДЕРЖКА"
+#define TS_DESC_DEFILER "Осквернитель - ЗАРАЗИТЕЛЬ"
 //TIER 4
-#define TS_DESC_QUEEN "Queen - LEADER"
+#define TS_DESC_QUEEN "Королева - ЛИДЕР"
 
 #define TS_TIER_1 1
 #define TS_TIER_2 2

@@ -4,7 +4,7 @@
 /datum/reagent/terror_black_toxin
 	name = "Black Terror venom"
 	id = "terror_black_toxin"
-	description = "An incredibly toxic venom injected by the Black Widow spider."
+	description = "Невероятно токсичный яд, введенный пауком Черной Вдовой."
 	can_synth = FALSE
 	color = "#cc00ff"
 	metabolization_rate = 0.25 * REAGENTS_METABOLISM
@@ -40,7 +40,7 @@
 /datum/reagent/terror_eggs
 	name = "terror spider eggs"
 	id = "terror_eggs"
-	description = "An incredibly toxic venom that spreads infestation."
+	description = "Невероятно токсичный яд, распространяющий заражение."
 	can_synth = FALSE
 	color = "#ffffff"
 	metabolization_rate = 1 * REAGENTS_METABOLISM

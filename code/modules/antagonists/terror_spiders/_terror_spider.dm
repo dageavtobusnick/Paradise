@@ -24,6 +24,26 @@
 /datum/antagonist/terror_spider/remove_owner_from_gamemode()
 	SSticker?.mode?.terror_spiders -= owner
 
+/datum/antagonist/terror_spider/apply_innate_effects(mob/living/mob_override)
+	. = ..()
+	reg_spider_signals()
+
+/datum/antagonist/terror_spider/remove_innate_effects(mob/living/mob_override)
+	. = ..()
+	unreg_spider_signals()
+
+/datum/antagonist/terror_spider/proc/reg_spider_signals()
+	RegisterSignal(owner, COMSIG_EMPRESS_EGG_LAYED, PROC_REF(on_empress_egg_layed))
+	return
+
+/datum/antagonist/terror_spider/proc/unreg_spider_signals()
+	UnregisterSignal(owner, COMSIG_EMPRESS_EGG_LAYED)
+	return
+
+/datum/antagonist/terror_spider/proc/on_empress_egg_layed()
+	SIGNAL_HANDLER
+	return
+
 /datum/antagonist/terror_spider/give_objectives()
 	var/datum/game_mode/mode = SSticker?.mode
 	if(!mode)
@@ -49,26 +69,27 @@
 /datum/antagonist/terror_spider/main_spider
 	var/spider_category = TERROR_OTHER
 	var/datum/objective/spider_get_power/power_objective
+	var/datum/action/innate/lay_empress_egg/egg_action
 
-/datum/antagonist/terror_spider/main_spider/apply_innate_effects(mob/living/mob_override)
+/datum/antagonist/terror_spider/main_spider/reg_spider_signals()
 	. = ..()
-	reg_spider_signals()
-
-/datum/antagonist/terror_spider/main_spider/remove_innate_effects(mob/living/mob_override)
-	. = ..()
-	unreg_spider_signals()
-
-/datum/antagonist/terror_spider/main_spider/proc/reg_spider_signals()
 	RegisterSignal(owner, COMSIG_SPIDER_CAN_LAY, PROC_REF(add_egg_power))
 	RegisterSignal(owner, COMSIG_TERROR_SPIDER_DIED, PROC_REF(on_terror_spider_died))
 
-
-/datum/antagonist/terror_spider/main_spider/proc/unreg_spider_signals()
+/datum/antagonist/terror_spider/main_spider/unreg_spider_signals()
+	. = ..()
 	UnregisterSignal(owner, list(COMSIG_SPIDER_CAN_LAY, COMSIG_TERROR_SPIDER_DIED))
 
 /datum/antagonist/terror_spider/main_spider/proc/on_terror_spider_died()
+	SIGNAL_HANDLER
 	SSticker?.mode?.on_major_spider_died(owner, spider_category)
 	unreg_spider_signals()
+
+/datum/antagonist/terror_spider/main_spider/on_empress_egg_layed()
+	. = ..()
+	if(owner?.current)
+		egg_action?.Remove(owner.current)
+		QDEL_NULL(egg_action)
 
 /datum/antagonist/terror_spider/main_spider/add_owner_to_gamemode()
 	. = ..()
@@ -93,13 +114,14 @@
 	spiders -= owner
 
 /datum/antagonist/terror_spider/main_spider/proc/check_target()
-	if(power_objective.check_completion())
+	if(power_objective.check_completion() && !SSticker?.mode?.empress_egg)
 		add_egg_power()
 
 /datum/antagonist/terror_spider/main_spider/proc/add_egg_power()
 	SIGNAL_HANDLER
-	if(owner.current)
-		to_chat(owner.current, span_dangerbigger("Вы сможете отложить яйцо"))
+	if(owner?.current)
+		egg_action = new
+		egg_action.Grant(owner.current)
 	return
 
 /datum/antagonist/terror_spider/main_spider/defiler
@@ -161,4 +183,3 @@
 	add_objective(mode.prince_target)
 	power_objective = mode.prince_target
 	check_target()
-/datum/action/

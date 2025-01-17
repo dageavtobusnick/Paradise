@@ -5,7 +5,15 @@
 
 /obj/structure/spider/spiderling/terror_spiderling
 	name = "spiderling"
-	desc = "A fast-moving tiny spider, prone to making aggressive hissing sounds. Hope it doesn't grow up."
+	desc = "Быстро движущийся крошечный паук, склонный издавать агрессивные шипящие звуки. Надеюсь, оно не вырастет."
+	ru_names = list(
+		NOMINATIVE = "спайдерлинг",
+		GENITIVE = "спайдерлинга",
+		DATIVE = "спайдерлингу",
+		ACCUSATIVE = "спайдерлинга",
+		INSTRUMENTAL = "спайдерлингом",
+		PREPOSITIONAL = "спайдерлинге",
+	)
 	icon_state = "spiderling"
 	anchored = FALSE
 	layer = 2.75
@@ -132,7 +140,7 @@
 						entry_vent = null
 						return
 					if(prob(50))
-						audible_message("<span class='notice'>You hear something squeezing through the ventilation ducts.</span>")
+						audible_message(span_notice("Слышно, как что-то сжимается в вентиляционных каналах."))
 					spawn(travel_time)
 						if(!exit_vent || exit_vent.welded)
 							forceMove(original_location)
@@ -186,7 +194,7 @@
 
 /obj/structure/spider/eggcluster/terror_eggcluster
 	name = "terror egg cluster"
-	desc = "A cluster of tiny spider eggs. They pulse with a strong inner life, and appear to have sharp thorns on the sides."
+	desc = "Скопление крошечных паучьих яиц. Они пульсируют сильной внутренней жизнью и, кажется, имеют острые шипы по бокам."
 	icon_state = "egg"
 	max_integrity = 40
 	grown_tick_count = 140
@@ -201,31 +209,55 @@
 	. = ..()
 	GLOB.ts_egg_list += src
 	spiderling_type = lay_type
+	var/ru_prefix = "паука ужаса"
 	switch(spiderling_type)
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/knight)
 			name = "knight of terror eggs"
+			ru_prefix = "рыцаря ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/lurker)
 			name = "lurker of terror eggs"
+			ru_prefix = "наблюдателя ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/healer)
 			name = "healer of terror eggs"
+			ru_prefix = "лекаря ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/reaper)
 			name = "reaper of terror eggs"
+			ru_prefix = "жнеца ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/builder)
 			name = "builder of terror eggs"
+			ru_prefix = "дрона ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/widow)
 			name = "widow of terror eggs"
+			ru_prefix = "вдовы ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/guardian)
 			name = "guardian of terror eggs"
+			ru_prefix = "защитника ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/destroyer)
 			name = "destroyer of terror eggs"
+			ru_prefix = "разрушителя ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/defiler)
 			name = "defiler of terror eggs"
+			ru_prefix = "осквернителя ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/mother)
 			name = "mother of terror eggs"
+			ru_prefix = "матери ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/prince)
 			name = "prince of terror eggs"
+			ru_prefix = "принца ужаса"
 		if(/mob/living/simple_animal/hostile/poison/terror_spider/queen)
 			name = "queen of terror eggs"
+			ru_prefix = "королевы ужаса"
+		if(/mob/living/simple_animal/hostile/poison/terror_spider/queen/princess)
+			name = "princess of terror eggs"
+			ru_prefix = "принцессы ужаса"
+	ru_names = list(
+		NOMINATIVE = "яйца [ru_prefix]",
+		GENITIVE = "яиц [ru_prefix]",
+		DATIVE = "яйцам [ru_prefix]",
+		ACCUSATIVE = "яйца [ru_prefix]",
+		INSTRUMENTAL = "яйцами [ru_prefix]",
+		PREPOSITIONAL = "яйцах [ru_prefix]",
+	)
 
 /obj/structure/spider/eggcluster/terror_eggcluster/Destroy()
 	GLOB.ts_egg_list -= src
@@ -250,8 +282,16 @@
 
 /obj/structure/spider/eggcluster/terror_eggcluster/empress
 	name = "empress egg cluster"
-	desc = "A cluster of tiny spider eggs. They pulse with a strong inner life, and appear to have sharp thorns on the sides."
-	spiderling_type = /mob/living/simple_animal/hostile/poison/terror_spider/queen/empress
+	desc = "Скопление крошечных паучьих яиц. Они пульсируют сильной внутренней жизнью и, кажется, имеют острые шипы по бокам."
+	ru_names = list(
+		NOMINATIVE = "яйца императрицы ужаса",
+		GENITIVE = "яиц императрицы ужаса",
+		DATIVE = "яйцам императрицы ужаса",
+		ACCUSATIVE = "яйца императрицы ужаса",
+		INSTRUMENTAL = "яйцами императрицы ужаса",
+		PREPOSITIONAL = "яйцах императрицы ужаса",
+	)
+	spiderling_type = /mob/living/simple_animal/hostile/poison/terror_spider/queen/empress/weak
 	max_integrity = 1000
 	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 100, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50)
 	explosion_block = 100
@@ -269,11 +309,20 @@
 		SSticker?.mode?.on_empress_egg_destroyed()
 
 /obj/structure/spider/eggcluster/terror_eggcluster/empress/process()
-	if(amount_grown >= grown_tick_count)
+	if(amount_grown >= grown_tick_count && !save_burst)
 		save_burst = TRUE
+		SSticker?.mode?.on_empress_egg_burst()
 	. = ..()
 
 /obj/structure/spider/royaljelly
 	name = "royal jelly"
-	desc = "A pulsating mass of slime, jelly, blood, and or liquified human organs considered delicious and highly nutritious by terror spiders."
+	ru_names = list(
+		NOMINATIVE = "королевское желе",
+		GENITIVE = "королевского желе",
+		DATIVE = "королевскому желе",
+		ACCUSATIVE = "королевское желе",
+		INSTRUMENTAL = "королевским желе",
+		PREPOSITIONAL = "королевском желе",
+	)
+	desc = "Пульсирующая масса слизи, желе, крови и/или сжиженных человеческих органов, которую пауки ужаса считают вкусной и очень питательной."
 	icon_state = "spiderjelly"

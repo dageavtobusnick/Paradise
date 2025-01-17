@@ -9,7 +9,15 @@
 
 /mob/living/simple_animal/hostile/poison/terror_spider/defiler
 	name = "Defiler of Terror"
-	desc = "An ominous-looking white spider, its ghostly eyes and vicious-looking fangs are the stuff of nightmares."
+	desc = "Зловещий на вид белый паук, с призрачными глазами и злобными кошмарными клыками."
+	ru_names = list(
+		NOMINATIVE = "осквернитель Ужаса",
+		GENITIVE = "осквернителя Ужаса",
+		DATIVE = "осквернителю Ужаса",
+		ACCUSATIVE = "осквернителя Ужаса",
+		INSTRUMENTAL = "осквернителем Ужаса",
+		PREPOSITIONAL = "осквернителе Ужаса",
+	)
 	ai_target_method = TS_DAMAGE_POISON
 	icon_state = "terror_white"
 	icon_living = "terror_white"
@@ -56,17 +64,17 @@
 	var/inject_target = pick(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
 	if(HAS_TRAIT(L, TRAIT_INCAPACITATED) || L.can_inject(null, FALSE, inject_target, FALSE) && prob(50))
 		new /obj/item/organ/internal/body_egg/terror_eggs(L)
-		visible_message("<span class='danger'>[src] buries its long fangs deep into the [inject_target] of [target]!</span>")
+		visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] вонзает свои длинные клыки глубоко в [inject_target] [target.declent_ru(ACCUSATIVE)]!"))
 	else
 		if(prob(20))
 			new /obj/item/organ/internal/body_egg/terror_eggs(L)
-			visible_message("<span class='danger'>[src] pierces armour and buries its long fangs deep into the [inject_target] of [target]!</span>")
+			visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] пробивает броню и вонзает свои длинные клыки глубоко в [inject_target] [target.declent_ru(ACCUSATIVE)]!"))
 	if(!ckey && !IsTSInfected(L))
 		step_away(src, L)
 		step_away(src, L)
 		LoseTarget()
 		step_away(src, L)
-		visible_message("<span class='notice'>[src] jumps away from [L]!</span>")
+		visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] отскакивает от [L.declent_ru(ACCUSATIVE)]!"))
 
 /proc/IsTSInfected(mob/living/carbon/C) // Terror AI requires this
 	if(C.get_int_organ(/obj/item/organ/internal/body_egg))
@@ -75,12 +83,21 @@
 
 /obj/structure/spider/terrorweb/white
 	name = "infested web"
-	desc = "This web is covered in hundreds of tiny, biting spiders - and their eggs."
+	desc = "Эта паутина покрыта сотнями крошечных кусающих пауков и их яицами."
+	ru_names = list(
+		NOMINATIVE = "зараженная паутина",
+		GENITIVE = "зараженной паутины",
+		DATIVE = "зараженной паутине",
+		ACCUSATIVE = "зараженную паутину",
+		INSTRUMENTAL = "зараженной паутиной",
+		PREPOSITIONAL = "зараженной паутине",
+	)
+
 
 /obj/structure/spider/terrorweb/white/web_special_ability(mob/living/carbon/C)
 	if(istype(C))
 		if(!IsTSInfected(C) && ishuman(C))
 			var/inject_target = pick(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
 			if(C.can_inject(null, FALSE, inject_target, FALSE))
-				to_chat(C, "<span class='danger'>[src] slices into you!</span>")
+				to_chat(C, "[capitalize(declent_ru(NOMINATIVE))] врезается в вас!")
 				new /obj/item/organ/internal/body_egg/terror_eggs(C)

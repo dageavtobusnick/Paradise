@@ -38,9 +38,15 @@
 	SSshuttle?.emergency.cancel()
 	SSshuttle?.lockdown_escape()
 
+/datum/game_mode/proc/egg_announce()
+	GLOB.command_announcement.Announce("На борту станции [station_name()] зафиксирован биологическая сигнатура яйца Императрицы Ужаса в [get_area(empress_egg)]. Уничтожите его для вырождения станционного выводка, пока не стало слишком поздно.", "ВНИМАНИЕ: БИОЛОГИЧЕСКАЯ УГРОЗА.", 'sound/effects/siren-spooky.ogg')
+
+/datum/game_mode/proc/spider_win_announce()
+	GLOB.command_announcement.Announce("Зафиксировано проявление Императрицы Ужаса на борту станции [station_name()], станция переклассифицированна в гнездо S класса. Взведение устройства самоуничтожения персоналом или внешними силами в данный момент не представляется возможным. Активация протоколов изоляции.", "Отчет об объекте [station_name()]")
+
 /datum/game_mode/proc/get_spider_type(text_type)
 	switch(text_type)
-		if(TERROR_DEFILER)         
+		if(TERROR_DEFILER)
 			return /mob/living/simple_animal/hostile/poison/terror_spider/defiler
 		if(TERROR_PRINCESS)
 			return /mob/living/simple_animal/hostile/poison/terror_spider/queen/princess
@@ -125,18 +131,24 @@
 	terror_infections -= eggs
 
 /datum/game_mode/proc/on_empress_egg_layed(egg)
-	
+	for(var/datum/spider as anything in terror_spiders)
+		SEND_SIGNAL(spider, COMSIG_EMPRESS_EGG_LAYED)
+	empress_egg = egg
+	addtimer(CALLBACK(src, PROC_REF(egg_announce)), 10 SECONDS)
 
 
 /datum/game_mode/proc/on_empress_egg_burst()
+	empress_egg = null
 
 
 /datum/game_mode/proc/on_empress_egg_destroyed()
 	global_degenerate = TRUE
-	for(var/datum/mind/spider_mind in terror_spiders)
-		var/mob/spider = spider_mind.current
+	for(var/mob/spider in GLOB.ts_spiderlist)
 		if(spider)
 			to_chat(spider, span_danger("Вы чувствуесте невообразимую боль. Яйцо императрицы уничтожено."))
+	erase_eggs()
+
+/datum/game_mode/proc/erase_eggs()
 	for(var/infection in terror_infections)
 		qdel(infection)
 	for(var/egg in terror_eggs)
