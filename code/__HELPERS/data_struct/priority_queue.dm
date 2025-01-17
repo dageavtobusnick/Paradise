@@ -25,13 +25,15 @@
     return heap.len == 0
 
 /priority_queue/proc/bubble_up(index)
-    while (index > 1)
-        var/parent = round(index / 2)
-        if (heap[index][1] < heap[parent][1])
-            swap(index, parent)
-            index = parent
-        else
-            break
+	while(index > 1)
+		var/parent = round(index / 2)
+
+		if (heap[parent][1] < heap[index][1])
+			break
+
+		swap(index, parent)
+		index = parent
+
 
 /priority_queue/proc/bubble_down(index)
 	while(index * 2 <= heap.len)
@@ -40,7 +42,7 @@
 		if (child + 1 <= heap.len && heap[child + 1][1] < heap[child][1])
 			child++
 
-		if (heap[child][1] >= heap[index][1])
+		if (heap[index][1] < heap[child][1])
 			break
 
 		swap(index, child)
