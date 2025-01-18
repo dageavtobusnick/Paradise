@@ -7,9 +7,12 @@
 	var/datum/objective/spider_get_power/alife_spiders/lay_eggs_target
 	var/datum/objective/spider_get_power/spider_infections/infect_target
 	var/datum/objective/spider_protect/other_target
+	var/datum/objective/spider_protect_egg/protect_egg
 	var/obj/structure/spider/eggcluster/terror_eggcluster/empress/empress_egg
 	var/global_degenerate = FALSE
 	var/terror_announce = FALSE
+	var/terror_stage = TERROR_STAGE_START
+	var/delay_terror_end = FALSE
 
 /datum/game_mode/proc/create_terror_spiders(type, count)
 	var/spider_type = get_spider_type(type)
@@ -22,27 +25,27 @@
 		return FALSE
 	var/successSpawn = FALSE
 	while(count && length(candidates))
-		var/mob/living/simple_animal/hostile/poison/terror_spider/S = new spider_type(pick(GLOB.xeno_spawn))
-		var/mob/M = pick_n_take(candidates)
-		S.key = M.key
-		S.add_datum_if_not_exist()
+		var/mob/living/simple_animal/hostile/poison/terror_spider/spider = new spider_type(pick(GLOB.xeno_spawn))
+		var/mob/ghost = pick_n_take(candidates)
+		spider.key = ghost.key
+		spider.add_datum_if_not_exist()
 		count--
 		successSpawn = TRUE
-		log_game("[S.key] has become [S].")
+		log_game("[spider.key] has become [spider].")
 	return successSpawn
 
 
 /datum/game_mode/proc/spider_announce()
-	GLOB.command_announcement.Announce("Вспышка биологической угрозы 3-го уровня зафиксирована на борту станции [station_name()]. Всему персоналу надлежит сдержать её распространение любой ценой! Особая директива распечатана на всех консолях связи.", "ВНИМАНИЕ: БИОЛОГИЧЕСКАЯ УГРОЗА.", 'sound/effects/siren-spooky.ogg')
+	GLOB.event_announcement.Announce("Вспышка биологической угрозы 3-го уровня зафиксирована на борту станции [station_name()]. Всему персоналу надлежит сдержать её распространение любой ценой! Особая директива распечатана на всех консолях связи.", "ВНИМАНИЕ: БИОЛОГИЧЕСКАЯ УГРОЗА.", 'sound/effects/siren-spooky.ogg')
 	special_directive()
 	SSshuttle?.emergency.cancel()
 	SSshuttle?.lockdown_escape()
 
 /datum/game_mode/proc/egg_announce()
-	GLOB.command_announcement.Announce("На борту станции [station_name()] зафиксирован биологическая сигнатура яйца Императрицы Ужаса в [get_area(empress_egg)]. Уничтожите его для вырождения станционного выводка, пока не стало слишком поздно.", "ВНИМАНИЕ: БИОЛОГИЧЕСКАЯ УГРОЗА.", 'sound/effects/siren-spooky.ogg')
+	GLOB.event_announcement.Announce("На борту станции [station_name()] зафиксирован биологическая сигнатура яйца Императрицы Ужаса в [get_area(empress_egg)]. Уничтожите его для вырождения станционного выводка, пока не стало слишком поздно.", "ВНИМАНИЕ: БИОЛОГИЧЕСКАЯ УГРОЗА.", 'sound/effects/siren-spooky.ogg')
 
 /datum/game_mode/proc/spider_win_announce()
-	GLOB.command_announcement.Announce("Зафиксировано проявление Императрицы Ужаса на борту станции [station_name()], станция переклассифицированна в гнездо S класса. Взведение устройства самоуничтожения персоналом или внешними силами в данный момент не представляется возможным. Активация протоколов изоляции.", "Отчет об объекте [station_name()]")
+	GLOB.event_announcement.Announce("Подтверждено проявление Императрицы Ужаса на борту станции [station_name()], станция переклассифицированна в гнездо S класса. Взведение устройства самоуничтожения персоналом или внешними силами в данный момент не представляется возможным. Активация протоколов изоляции.", "Отчет об объекте [station_name()]")
 
 /datum/game_mode/proc/get_spider_type(text_type)
 	switch(text_type)
@@ -131,15 +134,26 @@
 	terror_infections -= eggs
 
 /datum/game_mode/proc/on_empress_egg_layed(egg)
+	empress_egg = egg
+	terror_stage = TERROR_STAGE_PROTECT_EGG
 	for(var/datum/spider as anything in terror_spiders)
 		SEND_SIGNAL(spider, COMSIG_EMPRESS_EGG_LAYED)
-	empress_egg = egg
 	addtimer(CALLBACK(src, PROC_REF(egg_announce)), 10 SECONDS)
 
 
 /datum/game_mode/proc/on_empress_egg_burst()
 	empress_egg = null
+	SSweather.run_weather(/datum/weather/web_storm)
+	protect_egg.completed = TRUE
+	terror_stage = TERROR_STAGE_STORM
 
+/datum/game_mode/proc/on_web_storm_ended()
+	spider_win_announce()
+	terror_stage = TERROR_STAGE_END
+	if(delay_terror_end)
+		terror_stage = TERROR_STAGE_POST_END
+	else
+		end_game()
 
 /datum/game_mode/proc/on_empress_egg_destroyed()
 	global_degenerate = TRUE

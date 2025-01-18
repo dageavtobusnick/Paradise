@@ -35,6 +35,7 @@
 	icon_state = "terror_empress"
 	icon_living = "terror_empress"
 	icon_dead = "terror_empress_dead"
+	datum_type = /datum/antagonist/terror_spider/main_spider/empress
 	var/datum/action/innate/terrorspider/queen/empress/empresslings/empresslings_action
 	var/datum/action/innate/terrorspider/queen/empress/empresserase/empresserase_action
 	tts_seed = "Queen"
@@ -66,24 +67,34 @@
 	switch(eggtype)
 		if(TS_DESC_KNIGHT)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/knight, numlings)
+			canlay -= numlings
 		if(TS_DESC_LURKER)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/lurker, numlings)
+			canlay -= numlings
 		if(TS_DESC_HEALER)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/healer, numlings)
+			canlay -= numlings
 		if(TS_DESC_WIDOW)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/widow, numlings)
+			canlay -= numlings
 		if(TS_DESC_GUARDIAN)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/guardian, numlings)
+			canlay -= numlings
 		if(TS_DESC_DEFILER)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/defiler, numlings)
+			canlay -= numlings
 		if(TS_DESC_DESTROYER)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/destroyer, numlings)
+			canlay -= numlings
 		if(TS_DESC_PRINCE)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/prince, numlings)
+			canlay -= numlings
 		if(TS_DESC_PRINCESS)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/queen/princess, numlings)
+			canlay -= numlings
 		if(TS_DESC_MOTHER)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/mother, numlings)
+			canlay -= numlings
 		if(TS_DESC_QUEEN)
 			DoLayTerrorEggs(/mob/living/simple_animal/hostile/poison/terror_spider/queen, numlings)
 		else
@@ -129,10 +140,11 @@
 
 /mob/living/simple_animal/hostile/poison/terror_spider/queen/empress/weak
 	canlay = 10
-	spider_spawnfrequency = 800
+	spider_spawnfrequency = 1000
+	ai_playercontrol_allowtype = TRUE
 
 /mob/living/simple_animal/hostile/poison/terror_spider/queen/empress/weak/getSpiderLevel()
-	return 5
+	return 7
 
 /mob/living/simple_animal/hostile/poison/terror_spider/queen/empress/weak/grant_actions()
 	empresserase_action = new()

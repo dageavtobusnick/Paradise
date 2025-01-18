@@ -24,9 +24,9 @@
 		return .
 
 	var/datum/game_mode/mode = SSticker?.mode
-	if(mode.infect_target.check_completion() || \
-	mode.lay_eggs_target.check_completion() || \
-	mode.prince_target.check_completion())
+	if(mode?.infect_target?.completed || \
+	mode?.lay_eggs_target?.completed|| \
+	mode?.prince_target?.completed)
 		completed = TRUE
 		return TRUE
 	return .
@@ -41,7 +41,9 @@
 	generate_text()
 
 /datum/objective/spider_protect_egg/proc/generate_text()
-	
+	if(!SSticker?.mode?.empress_egg)
+		return
+	explanation_text = "Защищайте яйцо императрицы ужаса. Оно находится в [get_area(SSticker?.mode?.empress_egg)]. Его уничтожение приведет к гибели всего гнезда."
 
 /datum/objective/spider_get_power
 	name = "spider bug"
@@ -82,7 +84,7 @@
 /datum/objective/spider_get_power/spider_infections
 	name = "заражать гуманоидов"
 
-/datum/objective/spider_get_power/alife_spiders/spider_infections/generate_text()
+/datum/objective/spider_get_power/spider_infections/generate_text()
 	. = ..()
 	explanation_text = "Заражайте. Для того, чтобы вы могли отложить яйцо императрицы должно быть заражено [targets_need] гуманоидов."
 

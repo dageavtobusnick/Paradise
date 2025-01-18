@@ -29,6 +29,7 @@
 	var/frustration = 0
 	var/debug_ai_choices = FALSE
 	var/movement_disabled = FALSE
+	var/mob/asigned_ghost
 
 /obj/structure/spider/spiderling/terror_spiderling/Initialize(mapload)
 	. = ..()
@@ -85,6 +86,9 @@
 	var/turf/T = get_turf(src)
 	if(spider_awaymission && !is_away_level(T.z))
 		stillborn = TRUE
+	if(SSticker?.mode?.global_degenerate && !spider_awaymission && !QDELETED(src))
+		qdel(src)
+		return
 	if(stillborn)
 		// Fake spiderlings stick around for awhile, just to be spooky.
 		qdel(src)
@@ -95,7 +99,25 @@
 		S.spider_myqueen = spider_myqueen
 		S.spider_mymother = spider_mymother
 		S.enemies = enemies
+
+		if(!spider_awaymission && asigned_ghost)
+			S.key = asigned_ghost.key
+			S.add_datum_if_not_exist()
+			asigned_ghost = null
+		else if(!spider_awaymission)
+			S.AddComponent(\
+			/datum/component/ghost_direct_control,\
+			ban_type = ROLE_TERROR_SPIDER,\
+			ban_syndicate = TRUE,\
+			poll_candidates = FALSE,\
+			question_text =" Роль: [S.spider_intro_text]" ,\
+			extra_control_checks = CALLBACK(S, \
+			TYPE_PROC_REF(/mob/living/simple_animal/hostile/poison/terror_spider, extra_checks)),\
+			after_assumed_control = CALLBACK(S, \
+			TYPE_PROC_REF(/mob/living/simple_animal/hostile/poison/terror_spider, humanize_spider)),\
+		)
 		qdel(src)
+
 	if(movement_disabled)
 		return
 	if(travelling_in_vent)
@@ -204,6 +226,8 @@
 	var/spiderling_type = null
 	var/spiderling_number = 1
 	var/list/enemies = list()
+	var/list/asigned_ghosts = list()
+	var/ghost_poll = FALSE
 
 /obj/structure/spider/eggcluster/terror_eggcluster/Initialize(mapload, lay_type)
 	. = ..()
@@ -264,21 +288,45 @@
 	SSticker?.mode?.terror_eggs -= src
 	return ..()
 
+/obj/structure/spider/eggcluster/terror_eggcluster/proc/find_spider_owner()
+	ghost_poll = TRUE
+	var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите занять роль Паука Ужаса([nameof(spiderling_type)])?", ROLE_TERROR_SPIDER, TRUE, TERROR_VOTE_LEN, source = spiderling_type, role_cleanname = "Паук Ужаса")
+	if(QDELETED(src))
+		return FALSE
+	ghost_poll = FALSE
+	if(!length(candidates) || spider_mymother.spider_awaymission)
+		burst_eggs()
+		return FALSE
+	for(var/i = 0, i < spiderling_number, i++)
+		asigned_ghosts |= pick_n_take(candidates)
+	burst_eggs()
+
 /obj/structure/spider/eggcluster/terror_eggcluster/process()
 	amount_grown += 1
-	if(amount_grown >= grown_tick_count)  //x2 time for egg process, spiderlings grows instantly
-		var/num = spiderling_number
-		playsound(src, 'sound/creatures/terrorspiders/eggburst.ogg', 100)
-		for(var/i=0, i<num, i++)
-			var/obj/structure/spider/spiderling/terror_spiderling/S = new /obj/structure/spider/spiderling/terror_spiderling(get_turf(src))
-			if(spiderling_type)
-				S.grow_as = spiderling_type
-			S.spider_myqueen = spider_myqueen
-			S.spider_mymother = spider_mymother
-			S.enemies = enemies
-			if(spider_growinstantly)
-				S.amount_grown = 250
+	if(SSticker?.mode?.global_degenerate && !spider_mymother.spider_awaymission && !QDELETED(src))
 		qdel(src)
+		return
+	if(grown_tick_count - amount_grown <= TERROR_VOTE_TICKS && !asigned_ghosts?.len \
+		&& !ghost_poll && !spider_mymother.spider_awaymission)
+		find_spider_owner()
+	if(amount_grown >= grown_tick_count && spider_mymother.spider_awaymission)  //x2 time for egg process, spiderlings grows instantly
+		burst_eggs()
+
+/obj/structure/spider/eggcluster/terror_eggcluster/proc/burst_eggs()
+	var/num = spiderling_number
+	playsound(src, 'sound/creatures/terrorspiders/eggburst.ogg', 100)
+	for(var/i=0, i<num, i++)
+		var/obj/structure/spider/spiderling/terror_spiderling/S = new /obj/structure/spider/spiderling/terror_spiderling(get_turf(src))
+		if(spiderling_type)
+			S.grow_as = spiderling_type
+		S.spider_myqueen = spider_myqueen
+		S.spider_mymother = spider_mymother
+		S.enemies = enemies
+		if(asigned_ghosts.len)
+			S.asigned_ghost = pick_n_take(asigned_ghosts)
+		if(spider_growinstantly)
+			S.amount_grown = 250
+	qdel(src)
 
 /obj/structure/spider/eggcluster/terror_eggcluster/empress
 	name = "empress egg cluster"
@@ -308,10 +356,12 @@
 	if(!save_burst)
 		SSticker?.mode?.on_empress_egg_destroyed()
 
-/obj/structure/spider/eggcluster/terror_eggcluster/empress/process()
-	if(amount_grown >= grown_tick_count && !save_burst)
-		save_burst = TRUE
-		SSticker?.mode?.on_empress_egg_burst()
+/obj/structure/spider/eggcluster/terror_eggcluster/empress/ex_act(severity)
+	return
+
+/obj/structure/spider/eggcluster/terror_eggcluster/empress/burst_eggs()
+	save_burst = TRUE
+	SSticker?.mode?.on_empress_egg_burst()
 	. = ..()
 
 /obj/structure/spider/royaljelly

@@ -199,7 +199,8 @@
 				if(world.time > (lastnestsetup + nestfrequency))
 					lastnestsetup = world.time
 					neststep = 2
-					NestMode()
+					if(!hasnested)
+						NestMode()
 			if(2)
 				// Create initial T2 spiders.
 				if(world.time > (lastnestsetup + nestfrequency))
@@ -335,7 +336,7 @@
 /mob/living/simple_animal/hostile/poison/terror_spider/queen/proc/show_egg_timer()
 	var/remainingtime = round(((spider_lastspawn + spider_spawnfrequency) - world.time) / 10, 1)
 	if(remainingtime > 0)
-		to_chat(src, span_danger("Слишком рано пытаться повторить это. Подождиnt еще [num2text(remainingtime)] секунд."))
+		to_chat(src, span_danger("Слишком рано пытаться повторить это. Подождите еще [num2text(remainingtime)] секунд."))
 	else
 		to_chat(src, span_danger("Слишком рано пытаться повторить это. Подождите еще несколько секунд..."))
 

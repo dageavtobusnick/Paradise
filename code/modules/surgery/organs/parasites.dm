@@ -54,16 +54,16 @@
 	var/eggs_hatched = 0 // num of hatch events completed
 	var/awaymission_checked = FALSE
 	var/awaymission_infection = FALSE // TRUE if infection occurred inside gateway
-
-/obj/item/organ/internal/body_egg/terror_eggs/Initialize(mapload)
-	. = ..()
-	SSticker.mode.on_terror_infection_created(src)
+	var/mob/asigned_ghost
+	var/ghost_poll = FALSE
 
 /obj/item/organ/internal/body_egg/terror_eggs/on_life()
 	// Safety first.
 	if(!owner)
 		return
-
+	if(SSticker?.mode?.global_degenerate && !awaymission_infection && !QDELETED(src))
+		qdel(src)
+		return
 	// Parasite growth
 	cycle_num += 1
 	egg_progress += 1
@@ -74,16 +74,31 @@
 		awaymission_checked = TRUE
 		if(is_away_level(owner.z))
 			awaymission_infection = TRUE
+		else
+			SSticker?.mode?.on_terror_infection_created(src)
 	if(awaymission_infection)
 		var/turf/T = get_turf(owner)
 		if(istype(T) && !is_away_level(T.z))
 			owner.gib()
 			qdel(src)
 			return
+	if(egg_progress_per_hatch - egg_progress <= TERROR_VOTE_TICKS && !ghost_poll && !awaymission_infection)
+		find_spider_owner()
 
-	if(egg_progress > egg_progress_per_hatch)
-		egg_progress -= egg_progress_per_hatch
+	if(egg_progress > egg_progress_per_hatch && awaymission_infection)
 		hatch_egg()
+
+/obj/item/organ/internal/body_egg/terror_eggs/proc/find_spider_owner()
+	ghost_poll = TRUE
+	var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите занять роль Паука Ужаса?", ROLE_TERROR_SPIDER, TRUE, TERROR_VOTE_LEN, , role_cleanname = "Паук Ужаса")
+	if(QDELETED(src))
+		return
+	ghost_poll = FALSE
+	if(!length(candidates) || awaymission_infection)
+		hatch_egg()
+		return
+	asigned_ghost = pick_n_take(candidates)
+	hatch_egg()
 
 /obj/item/organ/internal/body_egg/terror_eggs/proc/calc_variable_progress()
 	var/extra_progress = 0
@@ -99,6 +114,7 @@
 
 /obj/item/organ/internal/body_egg/terror_eggs/proc/hatch_egg()
 	var/infection_completed = FALSE
+	egg_progress -= egg_progress_per_hatch
 	var/obj/structure/spider/spiderling/terror_spiderling/S = new(get_turf(owner))
 	switch(eggs_hatched)
 		if(0) // 1st spiderling
@@ -111,6 +127,7 @@
 			owner.death()
 			infection_completed = TRUE
 	S.immediate_ventcrawl = TRUE
+	S.asigned_ghost = asigned_ghost
 	eggs_hatched++
 	owner.adjustBruteLoss(80)
 	owner.Paralyse(20 SECONDS)

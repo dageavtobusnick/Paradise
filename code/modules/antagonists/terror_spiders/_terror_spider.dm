@@ -7,6 +7,7 @@
 	russian_wiki_name = "Паук_Ужаса"
 	show_in_roundend = FALSE
 	show_in_orbit = FALSE
+	var/spider_category = TERROR_OTHER
 	var/spider_intro_text = "Если ты это видишь, это баг."
 
 /datum/antagonist/terror_spider/on_gain()
@@ -42,6 +43,7 @@
 
 /datum/antagonist/terror_spider/proc/on_empress_egg_layed()
 	SIGNAL_HANDLER
+	INVOKE_ASYNC(src, PROC_REF(give_protect_egg_objective))
 	return
 
 /datum/antagonist/terror_spider/give_objectives()
@@ -53,7 +55,19 @@
 		mode.other_target.generate_text()
 	add_objective(mode.other_target)
 	mode.other_target.check_completion()
+	if(mode.empress_egg)
+		give_protect_egg_objective()
 
+/datum/antagonist/terror_spider/proc/give_protect_egg_objective()
+	var/datum/game_mode/mode = SSticker?.mode
+	if(!mode)
+		return
+	if(!mode.protect_egg)
+		mode.protect_egg = new
+		mode.protect_egg.generate_text()
+	if(mode.protect_egg in objectives)
+		return
+	add_objective(mode.protect_egg)
 
 /datum/antagonist/terror_spider/roundend_report_header()
 	return
@@ -67,9 +81,8 @@
 	return messages
 
 /datum/antagonist/terror_spider/main_spider
-	var/spider_category = TERROR_OTHER
 	var/datum/objective/spider_get_power/power_objective
-	var/datum/action/innate/lay_empress_egg/egg_action
+	var/datum/action/innate/terrorspider/lay_empress_egg/egg_action
 
 /datum/antagonist/terror_spider/main_spider/reg_spider_signals()
 	. = ..()
@@ -106,6 +119,9 @@
 	add_objective(mode.lay_eggs_target)
 	power_objective = mode.lay_eggs_target
 	check_target()
+	if(mode.empress_egg)
+		give_protect_egg_objective()
+
 
 /datum/antagonist/terror_spider/main_spider/remove_owner_from_gamemode()
 	. = ..()
@@ -114,14 +130,20 @@
 	spiders -= owner
 
 /datum/antagonist/terror_spider/main_spider/proc/check_target()
-	if(power_objective.check_completion() && !SSticker?.mode?.empress_egg)
+	if(power_objective?.check_completion() && !SSticker?.mode?.empress_egg)
 		add_egg_power()
 
 /datum/antagonist/terror_spider/main_spider/proc/add_egg_power()
 	SIGNAL_HANDLER
-	if(owner?.current)
+	if(owner?.current && !egg_action && !SSticker?.mode?.empress_egg)
 		egg_action = new
 		egg_action.Grant(owner.current)
+	return
+
+/datum/antagonist/terror_spider/main_spider/empress/check_target()
+	return
+	
+/datum/antagonist/terror_spider/main_spider/empress/give_objectives()
 	return
 
 /datum/antagonist/terror_spider/main_spider/defiler
@@ -138,6 +160,8 @@
 	add_objective(mode.infect_target)
 	power_objective = mode.infect_target
 	check_target()
+	if(mode.empress_egg)
+		give_protect_egg_objective()
 
 /datum/antagonist/terror_spider/main_spider/queen
 	spider_category = TERROR_QUEEN
@@ -183,3 +207,5 @@
 	add_objective(mode.prince_target)
 	power_objective = mode.prince_target
 	check_target()
+	if(mode.empress_egg)
+		give_protect_egg_objective()
