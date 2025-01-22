@@ -280,7 +280,7 @@
 	return ritual.check_contents(invoker, used_things)
 
 /datum/component/ritual_object/proc/cast()
-	for(var/mob/living/carbon/human/human as anything in invokers)
+	for(var/mob/living/carbon/human/human in invokers)
 		if(!do_after(human, ritual.cast_time, parent, DA_IGNORE_HELD_ITEM, max_interact_count = 1))
 			return FALSE
 
