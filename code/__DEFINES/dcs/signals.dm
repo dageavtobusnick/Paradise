@@ -1284,3 +1284,6 @@
 
 /// Source: /proc/random_hair_style (mob/living/carbon/human/human, valid_hairstyles, robohead)
 #define COMSIG_RANDOM_HAIR_STYLE	"random_hair_style"
+
+/// Source: /datum/component/ritual_object/proc/pre_ritual_check (status_bitflag, mob/living/carbon/human, list/invokers, list/used_things)
+#define COMSIG_RITUAL_ENDED "ritual_ended"
