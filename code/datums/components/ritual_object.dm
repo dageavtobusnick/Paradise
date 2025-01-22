@@ -125,6 +125,7 @@
 	ritual.handle_ritual_object(RITUAL_STARTED)
 
 	. = ritual_invoke_check(invoker)
+	SEND_SIGNAL(ritual, COMSIG_RITUAL_ENDED, ., invoker, invokers, used_things)
 
 	if(!(. & RITUAL_SUCCESSFUL))
 		failed = TRUE
@@ -167,8 +168,6 @@
 
 	for(var/atom/movable/atom as anything in used_things)
 		UnregisterSignal(atom, COMSIG_MOVABLE_MOVED)
-
-	SEND_SIGNAL(ritual, COMSIG_RITUAL_ENDED, ., invoker, invokers, used_things)
 
 	LAZYNULL(invokers)
 	LAZYNULL(used_things)
