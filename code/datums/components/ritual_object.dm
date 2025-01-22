@@ -168,6 +168,8 @@
 	for(var/atom/movable/atom as anything in used_things)
 		UnregisterSignal(atom, COMSIG_MOVABLE_MOVED)
 
+	SEND_SIGNAL(ritual, COMSIG_RITUAL_ENDED, ., invoker, invokers, used_things)
+
 	LAZYNULL(invokers)
 	LAZYNULL(used_things)
 	ritual = null
