@@ -47,7 +47,7 @@
 /datum/component/ritual_object/UnregisterFromParent()
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACK_HAND)
 
-/datum/component/ritual_object/proc/get_rituals() // We'll get all rituals for flexibility. 
+/datum/component/ritual_object/proc/get_rituals() // We'll get all rituals for flexibility.
 	LAZYCLEARLIST(rituals)
 
 	for(var/datum/ritual/ritual as anything in typecacheof(allowed_categories))
@@ -55,15 +55,15 @@
 			continue
 
 		rituals += new ritual
-	
+
 	for(var/datum/ritual/ritual as anything in rituals)
 		ritual.ritual_object = parent
 
 	return
-	
+
 /datum/component/ritual_object/proc/attackby(datum/source, mob/living/carbon/human/human)
 	SIGNAL_HANDLER
-	
+
 	if(active_ui)
 		return
 
@@ -79,7 +79,7 @@
 	active_ui = TRUE
 	INVOKE_ASYNC(src, PROC_REF(open_ritual_ui), human)
 
-	return COMPONENT_CANCEL_ATTACK_CHAIN 
+	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/ritual_object/proc/open_ritual_ui(mob/living/carbon/human/human)
 	var/list/rituals_list = get_available_rituals(human)
@@ -94,7 +94,7 @@
 	if(!choosen_ritual)
 		active_ui = FALSE
 		return
-	
+
 	return handle_ritual_selection(human, choosen_ritual)
 
 /datum/component/ritual_object/proc/handle_ritual_selection(mob/living/carbon/human/human, choosen_ritual)
@@ -123,7 +123,7 @@
 	var/message
 
 	ritual.handle_ritual_object(RITUAL_STARTED)
-	
+
 	. = ritual_invoke_check(invoker)
 
 	if(!(. & RITUAL_SUCCESSFUL))
@@ -139,7 +139,7 @@
 	if(. & RITUAL_FAILED_ON_PROCEED)
 		cause_disaster = TRUE
 		start_cooldown = TRUE
-	
+
 	if(start_cooldown)
 		COOLDOWN_START(ritual, ritual_cooldown, ritual.cooldown_after_cast)
 
@@ -194,11 +194,11 @@
 	return ritual.do_ritual(invoker, invokers, used_things)
 
 /datum/component/ritual_object/proc/track_atoms(
-	atom/source, 
-	atom/old_loc, 
-	movement_dir, 
-	forced, 
-	atom/old_locs, 
+	atom/source,
+	atom/old_loc,
+	movement_dir,
+	forced,
+	atom/old_locs,
 	momentum_change
 )
 	SIGNAL_HANDLER
@@ -251,7 +251,7 @@
 		for(var/req_type in requirements)
 			if(requirements[req_type] <= 0)
 				continue
-			
+
 			if(!istype(atom, req_type))
 				continue
 
@@ -266,7 +266,7 @@
 	var/list/what_are_we_missing = list()
 	for(var/req_type in requirements)
 		var/number_of_things = requirements[req_type]
-		
+
 		if(number_of_things <= 0)
 			continue
 

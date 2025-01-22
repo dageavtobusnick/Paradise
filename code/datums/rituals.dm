@@ -77,11 +77,15 @@
 	/// If ritual can be invoked only by shaman
 	var/shaman_only = FALSE
 	allowed_species = list(/datum/species/unathi/ashwalker, /datum/species/unathi/draconid)
+	/// If our ritual needed any dyes on the body. Use names from code/modules/mining/ash_walkers/lavaland_dye.dm
+	var/needed_dye = null
+	/// Same, but for totems. This should be made little better, but i have no frackin idea how. Use same file.
+	var/totem_dye = null
 
 /datum/ritual/ashwalker/is_valid_invoker(atom/atom)
-	return istype(atom, /obj/structure/grace_of_lazis) || ..()
+	return istype(atom, /obj/structure/ash_totem) || ..()
 
-/datum/ritual/ashwalker/check_invokers(mob/living/carbon/human/invoker, list/invokers)
+/datum/ritual/ashwalker/check_invokers(atom/invoker, list/invokers)
 	. = ..()
 
 	if(!.)
@@ -90,6 +94,24 @@
 	if(shaman_only && !isashwalkershaman(invoker))
 		to_chat(invoker, span_warning("Только шаман может выполнить данный ритуал!"))
 		return FALSE
+
+	if(needed_dye)
+		for(var/mob/living/carbon/human/human in invokers)
+			if(human.m_styles["body"] != needed_dye)
+				human.balloon_alert(invoker, "нет нужной краски!")
+				return FALSE
+			human.m_styles["body"] = "None"
+			to_chat(human, span_notice("Краска на вашем теле медленно испаряется."))
+			human.update_markings()
+
+		for(var/obj/structure/ash_totem/totem in invokers)
+			if(totem.applied_dye != totem_dye)
+				totem.balloon_alert(invoker, "нет нужной краски!")
+				return FALSE
+			totem.applied_dye = null
+			totem.applied_dye_fluff_name = null
+			totem.visible_message(span_notice("Краска медленно испаряется с тотема."))
+			totem.update_icon(UPDATE_OVERLAYS)
 
 	var/list/shaman_invokers = list()
 
@@ -105,6 +127,44 @@
 			return FALSE
 
 	return TRUE
+
+/datum/ritual/ashwalker/test_cinnabar_one_person
+	name = "cinnabar 1 walkers"
+	cooldown_after_cast = 10 SECONDS
+	cast_time = 10 SECONDS
+	fail_chance = 0
+	disaster_prob = 0
+	needed_dye = "Cinnabar Dyes"
+	totem_dye = "cinnabar"
+
+/datum/ritual/ashwalker/test_crimson_one_person
+	name = "crimson 1 walker"
+	cooldown_after_cast = 10 SECONDS
+	cast_time = 10 SECONDS
+	fail_chance = 0
+	disaster_prob = 0
+	needed_dye = "Crimson Dyes"
+	totem_dye = "crimson"
+
+/datum/ritual/ashwalker/test_mint_two_persons
+	name = "mint 2 walkers"
+	cooldown_after_cast = 10 SECONDS
+	cast_time = 10 SECONDS
+	fail_chance = 0
+	disaster_prob = 0
+	extra_invokers = 1
+	needed_dye = "Mint Dyes"
+	totem_dye = "mint"
+
+/datum/ritual/ashwalker/test_amber_three_persons
+	name = "amber 3 walkers"
+	cooldown_after_cast = 10 SECONDS
+	cast_time = 10 SECONDS
+	fail_chance = 0
+	disaster_prob = 0
+	extra_invokers = 2
+	needed_dye = "Amber Dyes"
+	totem_dye = "amber"
 
 /datum/ritual/ashwalker/summon_ashstorm
 	name = "Ash storm summon"

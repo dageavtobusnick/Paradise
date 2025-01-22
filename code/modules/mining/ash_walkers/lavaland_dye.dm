@@ -21,9 +21,10 @@
 /obj/item/lavaland_dye/attack_obj(obj/object, mob/living/user, params) //это все будет переписано, поэтому коммент на русском. Чтобы не забыть
 	if(istype(object, /obj/structure/ash_totem))
 		var/obj/structure/ash_totem/totem = object
-		totem.applied_dye = totem_dye
-		totem.applied_dye_fluff_name = fluff_name
-		totem.update_icon(UPDATE_OVERLAYS)
+		if(!totem.applied_dye)
+			totem.applied_dye = totem_dye
+			totem.applied_dye_fluff_name = fluff_name
+			totem.update_icon(UPDATE_OVERLAYS)
 
 /obj/item/lavaland_dye/cinnabar
 	name = "cinnabar-colored spleen"
