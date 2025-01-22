@@ -82,6 +82,10 @@
 	/// Same, but for totems. This should be made little better, but i have no frackin idea how. Use same file.
 	var/totem_dye = null
 
+/datum/ritual/ashwalker/New()
+	. = ..()
+	AddElement(/datum/element/dye_removal)
+
 /datum/ritual/ashwalker/is_valid_invoker(atom/atom)
 	return istype(atom, /obj/structure/ash_totem) || ..()
 
@@ -100,18 +104,11 @@
 			if(human.m_styles["body"] != needed_dye)
 				human.balloon_alert(invoker, "нет нужной краски!")
 				return FALSE
-			human.m_styles["body"] = "None"
-			to_chat(human, span_notice("Краска на вашем теле медленно испаряется."))
-			human.update_markings()
 
 		for(var/obj/structure/ash_totem/totem in invokers)
 			if(totem.applied_dye != totem_dye)
 				totem.balloon_alert(invoker, "нет нужной краски!")
 				return FALSE
-			totem.applied_dye = null
-			totem.applied_dye_fluff_name = null
-			totem.visible_message(span_notice("Краска медленно испаряется с тотема."))
-			totem.update_icon(UPDATE_OVERLAYS)
 
 	var/list/shaman_invokers = list()
 
