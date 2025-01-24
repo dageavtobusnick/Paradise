@@ -3347,9 +3347,9 @@
 						var/obj/item/clothing/head/kitty/hat = new
 						var/seifuku = pick(typesof(/obj/item/clothing/under/schoolgirl))
 						var/obj/item/clothing/under/schoolgirl/uniform = new seifuku
-						human.drop_item_ground(human.w_uniform, TRUE)
+						human.temporarily_remove_item_from_inventory(human.w_uniform, TRUE, FALSE, TRUE)
 						human.equip_to_slot_or_del(uniform, uniform.slot_flags)
-						human.drop_item_ground(human.head, TRUE)
+						human.temporarily_remove_item_from_inventory(human.head, TRUE, FALSE, TRUE)
 						human.equip_to_slot_or_del(hat, hat.slot_flags)
 						ADD_TRAIT(uniform, TRAIT_NODROP, INNATE_TRAIT)
 						ADD_TRAIT(hat, TRAIT_NODROP, INNATE_TRAIT)
