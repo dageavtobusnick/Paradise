@@ -56,6 +56,7 @@
 	.["Mark Object"] = "?_src_=vars;mark_object=[UID()]"
 	.["Jump to Object"] = "?_src_=vars;jump_to=[UID()]"
 	.["Delete"] = "?_src_=vars;delete=[UID()]"
+	.["Show VV To Player"] = "?_src_=vars;expose=[UID()]"
 	.["Modify Traits"] = "?_src_=vars;traitmod=[UID()]"
 	.["Add Component/Element"] = "?_src_=vars;addcomponent=[UID()]"
 	.["Remove Component/Element"] = "?_src_=vars;removecomponent=[UID()]"
@@ -110,7 +111,7 @@
 			sprite = new /icon(A.icon, A.icon_state)
 			hash = md5(A.icon)
 			hash = md5(hash + A.icon_state)
-			usr << browse_rsc(sprite, "vv[hash].png")
+			src << browse_rsc(sprite, "vv[hash].png")
 
 
 	var/sprite_text
@@ -157,7 +158,7 @@
 
 
 	var/marked
-	if(holder.marked_datum && holder.marked_datum == D)
+	if(holder?.marked_datum && holder.marked_datum == D)
 		marked = "<br><font size='1' color='red'><b>Marked Object</b></font>"
 
 
@@ -180,7 +181,8 @@
 			"Remove Nulls" = "?_src_=vars;listnulls=[refid]",
 			"Remove Dupes" = "?_src_=vars;listdupes=[refid]",
 			"Set len" = "?_src_=vars;listlen=[refid]",
-			"Shuffle" = "?_src_=vars;listshuffle=[refid]"
+			"Shuffle" = "?_src_=vars;listshuffle=[refid]",
+			"Show VV To Player" = "?_src_=vars;expose=[refid]"
 		)
 	else
 		dropdownoptions = D.vv_get_dropdown()
@@ -438,7 +440,7 @@
 </html>
 	"}
 
-	usr << browse(html, "window=variables[refid];size=475x650")
+	src << browse(html, "window=variables[refid];size=475x650")
 
 #define VV_HTML_ENCODE(thing) ( sanitize ? html_encode(thing) : thing )
 /proc/debug_variable(name, value, level, var/datum/DA = null, sanitize = TRUE, display_flags)
@@ -938,7 +940,7 @@
 		href_list["datumrefresh"] = href_list["emp"]
 
 	else if(href_list["mark_object"])
-		if(!check_rights(0))	return
+		if(!check_rights(R_ADMIN | R_VIEWRUNTIMES))	return
 
 		var/datum/D = locateUID(href_list["mark_object"])
 		if(!istype(D))
@@ -1350,7 +1352,7 @@
 		qdel(rem_organ)
 
 	else if(href_list["regenerateicons"])
-		if(!check_rights(0))	return
+		if(!check_rights(R_ADMIN | R_VIEWRUNTIMES))	return
 
 		var/mob/M = locateUID(href_list["regenerateicons"])
 		if(!ismob(M))
@@ -1480,6 +1482,25 @@
 
 		A.stop_deadchat_plays()
 		log_and_message_admins("removed deadchat control from [A].")
+	
+	else if(href_list["expose"])
+		if(!check_rights(R_ADMIN | R_VIEWRUNTIMES, FALSE))
+			return
+		var/thing = locate(href_list["expose"])
+		if (!thing)
+			return
+		var/value = vv_get_value(VV_CLIENT)
+		if (value["class"] != VV_CLIENT)
+			return
+		var/client/C = value["value"]
+		if (!C)
+			return
+		var/prompt = tgui_alert(usr, "Вы действительно хотите дать [C] возможность посмотреть окно VV? (он не сможет редактировать что-либо или открывать вложенные окна без соответствующего доступа)", "Подтверждение", list("Да", "Нет"))
+		if (prompt != "Да" || !usr.client)
+			return
+		log_and_message_admins("showed [key_name(C)] a VV window of a [thing]")
+		to_chat(C, "[usr.client.holder.fakekey ? "Администратор" : "[usr.client.key]"] дал вам возможность посмотреть окно VV.")
+		C.debug_variables(thing)
 
 /client/proc/view_var_Topic_list(href, href_list, hsrc)
 	if(href_list["VarsList"])
