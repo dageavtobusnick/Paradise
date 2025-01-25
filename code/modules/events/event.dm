@@ -74,6 +74,8 @@
 	var/noAutoEnd       = FALSE
 	/// The area the event will hit
 	var/area/impact_area
+	/// Is event forced by administrator
+	var/forced = FALSE
 	var/datum/event_meta/event_meta = null
 
 /datum/event/nothing
@@ -176,7 +178,7 @@
 	SSevents.active_events -= src
 	SSevents.event_complete(src)
 
-/datum/event/New(datum/event_meta/EM, skeleton = FALSE)
+/datum/event/New(datum/event_meta/EM, skeleton = FALSE, forced = FALSE)
 	// event needs to be responsible for this, as stuff like APLUs currently make their own events for curious reasons
 	if(!skeleton)
 		SSevents.active_events += src
@@ -186,6 +188,9 @@
 
 	event_meta = EM
 	severity = event_meta.severity
+	src.forced = forced
+	if(forced)
+		admin_setup()
 
 	// Validate severity
 	if(severity != EVENT_LEVEL_NONE \
@@ -215,3 +220,9 @@
   */
 /datum/event/proc/fake_announce()
 	return FALSE
+
+/**
+  * Override this to allow admins to configure the force event.
+  */
+/datum/event/proc/admin_setup()
+	return
