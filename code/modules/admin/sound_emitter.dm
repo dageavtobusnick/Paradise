@@ -1,9 +1,9 @@
-#define SOUND_EMITTER_LOCAL "local" //Plays the sound like a normal heard sound
-#define SOUND_EMITTER_DIRECT "direct" //Plays the sound directly to hearers regardless of pressure/proximity/et cetera
+#define SOUND_EMITTER_LOCAL "локальный" //Plays the sound like a normal heard sound
+#define SOUND_EMITTER_DIRECT "прямой" //Plays the sound directly to hearers regardless of pressure/proximity/et cetera
 
-#define SOUND_EMITTER_RADIUS "radius" //Plays the sound to everyone in a radius
-#define SOUND_EMITTER_ZLEVEL "zlevel" //Plays the sound to everyone on the z-level
-#define SOUND_EMITTER_GLOBAL "global" //Plays the sound to everyone in the game world
+#define SOUND_EMITTER_RADIUS "радиус" //Plays the sound to everyone in a radius
+#define SOUND_EMITTER_ZLEVEL "z-уровень" //Plays the sound to everyone on the z-level
+#define SOUND_EMITTER_GLOBAL "глобальный" //Plays the sound to everyone in the game world
 
 //Admin sound emitters with highly customizable functions!
 /obj/effect/sound_emitter
