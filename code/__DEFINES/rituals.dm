@@ -1,5 +1,5 @@
 /// Used in ritual variables
-#define DEFAULT_RITUAL_RANGE_FIND       1
+#define DEFAULT_RITUAL_RANGE_FIND       2
 #define DEFAULT_RITUAL_COOLDOWN         (100 SECONDS)
 #define DEFAULT_RITUAL_DISASTER_PROB    10
 #define DEFAULT_RITUAL_FAIL_PROB        10

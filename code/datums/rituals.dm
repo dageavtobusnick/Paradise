@@ -3,6 +3,8 @@
 	var/obj/ritual_object
 	/// Name of our ritual
 	var/name
+	/// Description of our ritual. Later be used in tgui
+	var/description
 	/// If ritual requires more than one invoker
 	var/extra_invokers = 0
 	/// If invoker species isn't in allowed - he won't do ritual.
@@ -125,53 +127,18 @@
 
 	return TRUE
 
-/datum/ritual/ashwalker/test_cinnabar_one_person
-	name = "cinnabar 1 walkers"
-	cooldown_after_cast = 10 SECONDS
-	cast_time = 10 SECONDS
-	fail_chance = 0
-	disaster_prob = 0
-	needed_dye = "Cinnabar Dyes"
-	totem_dye = "cinnabar"
-
-/datum/ritual/ashwalker/test_crimson_one_person
-	name = "crimson 1 walker"
-	cooldown_after_cast = 10 SECONDS
-	cast_time = 10 SECONDS
-	fail_chance = 0
-	disaster_prob = 0
-	needed_dye = "Crimson Dyes"
-	totem_dye = "crimson"
-
-/datum/ritual/ashwalker/test_mint_two_persons
-	name = "mint 2 walkers"
-	cooldown_after_cast = 10 SECONDS
-	cast_time = 10 SECONDS
-	fail_chance = 0
-	disaster_prob = 0
-	extra_invokers = 1
-	needed_dye = "Mint Dyes"
-	totem_dye = "mint"
-
-/datum/ritual/ashwalker/test_amber_three_persons
-	name = "amber 3 walkers"
-	cooldown_after_cast = 10 SECONDS
-	cast_time = 10 SECONDS
-	fail_chance = 0
-	disaster_prob = 0
-	extra_invokers = 2
-	needed_dye = "Amber Dyes"
-	totem_dye = "amber"
-
 /datum/ritual/ashwalker/summon_ashstorm
-	name = "Ash storm summon"
+	name = "Призыв Пепельной Бури"
+	description = "Проведение данного ритуала обрушивает на Лазис суровую пепельную бурю, значительно ухудшая видимость и смешивая планы чужеземцев."
 	shaman_only = TRUE
 	disaster_prob = 20
 	charges = 2
 	cooldown_after_cast = 1200 SECONDS
-	cast_time = 100 SECONDS
+	cast_time = 20 SECONDS
 	fail_chance = 20
 	extra_invokers = 2
+	needed_dye = "Amber Dyes"
+	totem_dye = "amber"
 	required_things = list(
 		/mob/living/simple_animal/hostile/asteroid/goldgrub = 1
 	)
@@ -196,19 +163,6 @@
 		living.gib()
 
 	return
-
-/datum/ritual/ashwalker/summon_ashstorm/check_invokers(mob/living/carbon/human/invoker, list/invokers)
-	. = ..()
-
-	if(!.)
-		return FALSE
-
-	for(var/mob/living/carbon/human/human in invokers)
-		if(!human.fire_stacks)
-			to_chat(invoker, "Участники ритуала должны быть в воспламеняемой субстанции.")
-			return FALSE
-
-	return TRUE
 
 /datum/ritual/ashwalker/summon_ashstorm/do_ritual(mob/living/carbon/human/invoker, list/invokers, list/used_things)
 	SSweather.run_weather(/datum/weather/ash_storm)
@@ -244,15 +198,17 @@
 			playsound(ritual_object.loc, 'sound/magic/castsummon.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/transformation
-	name = "Transformation ritual"
+	name = "Ритуал Превращения"
+	description = "Проведение данного ритуала обращает тело вторженца в подобного нам. Выбранная жертва должна иметь душу."
 	disaster_prob = 30
 	fail_chance = 50
 	extra_invokers = 1
 	cooldown_after_cast = 480 SECONDS
 	cast_time = 30 SECONDS
 	ritual_should_del_things_on_fail = TRUE
+	needed_dye = "Cinnabar Dyes"
+	totem_dye = "cinnabar"
 	required_things = list(
-		/obj/item/twohanded/spear = 3,
 		/obj/item/organ/internal/regenerative_core = 1,
 		/mob/living/carbon/human = 1
 	)
@@ -295,10 +251,13 @@
 	return ..()
 
 /datum/ritual/ashwalker/summon
-	name = "Summoning ritual"
+	name = "Ритуал Призыва"
+	description = "Проведение данного ритуала позволяет шаману призвать к руне любого пеплоходца вне зависимости от его текущего состояния."
 	disaster_prob = 30
 	fail_chance = 30
 	shaman_only = TRUE
+	needed_dye = "Crimson Dyes"
+	totem_dye = "crimson"
 	cooldown_after_cast = 900 SECONDS
 	cast_time = 30 SECONDS
 	extra_invokers = 1
@@ -364,16 +323,19 @@
 			playsound(ritual_object.loc, 'sound/magic/invoke_general.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/curse
-	name = "Curse ritual"
+	name = "Ритуал Проклятия"
+	description = "Проведение данного ритуала приведёт к наложению страшной, почти неизлечимой болезни на случайного гуманоида, который не принадлежит нашему племени."
 	disaster_prob = 30
 	fail_chance = 30
 	cooldown_after_cast = 600 SECONDS
 	cast_time = 30 SECONDS
 	charges = 3
 	shaman_only = TRUE
+	needed_dye = "Crimson Dyes"
+	totem_dye = "crimson"
 	extra_invokers = 2
 	required_things = list(
-		/mob/living/carbon/human = 3
+		/mob/living/carbon/human = 1
 	)
 
 /datum/ritual/ashwalker/curse/del_things(list/used_things)
@@ -431,17 +393,20 @@
 	return
 
 /datum/ritual/ashwalker/power
-	name = "Power ritual"
+	name = "Ритуал Силы"
+	description = "Проведение данного ритуала значительно увеличит силу всех его участников, позволяя им таскать тяжести без замедления."
 	disaster_prob = 40
 	fail_chance = 40
 	charges = 1
 	cooldown_after_cast = 800 SECONDS
 	cast_time = 30 SECONDS
 	shaman_only = TRUE
-	extra_invokers = 4
+	extra_invokers = 2
+	needed_dye = "Indigo Dyes"
+	totem_dye = "indigo"
 	required_things = list(
-		/mob/living/simple_animal/hostile/asteroid/goliath = 3,
-		/obj/item/organ/internal/regenerative_core = 3
+		/mob/living/simple_animal/hostile/asteroid/goliath = 1,
+		/obj/item/organ/internal/regenerative_core = 1
 	)
 
 /datum/ritual/ashwalker/power/del_things(list/used_things)
@@ -505,7 +470,8 @@
 			playsound(ritual_object.loc, 'sound/magic/strings.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/resurrection
-	name = "Resurrection ritual"
+	name = "Ритуал Воскрешения"
+	description = "Проведение данного ритуала позволит оживить погибшего гуманоида, находящегося на руне."
 	charges = 3
 	extra_invokers = 2
 	cooldown_after_cast = 180 SECONDS
@@ -513,11 +479,12 @@
 	shaman_only = TRUE
 	disaster_prob = 25
 	fail_chance = 35
+	needed_dye = "Mint Dyes"
+	totem_dye = "mint"
 	required_things = list(
 		/obj/item/organ/internal/regenerative_core = 2,
 		/mob/living/carbon/human = 1,
-		/obj/item/reagent_containers/food/snacks/grown/ash_flora/fireblossom = 4,
-		/obj/item/reagent_containers/food/snacks/grown/ash_flora/cactus_fruit = 1
+		/obj/item/reagent_containers/food/snacks/grown/ash_flora/fireblossom = 2
 	)
 
 /datum/ritual/ashwalker/resurrection/check_contents(mob/living/carbon/human/invoker, list/used_things)
@@ -567,18 +534,20 @@
 			playsound(ritual_object.loc, 'sound/magic/invoke_general.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/recharge
-	name = "Recharge rituals"
+	name = "Ритуал Восстановления"
+	description = "Проведение данного ритуала позволит восстановить заряды у ритуалов, имеющих ограниченное количество зарядов."
 	extra_invokers = 3
 	disaster_prob = 30
 	fail_chance = 50
 	cooldown_after_cast = 360 SECONDS
 	cast_time = 30 SECONDS
 	shaman_only = TRUE
+	needed_dye = "Amber Dyes"
+	totem_dye = "amber"
 	required_things = list(
 		/mob/living/simple_animal/hostile/asteroid/basilisk/watcher = 1,
 		/mob/living/simple_animal/hostile/asteroid/goliath = 1,
 		/obj/item/organ/internal/regenerative_core = 1,
-		/mob/living/simple_animal/hostile/asteroid/goldgrub = 1
 	)
 	var/list/blacklisted_rituals = list(/datum/ritual/ashwalker/power)
 
@@ -647,19 +616,19 @@
 			playsound(ritual_object.loc, 'sound/magic/invoke_general.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/population
-	name = "Population ritual"
+	name = "Ритуал Населения"
+	description = "Проведение данного ритуала позволит племени пеплоходцев получить второго шамана."
 	extra_invokers = 2
 	charges = 1
 	cooldown_after_cast = 120 SECONDS
 	cast_time = 30 SECONDS
 	ritual_should_del_things_on_fail = TRUE
+	needed_dye = "Cinnabar Dyes"
+	totem_dye = "cinnabar"
 	required_things = list(
 		/obj/item/reagent_containers/food/snacks/grown/ash_flora/cactus_fruit = 1,
 		/obj/item/reagent_containers/food/snacks/grown/ash_flora/fireblossom = 1,
-		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_stem = 1,
 		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_leaf = 1,
-		/obj/item/reagent_containers/food/snacks/grown/ash_flora/mushroom_cap = 1,
-		/obj/item/reagent_containers/food/snacks/grown/ash_flora/shavings = 1
 	)
 
 /datum/ritual/ashwalker/population/check_invokers(mob/living/carbon/human/invoker, list/invokers)
@@ -728,10 +697,13 @@
 			playsound(ritual_object.loc, 'sound/magic/teleport_diss.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/soul
-	name = "Soul ritual"
+	name = "Ритуал Души"
+	description = "Проведение данного ритуала позволяет призывающему возвыситься до драконида."
 	extra_invokers = 3
 	cooldown_after_cast = 1200 SECONDS
 	cast_time = 30 SECONDS
+	needed_dye = "Crimson Dyes"
+	totem_dye = "crimson"
 	required_things = list(
 		/mob/living/carbon/human = 3,
 		/obj/item/stack/sheet/animalhide/ashdrake = 1
@@ -804,8 +776,9 @@
 			playsound(ritual_object.loc, 'sound/effects/blobattack.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/transmutation
-	name = "Transmutation ritual"
-	cooldown_after_cast = 120 SECONDS
+	name = "Ритуал Трансмутации"
+	description = "Проведение данного ритуала позволяет трансмутировать 10 единиц любой руды в другую случайную руду."
+	cooldown_after_cast = 20 SECONDS
 	cast_time = 10 SECONDS
 	required_things = list(
 		/obj/item/stack/ore = 10
@@ -856,7 +829,8 @@
 			playsound(ritual_object.loc, 'sound/magic/knock.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/interrogation
-	name = "Interrogation ritual"
+	name = "Ритуал Допроса"
+	description = "Проведение данного ритуала позволяет получить информацию о чувствах и мыслях вашей жертвы."
 	cooldown_after_cast = 50 SECONDS
 	shaman_only = TRUE
 	cast_time = 10 SECONDS
@@ -928,11 +902,14 @@
 			playsound(ritual_object.loc, 'sound/effects/forge_destroy.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/creation
-	name = "Creation ritual"
+	name = "Ритуал Создания"
+	description = "Проведение данного ритуала позволяет призвать двух случайных враждебных существ к руне."
 	cooldown_after_cast = 150 SECONDS
 	shaman_only = TRUE
 	extra_invokers = 2
 	cast_time = 30 SECONDS
+	needed_dye = "Indigo Dyes"
+	totem_dye = "indigo"
 	required_things = list(
 		/mob/living/carbon/human = 2
 	)
@@ -999,16 +976,18 @@
 			playsound(ritual_object.loc, 'sound/magic/castsummon.ogg', 50, TRUE)
 
 /datum/ritual/ashwalker/command
-	name = "Command ritual"
+	name = "Ритуал Коммандования"
+	description = "Проведение данного ритуала позволяет получить в ваше подчинение местную фауну."
 	cooldown_after_cast = 150 SECONDS
 	shaman_only = TRUE
 	disaster_prob = 35
 	extra_invokers = 1
 	cast_time = 30 SECONDS
+	needed_dye = "Mint Dyes"
+	totem_dye = "mint"
 	required_things = list(
 		/mob/living/simple_animal = 1,
 		/obj/item/organ/internal/regenerative_core = 1,
-		/obj/item/reagent_containers/food/snacks/monstermeat/spiderleg = 1
 	)
 
 /datum/ritual/ashwalker/command/check_contents(mob/living/carbon/human/invoker, list/used_things)
