@@ -235,7 +235,15 @@ GLOBAL_LIST_INIT(VVpixelmovement, list("step_x", "step_y", "step_size", "bound_h
 				.["class"] = null
 				return
 			.["type"] = type
-			.["value"] = new type()
+			var/list/arguments
+			
+			if(tgui_alert(usr, "Вы хотите добавить аргументы?", "Новый атом", list("Да", "Нет")) == "Да")
+				arguments = get_callproc_args(FALSE)
+			else
+				arguments = list()
+
+			.["value"] = new type(arglist(arguments))
+
 
 		if(VV_NEW_DATUM)
 			var/type = pick_closest_path(FALSE, get_fancy_list_of_datum_types())
@@ -243,23 +251,34 @@ GLOBAL_LIST_INIT(VVpixelmovement, list("step_x", "step_y", "step_size", "bound_h
 				.["class"] = null
 				return
 			.["type"] = type
-			.["value"] = new type()
+			var/list/arguments
+			
+			if(tgui_alert(usr, "Вы хотите добавить аргументы?", "Новый атом", list("Да", "Нет")) == "Да")
+				arguments = get_callproc_args(FALSE)
+			else
+				arguments = list()
+
+			.["value"] = new type(arglist(arguments))
 
 		if(VV_NEW_TYPE)
 			var/type = current_value
 			var/error = ""
-			do
-				type = tgui_input_text(src, "Введите тип:[error]", "Тип", type)
-				if(!type)
-					break
+			type = tgui_input_text(src, "Введите тип:[error]", "Тип", type)
+			if(!type)
 				type = text2path(type)
 				error = "\nТип не найден, Попробуйте снова"
-			while(!type)
-			if(!type)
 				.["class"] = null
 				return
+
 			.["type"] = type
-			.["value"] = new type()
+			var/list/arguments
+			
+			if(tgui_alert(usr, "Вы хотите добавить аргументы?", "Новый атом", list("Да", "Нет")) == "Да")
+				arguments = get_callproc_args(FALSE)
+			else
+				arguments = list()
+
+			.["value"] = new type(arglist(arguments))
 
 
 		if(VV_NEW_LIST)
