@@ -305,6 +305,10 @@ BLIND     // can't see anything
 	var/surgeryspeedmod = 0
 	/// Same as above, used for surgery modifiers
 	var/toolspeedmod = 0
+	/// Constant time of surgery step
+	var/surgery_step_time = null
+	/// Chance of germs transfering to organ
+	var/surgery_germ_chance = 100
 	strip_delay = 20
 	put_on_delay = 40
 

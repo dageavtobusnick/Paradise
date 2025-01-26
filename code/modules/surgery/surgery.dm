@@ -352,7 +352,15 @@
 
 	// They also have some interesting ways that surgery success/fail prob get evaluated, maybe worth looking at
 	speed_mod /= (get_location_modifier(target) * 1 + surgery.speed_modifier) * implement_speed_mod
-	var/modded_time = slowdown_immune(user) ? time : time * speed_mod
+	var/step_time = time
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/human_user = user
+		var/obj/item/clothing/gloves/gloves = human_user.gloves
+		if(gloves && istype(gloves))
+			step_time = !isnull(gloves.surgery_step_time)? gloves.surgery_step_time : time
+
+	var/modded_time = slowdown_immune(user) ? step_time : step_time * speed_mod
 
 	if(implement_type)	// If this is set, we aren't in an allow_hand or allow_any_item step.
 		prob_success = allowed_tools[implement_type]
@@ -529,7 +537,8 @@
 
 	// germ spread from surgeon touching the patient
 	if(user.gloves)
-		germ_level = user.gloves.germ_level
+		var/obj/item/clothing/gloves/gloves = user.gloves
+		germ_level = !(istype(gloves) && prob(gloves.surgery_germ_chance))? user.gloves.germ_level : 0
 	target_organ.germ_level = max(germ_level, target_organ.germ_level)
 	spread_germs_by_incision(target_organ, tool) //germ spread from environement to patient
 

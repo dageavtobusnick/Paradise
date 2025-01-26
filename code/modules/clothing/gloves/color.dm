@@ -270,6 +270,49 @@
 	item_color = "modified"
 	surgeryspeedmod = -0.3
 
+/obj/item/clothing/gloves/color/latex/inugami
+	name = "medical gloves Inugami"
+	desc = "Прототип медицинских перчаток оснащенных наночипами, что значительно корректируют работу носителя во время проведения операции."
+	ru_names = list(
+		NOMINATIVE = "медицинские перчатки Inugami",
+		GENITIVE = "медицинских перчаток Inugami",
+		DATIVE = "медицинским перчаткам Inugami",
+		ACCUSATIVE = "медицинские перчатки Inugami",
+		INSTRUMENTAL = "медицинскими перчатками Inugami",
+		PREPOSITIONAL = "медицинских перчатках Inugami",
+	)
+	icon_state = "inugami_gl"
+	item_state = "inugami_gl"
+	item_color = null
+	surgery_step_time = 0.5 SECONDS
+	surgery_germ_chance = 50
+
+/obj/item/clothing/gloves/color/latex/inugami/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/defib, ignore_hardsuits = TRUE, safe_by_default = TRUE, emp_proof = TRUE, emag_proof = TRUE)
+
+/obj/item/clothing/gloves/color/latex/inugami/Touch(atom/A, proximity)
+	if(!ishuman(loc))
+		return FALSE //Only works while worn
+
+	if(!ishuman(A))
+		return FALSE
+
+	if(!proximity)
+		return FALSE
+
+	var/mob/living/carbon/human/human = loc
+	if(human.a_intent == INTENT_HELP)
+		if(!human.is_hands_free())
+			to_chat(usr, span_warning("Чтобы провести дефибрилляцию, обе руки должны быть свободны."))
+			balloon_alert(usr, "руки заняты")
+			return FALSE
+		SEND_SIGNAL(src, COMSIG_MOB_ITEM_TOUCH, A, usr)
+		return TRUE
+
+	return FALSE
+	
+
 /obj/item/clothing/gloves/color/white
 	name = "white gloves"
 	desc = "These look pretty fancy."
