@@ -774,7 +774,7 @@ GLOBAL_VAR_INIT(nologevent, 0)
 
 
 /datum/admins/proc/spawn_atom(object as text)
-	set category = "Admin.Event Spawn"
+	set category = "Admin.Event"
 	set desc = "(путь атома) Создайте атом. Добавьте точку к тексту, чтобы исключить подтипы пути, соответствующего входным данным."
 	set name = "Spawn"
 

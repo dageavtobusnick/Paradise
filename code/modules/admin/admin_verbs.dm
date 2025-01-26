@@ -467,7 +467,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 
 /client/proc/game_panel()
 	set name = "Game Panel"
-	set category = "Admin.Event Spawn"
+	set category = "Admin.Event"
 
 	if(!check_rights(R_ADMIN | R_EVENT))
 		return
