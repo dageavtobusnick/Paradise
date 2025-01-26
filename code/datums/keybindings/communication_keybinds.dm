@@ -50,7 +50,7 @@
 
 /datum/keybinding/client/communication/whisper
 	name = WHISPER_CHANNEL
-	keys = list("ShiftB")
+	keys = list("ShiftT")
 	mute_category = MUTE_IC
 
 /datum/keybinding/client/communication/radio
