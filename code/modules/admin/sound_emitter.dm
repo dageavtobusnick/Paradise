@@ -49,7 +49,7 @@
 	to_chat(user, span_notice("<b>Дальность:</b> [emitter_range]"))
 	to_chat(user, span_notice("<b>Громкость проигрываемого звука [sound_volume]%.</b>"))
 	if(user.client.holder)
-		to_chat(user, "<b>Альт+ЛКМ для быстрой активации!</b>")
+		to_chat(user, "<b>Alt+ЛКМ для быстрой активации!</b>")
 
 /obj/effect/sound_emitter/attack_ghost(mob/user)
 	if(!check_rights_for(user.client, R_SOUNDS))
