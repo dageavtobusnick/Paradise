@@ -1488,7 +1488,7 @@
 		var/atom/object = locateUID(href_list["atom_say"])
 		if(!istype(object))
 			return
-		var/say_text = tgui_input_text(usr, "Введите то, что хотите, чтобы объект сказал", "Введите текст", "", multiline = TRUE, encode = FALSE)
+		var/say_text = tgui_input_text(usr, "Введите то, что хотите, чтобы объект сказал", "Введите текст", multiline = TRUE, encode = FALSE)
 
 		object.atom_say(say_text)
 
