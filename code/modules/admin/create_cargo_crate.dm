@@ -9,7 +9,7 @@ GLOBAL_LIST_INIT(create_crate_forms, list(/datum/supply_packs, /datum/syndie_sup
 		GLOB.create_object_html = replacetext(GLOB.create_object_html, "null /* object types */", "\"[objectjs]\"")
 		GLOB.create_mob_html = replacetext(GLOB.create_mob_html, "Create Object", "Create Crate")
 
-	var/datum/browser/popup = new(user, "create_crate", "<div align='center'>Create Object</div>", 550, 600)
+	var/datum/browser/popup = new(user, "create_crate", "<div align='center'>Create Crate</div>", 550, 600)
 	var/unique_content = GLOB.create_object_html
 	unique_content = replacetext(unique_content, "/* ref src */", UID())
 	popup.set_content(unique_content)
