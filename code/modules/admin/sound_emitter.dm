@@ -8,7 +8,7 @@
 //Admin sound emitters with highly customizable functions!
 /obj/effect/sound_emitter
 	name = "sound emitter"
-	desc = "Издает звуки, предположительно."
+	desc = "Издаёт звуки, наверное."
 	ru_names = list(
 		NOMINATIVE = "излучатель звука",
 		GENITIVE = "излучателя звука",
