@@ -590,7 +590,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 	else
 		H = M
 		if(H.l_store || H.r_store || H.s_store) //saves a lot of time for admins and coders alike
-			if(tgui_alert(usr, "Нужно ли выбрасывать вещи из карманов? Выбор \"Нет\" удалит их.", "Робастный, быстрый магазин одежды", "Да", "Нет") == "Нет")
+			if(tgui_alert(usr, "Нужно ли выбрасывать вещи из карманов? Выбор \"Нет\" удалит их.", "Выбор экипировки существа", "Да", "Нет") == "Нет")
 				delete_pocket = TRUE
 
 	for (var/obj/item/I in H.get_equipped_items(delete_pocket))
