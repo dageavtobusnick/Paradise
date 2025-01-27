@@ -29,7 +29,7 @@
 	START_PROCESSING(SSobj, src)
 	impact_area = get_area(src)
 
-	if(!impact_area)
+	if(!impact_area || impact_area.outdoors)
 		return INITIALIZE_HINT_QDEL
 
 	drops_core = _drops_core
@@ -254,7 +254,7 @@
 		investigate_log("teleported [key_name_log(moving_atom)] to [COORD(moving_atom)]", INVESTIGATE_TELEPORTATION)
 
 /obj/effect/anomaly/bluespace/detonate()
-	if(!mass_teleporting)
+	if(!mass_teleporting || impact_area.outdoors)
 		return
 	var/turf/T = pick(get_area_turfs(impact_area))
 	if(T)
