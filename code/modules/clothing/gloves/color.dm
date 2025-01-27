@@ -304,7 +304,6 @@
 	var/mob/living/carbon/human/human = loc
 	if(human.a_intent == INTENT_HELP)
 		if(!human.is_hands_free())
-			to_chat(usr, span_warning("Чтобы провести дефибрилляцию, обе руки должны быть свободны."))
 			balloon_alert(usr, "руки заняты")
 			return FALSE
 		SEND_SIGNAL(src, COMSIG_MOB_ITEM_TOUCH, A, usr)
