@@ -2860,10 +2860,6 @@
 		if(!check_rights(R_SPAWN))	return
 		return create_mob(usr)
 
-	else if(href_list["create_crate"])
-		if(!check_rights(R_SPAWN))	return
-		return create_crate(usr)
-
 	else if(href_list["dupe_marked_datum"])
 		if(!check_rights(R_SPAWN))	return
 		return DuplicateObject(marked_datum, perfectcopy=1, newloc=get_turf(usr))
@@ -2885,7 +2881,7 @@
 			var/path = text2path(dirty_path)
 			if(!path)
 				continue
-			else if(!ispath(path, /obj) && !ispath(path, /turf) && !ispath(path, /mob) && !/datum/supply_packs && !/datum/syndie_supply_order)
+			else if(!ispath(path, /obj) && !ispath(path, /turf) && !ispath(path, /mob))
 				continue
 			paths += path
 
@@ -2945,28 +2941,6 @@
 						var/turf/N = O.ChangeTurf(path)
 						if(N && obj_name)
 							N.name = obj_name
-
-					else if(path in typecacheof(/datum/supply_packs))
-						var/datum/supply_order/order = new
-						order.ordernum = 0
-						order.object = new path
-						order.orderedby = "ОШИБКА"
-						order.orderedbyRank = "ОШИБКА"
-						order.crates = 1
-						order.createObject(get_turf(target))
-
-						log_and_message_admins("spawned cargo pack [order.object.name] at ([target.x],[target.y],[target.z])")
-					
-					else if(path in typecacheof(/datum/syndie_supply_packs))
-						var/datum/syndie_supply_order/order = new
-						order.ordernum = 0
-						order.object = new path
-						order.orderedby = "ОШИБКА"
-						order.orderedbyRank = "ОШИБКА"
-						order.crates = 1
-						order.createObject(get_turf(target))
-
-						log_and_message_admins("spawned cargo pack [order.object.name] at ([target.x],[target.y],[target.z])")
 					else
 						var/atom/O = new path(target)
 						if(O)
@@ -3553,6 +3527,11 @@
 					message_admins("[key_name_admin(usr)] moved the gamma armory")
 					log_admin("[key_name(usr)] moved the gamma armory")
 					GLOB.gamma_ship_location = !GLOB.gamma_ship_location
+
+			if("spawn_cargo_crate")
+				if(!you_realy_want_do_this())
+					return
+				create_cargo_crate()
 
 		if(usr)
 			log_admin("[key_name(usr)] used secret [href_list["secretsfun"]]")
