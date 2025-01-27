@@ -107,7 +107,7 @@
 	if(href_list["play"])
 		activate(user)
 		if(user)
-			log_admin("[ADMIN_LOOKUPFLW(user)] activated a sound emitter with file \"[sound_file]\" at [COORD(src)]")
+			log_admin("[key_name(user)] activated a sound emitter with file \"[sound_file]\" at [COORD(src)]")
 
 	if(href_list["edit_label"])
 		var/new_label = tgui_input_text(user, "Введите маркировку", "Звуковой излучатель", max_length = MAX_NAME_LEN)
