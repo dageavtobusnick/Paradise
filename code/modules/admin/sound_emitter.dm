@@ -97,7 +97,7 @@
 	if(href_list["reload"])
 		reload(user)
 		if(user)
-			log_admin("[ADMIN_LOOKUPFLW(user)] reloaded a sound emitter with file \"[sound_file]\" at [COORD(src)]")
+			log_admin("[key_name(user)] reloaded a sound emitter with file \"[sound_file]\" at [COORD(src)]")
 
 	if(started)
 		to_chat(usr, span_notice("Пока проигрывание звука не остановлено, редактировать излучатель нельзя."))
