@@ -333,7 +333,7 @@
 			log_admin_rank_modification(adm_ckey, new_rank, rights)
 
 		else if(task == "permissions")
-			if(!D)	
+			if(!D)
 				return
 			var/new_value = input_bitfield(usr, "rights", D.rights)
 			if(!new_value)
@@ -341,7 +341,7 @@
 			var/add_bits = new_value & ~D.rights
 			var/removed_bits = D.rights & ~new_value
 			D.rights = new_value
-			edit_admin_permissions() 
+			edit_admin_permissions()
 			message_admins("[key_name_admin(usr)] переключил флаги админу [adm_ckey]: [add_bits? " ВКЛ - [rights2text(add_bits, " ")]" : ""][removed_bits? " ВЫКЛ - [rights2text(removed_bits, " ")]":""]")
 			log_admin("[key_name(usr)] переключил флаги админу [adm_ckey]: [add_bits? " ВКЛ - [rights2text(add_bits, " ")]" : ""][removed_bits? " ВЫКЛ - [rights2text(removed_bits, " ")]":""]")
 			log_admin_permission_modification(adm_ckey, new_value )
@@ -1593,7 +1593,7 @@
 			return
 
 		usr.client.view_msays()
-		
+
 	else if(href_list["devsays"])
 		if(!check_rights(R_ADMIN | R_VIEWRUNTIMES))
 			return
@@ -3340,17 +3340,18 @@
 
 				SSblackbox.record_feedback("tally", "admin_secrets_fun_used", 1, "Chinese Cartoons")
 				log_and_message_admins("made everything kawaii.")
-				for(var/mob/living/carbon/human/human in GLOB.mob_list)
+				for(var/mob/living/carbon/human/human as anything in GLOB.human_list)
 					SEND_SOUND(human, 'sound/AI/animes.ogg')
 					if(!human.dna.species.nojumpsuit && !isvox(human) && !isplasmaman(human) \
 						&& !isshadowling(human) && !isvoxarmalis(human) && !is_space_or_openspace(get_turf(human)))
 						var/obj/item/clothing/head/kitty/hat = new
 						var/seifuku = pick(typesof(/obj/item/clothing/under/schoolgirl))
 						var/obj/item/clothing/under/schoolgirl/uniform = new seifuku
-						human.temporarily_remove_item_from_inventory(human.w_uniform, TRUE, FALSE, TRUE)
+						human.drop_item_ground(human.w_uniform, TRUE, FALSE, TRUE)
 						human.equip_to_slot_or_del(uniform, uniform.slot_flags)
-						human.temporarily_remove_item_from_inventory(human.head, TRUE, FALSE, TRUE)
+						human.drop_item_ground(human.head, TRUE, FALSE, TRUE)
 						human.equip_to_slot_or_del(hat, hat.slot_flags)
+
 						ADD_TRAIT(uniform, TRAIT_NODROP, INNATE_TRAIT)
 						ADD_TRAIT(hat, TRAIT_NODROP, INNATE_TRAIT)
 					var/list/honorifics = list(MALE = list("кун"), FEMALE = list("чан","тан"), NEUTER = list("сан")) //John Robust -> Robust-kun
