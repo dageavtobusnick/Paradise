@@ -55,7 +55,8 @@
 	GLOB.poi_list.Remove(src)
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(countdown)
-	QDEL_NULL(aSignal)
+	if(!ispath(aSignal))
+		QDEL_NULL(aSignal)
 	return ..()
 
 /obj/effect/anomaly/process()
