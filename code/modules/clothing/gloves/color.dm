@@ -291,6 +291,21 @@
 	. = ..()
 	AddComponent(/datum/component/defib, ignore_hardsuits = TRUE, safe_by_default = TRUE, emp_proof = TRUE, emag_proof = TRUE)
 
+/obj/item/clothing/gloves/color/latex/inugami/equipped(mob/living/carbon/human/user, slot, initial)
+	. = ..()
+	if(slot == ITEM_SLOT_GLOVES)
+		RegisterSignal(user, COMSIG_SURGERY_STEP_INIT, PROC_REF(on_surgery_step_init))
+	else
+		UnregisterSignal(user, COMSIG_SURGERY_STEP_INIT)
+
+/obj/item/clothing/gloves/color/latex/inugami/dropped(mob/living/carbon/human/user, slot, silent)
+	. = ..()
+	UnregisterSignal(user, COMSIG_SURGERY_STEP_INIT)
+
+/obj/item/clothing/gloves/color/latex/inugami/proc/on_surgery_step_init(user, time_pointer)
+	SIGNAL_HANDLER
+	*time_pointer = surgery_step_time
+
 /obj/item/clothing/gloves/color/latex/inugami/Touch(atom/A, proximity)
 	if(!ishuman(loc))
 		return FALSE //Only works while worn
@@ -310,7 +325,7 @@
 		return TRUE
 
 	return FALSE
-	
+
 
 /obj/item/clothing/gloves/color/white
 	name = "white gloves"

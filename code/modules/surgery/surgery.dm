@@ -354,11 +354,7 @@
 	speed_mod /= (get_location_modifier(target) * 1 + surgery.speed_modifier) * implement_speed_mod
 	var/step_time = time
 
-	if(ishuman(user))
-		var/mob/living/carbon/human/human_user = user
-		var/obj/item/clothing/gloves/gloves = human_user.gloves
-		if(gloves && istype(gloves))
-			step_time = !isnull(gloves.surgery_step_time)? gloves.surgery_step_time : time
+	SEND_SIGNAL(user, COMSIG_SURGERY_STEP_INIT, &step_time)
 
 	var/modded_time = slowdown_immune(user) ? step_time : step_time * speed_mod
 
