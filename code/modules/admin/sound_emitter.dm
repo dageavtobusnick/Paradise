@@ -92,7 +92,7 @@
 	if(href_list["stop"])
 		deactivate(user)
 		if(user)
-			log_admin("[ADMIN_LOOKUPFLW(user)] deactivated a sound emitter at [COORD(src)]")
+			log_admin("[key_name(user)] deactivated a sound emitter at [COORD(src)]")
 
 	if(href_list["reload"])
 		reload(user)
