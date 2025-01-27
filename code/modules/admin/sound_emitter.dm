@@ -88,16 +88,16 @@
 	if(!ismob(usr) || !usr.client || !check_rights_for(usr.client, R_SOUNDS))
 		return
 	var/mob/user = usr
-	
+
 	if(href_list["stop"])
 		deactivate(user)
 		if(user)
-			log_admin("[key_name(user)] deactivated a sound emitter at [COORD(src)]")
+			log_and_message_admins("deactivated a sound emitter at [COORD(src)]")
 
 	if(href_list["reload"])
 		reload(user)
 		if(user)
-			log_admin("[key_name(user)] reloaded a sound emitter with file \"[sound_file]\" at [COORD(src)]")
+			log_and_message_admins("reloaded a sound emitter with file \"[sound_file]\" at [COORD(src)]")
 
 	if(started)
 		to_chat(usr, span_notice("Пока проигрывание звука не остановлено, редактировать излучатель нельзя."))
@@ -107,7 +107,7 @@
 	if(href_list["play"])
 		activate(user)
 		if(user)
-			log_admin("[key_name(user)] activated a sound emitter with file \"[sound_file]\" at [COORD(src)]")
+			log_and_message_admins("activated a sound emitter with file \"[sound_file]\" at [COORD(src)]")
 
 	if(href_list["edit_label"])
 		var/new_label = tgui_input_text(user, "Введите маркировку", "Звуковой излучатель", max_length = MAX_NAME_LEN)
