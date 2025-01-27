@@ -340,6 +340,23 @@ BLIND     // can't see anything
 
 // Called just before an attack_hand(), in mob/UnarmedAttack()
 /obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
+	if(!ishuman(loc))
+		return FALSE //Only works while worn
+
+	if(!ishuman(A))
+		return FALSE
+
+	if(!proximity)
+		return FALSE
+
+	var/mob/living/carbon/human/human = loc
+	if(human.a_intent == INTENT_HELP)
+		if(!human.is_hands_free())
+			balloon_alert(usr, "руки заняты!")
+			return FALSE
+		SEND_SIGNAL(src, COMSIG_GLOVES_DOUBLE_HANDS_TOUCH, A, usr)
+		return TRUE
+
 	return FALSE // return TRUE to cancel attack_hand()
 
 

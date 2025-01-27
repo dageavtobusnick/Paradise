@@ -306,27 +306,6 @@
 	SIGNAL_HANDLER
 	*time_pointer = surgery_step_time
 
-/obj/item/clothing/gloves/color/latex/inugami/Touch(atom/A, proximity)
-	if(!ishuman(loc))
-		return FALSE //Only works while worn
-
-	if(!ishuman(A))
-		return FALSE
-
-	if(!proximity)
-		return FALSE
-
-	var/mob/living/carbon/human/human = loc
-	if(human.a_intent == INTENT_HELP)
-		if(!human.is_hands_free())
-			balloon_alert(usr, "руки заняты!")
-			return FALSE
-		SEND_SIGNAL(src, COMSIG_MOB_ITEM_TOUCH, A, usr)
-		return TRUE
-
-	return FALSE
-
-
 /obj/item/clothing/gloves/color/white
 	name = "white gloves"
 	desc = "These look pretty fancy."
