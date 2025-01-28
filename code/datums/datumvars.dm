@@ -1,3 +1,7 @@
+#define VV_MSG_MARKED "<br><font size='1' color='red'><b>Marked Object</b></font>"
+#define VV_MSG_EDITED "<br><font size='1' color='red'><b>Var Edited</b></font>"
+#define VV_MSG_ADMIN_SPAWNED "<br><font size='1' color='red'><b>Admin Spawned</b></font>"
+#define VV_MSG_DELETED "<br><font size='1' color='red'><b>Deleted</b></font>"
 // reference: /client/proc/modify_variables(var/atom/O, var/param_var_name = null, var/autodetect_class = 0)
 
 /**
@@ -110,7 +114,9 @@
 			hash = md5(A.icon)
 			hash = md5(hash + A.icon_state)
 			usr << browse_rsc(sprite, "vv[hash].png")
-
+			
+	title = "[D]"
+	var/formatted_type = replacetext("[type]", "/", "<wbr>/")
 
 	var/sprite_text
 	if(sprite)
@@ -122,30 +128,31 @@
 		var/atom/A = D
 		if(isliving(A))
 			var/mob/living/L = A
-			atomsnowflake += "<a href='byond://?_src_=vars;rename=[L.UID()]'><b>[L]</b></a>"
-			if(L.dir)
-				atomsnowflake += "<br><font size='1'><a href='byond://?_src_=vars;rotatedatum=[L.UID()];rotatedir=left'><<</a> <a href='byond://?_src_=vars;datumedit=[L.UID()];varnameedit=dir'>[dir2text(L.dir)]</a> <a href='byond://?_src_=vars;rotatedatum=[L.UID()];rotatedir=right'>>></a></font>"
+			atomsnowflake += "<a href='byond://?_src_=vars;rename=[refid]'><b id='name'>[D]</b></a>"
+			atomsnowflake += "<br><font size='1'><a href='byond://?_src_=vars;rotatedatum=[refid];rotatedir=left'><<</a> <a href='byond://?_src_=vars;datumedit=[refid];varnameedit=dir' id='dir'>[dir2text(A.dir) || A.dir]</a> <a href='byond://?_src_=vars;rotatedatum=[refid];rotatedir=right'>>></a></font>"
 			atomsnowflake += {"
-				<br><font size='1'><a href='byond://?_src_=vars;datumedit=[L.UID()];varnameedit=ckey'>[L.ckey ? L.ckey : "No ckey"]</a> / <a href='byond://?_src_=vars;datumedit=[L.UID()];varnameedit=real_name'>[L.real_name ? L.real_name : "No real name"]</a></font>
+				<br><font size='1'><a href='byond://?_src_=vars;datumedit=[refid];varnameedit=ckey' id='ckey'>[L.ckey || "No ckey"]</a> / <a href='byond://?_src_=vars;datumedit=[refid];varnameedit=real_name' id='real_name'>[L.real_name || "No real name"]</a></font>
 				<br><font size='1'>
-					BRUTE:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[L.UID()];adjustDamage=brute'>[L.getBruteLoss()]</a>
-					FIRE:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[L.UID()];adjustDamage=fire'>[L.getFireLoss()]</a>
-					TOXIN:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[L.UID()];adjustDamage=toxin'>[L.getToxLoss()]</a>
-					OXY:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[L.UID()];adjustDamage=oxygen'>[L.getOxyLoss()]</a>
-					CLONE:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[L.UID()];adjustDamage=clone'>[L.getCloneLoss()]</a>
-					BRAIN:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[L.UID()];adjustDamage=brain'>[L.getBrainLoss()]</a>
-					STAMINA:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[L.UID()];adjustDamage=stamina'>[L.getStaminaLoss()]</a>
+					BRUTE:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[refid];adjustDamage=brute' id='brute'>[L.getBruteLoss()]</a>
+					FIRE:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[refid];adjustDamage=fire' id='fire'>[L.getFireLoss()]</a>
+					TOXIN:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[refid];adjustDamage=toxin' id='toxin'>[L.getToxLoss()]</a>
+					OXY:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[refid];adjustDamage=oxygen' id='oxygen'>[L.getOxyLoss()]</a>
+					CLONE:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[refid];adjustDamage=clone' id='clone'>[L.getCloneLoss()]</a>
+					BRAIN:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[refid];adjustDamage=brain' id='brain'>[L.getBrainLoss()]</a>
+					STAMINA:<font size='1'><a href='byond://?_src_=vars;mobToDamage=[refid];adjustDamage=stamina' id='stamina'>[L.getStaminaLoss()]</a>
 				</font>
 			"}
 		else
-			atomsnowflake += "<a href='byond://?_src_=vars;datumedit=[A.UID()];varnameedit=name'><b>[A]</b></a>"
-			if(A.dir)
-				atomsnowflake += "<br><font size='1'><a href='byond://?_src_=vars;rotatedatum=[A.UID()];rotatedir=left'><<</a> <a href='byond://?_src_=vars;datumedit=[A.UID()];varnameedit=dir'>[dir2text(A.dir)]</a> <a href='byond://?_src_=vars;rotatedatum=[D.UID()];rotatedir=right'>>></a></font>"
+			atomsnowflake += "<a href='byond://?_src_=vars;datumedit=[refid];varnameedit=name'><b id='name'>[D]</b></a>"
+			atomsnowflake += "<br><font size='1'><a href='byond://?_src_=vars;rotatedatum=[refid];rotatedir=left'><<</a> <a href='byond://?_src_=vars;datumedit=[refid];varnameedit=dir' id='dir'>[dir2text(A.dir) || A.dir]</a> <a href='byond://?_src_=vars;rotatedatum=[refid];rotatedir=right'>>></a></font>"
+	
+	else if("name" in D.vars)
+		atomsnowflake += "<a href='byond://?_src_=vars;datumedit=[refid];varnameedit=name'><b id='name'>[D]</b></a>"
 	else
-		atomsnowflake += "<b>[D]</b>"
+		atomsnowflake += "<b>[formatted_type]</b>"
+		formatted_type = null
 
 
-	var/formatted_type = "[type]"
 	if(length(formatted_type) > 25)
 		var/middle_point = length(formatted_type) / 2
 		var/splitpoint = findtext(formatted_type, "/", middle_point)
@@ -157,29 +164,32 @@
 
 	var/marked
 	if(holder.marked_datum && holder.marked_datum == D)
-		marked = "<br><font size='1' color='red'><b>Marked Object</b></font>"
+		marked = VV_MSG_MARKED
 
 
 	var/varedited_line = ""
 	if(isatom(D))
 		var/atom/A = D
 		if(A.flags & ADMIN_SPAWNED)
-			varedited_line += "<br><font size='1' color='red'><b>Admin Spawned</b></font>"
+			varedited_line += VV_MSG_ADMIN_SPAWNED
 
 
 	if(!islist && (D.datum_flags & DF_VAR_EDITED))
-		varedited_line += "<br><font size='1' color='red'><b>Var Edited</b></font>"
+		varedited_line = VV_MSG_EDITED
+	var/deleted_line
+	if(!islist && D.gc_destroyed)
+		deleted_line = VV_MSG_DELETED
 
 
 	var/dropdownoptions = list()
 	if(islist)
 		dropdownoptions = list(
 			"---",
-			"Add Item" = "?_src_=vars;listadd=[refid]",
-			"Remove Nulls" = "?_src_=vars;listnulls=[refid]",
-			"Remove Dupes" = "?_src_=vars;listdupes=[refid]",
-			"Set len" = "?_src_=vars;listlen=[refid]",
-			"Shuffle" = "?_src_=vars;listshuffle=[refid]"
+			"Add Item" = "byond://?_src_=vars;listadd=[refid]",
+			"Remove Nulls" = "byond://?_src_=vars;listnulls=[refid]",
+			"Remove Dupes" = "byond://?_src_=vars;listdupes=[refid]",
+			"Set len" = "byond://?_src_=vars;listlen=[refid]",
+			"Shuffle" = "byond://?_src_=vars;listshuffle=[refid]"
 		)
 	else
 		dropdownoptions = D.vv_get_dropdown()
@@ -372,6 +382,14 @@
 				if (value !== "") {
 					location.href = value;
 				}
+				list.selectedIndex = 0;
+				document.getElementById('filter').focus();
+			}
+
+			// byjax
+			function replace_span(what) {
+				var idx = what.indexOf(':');
+				document.getElementById(what.substr(0, idx)).innerHTML = what.substr(idx + 1);
 			}
 		</script>
 		<div align='center'>
@@ -390,8 +408,9 @@
 						</table>
 						<div align='center'>
 							<b><font size='1'>[formatted_type]</font></b>
-							[marked]
-							[varedited_line]
+							<span id='marked'>[marked]</span>
+							<span id='varedited'>[varedited_line]</span>
+							<span id='deleted'>[deleted_line]</span>
 						</div>
 					</td>
 					<td width='50%'>
@@ -445,6 +464,9 @@
 	"}
 
 	usr << browse(html, "window=variables[refid];size=475x650")
+
+/client/proc/vv_update_display(datum/D, span, content)
+	src << output("[span]:[content]", "variables[D.UID()].browser:replace_span")
 
 #define VV_HTML_ENCODE(thing) ( sanitize ? html_encode(thing) : thing )
 /proc/debug_variable(name, value, level, var/datum/DA = null, sanitize = TRUE, display_flags)
@@ -569,18 +591,36 @@
 
 		message_admins("Admin [key_name_admin(usr)] renamed [key_name_admin(M)] to [new_name].")
 		M.rename_character(M.real_name, new_name)
-		href_list["datumrefresh"] = href_list["rename"]
+		vv_update_display(M, "name", new_name)
+		vv_update_display(M, "real_name", M.real_name || "No real name")
 
 	else if(href_list["varnameedit"] && href_list["datumedit"])
 		if(!check_rights(R_VAREDIT))
 			return
 
-		var/D = locateUID(href_list["datumedit"])
+		var/datum/D = locateUID(href_list["datumedit"])
 		if(!isdatum(D) && !isclient(D))
 			to_chat(usr, "This can only be used on instances of types /client or /datum", confidential=TRUE)
 			return
 
-		modify_variables(D, href_list["varnameedit"], 1)
+		if (!modify_variables(D, href_list["varnameedit"], 1))
+			return
+
+		switch(href_list["varnameedit"])
+			if("name")
+				vv_update_display(D, "name", "[D]")
+			if("dir")
+				var/atom/A = D
+				if(istype(A))
+					vv_update_display(D, "dir", dir2text(A.dir) || A.dir)
+			if("ckey")
+				var/mob/living/mob = D
+				if(istype(mob))
+					vv_update_display(D, "ckey", mob.ckey || "No ckey")
+			if("real_name")
+				var/mob/living/mob = D
+				if(istype(mob))
+					vv_update_display(D, "real_name", mob.real_name || "No real name")
 
 	else if(href_list["matrix_tester"])
 		var/atom/atom = locateUID(href_list["matrix_tester"])
@@ -634,7 +674,6 @@
 			return
 
 		src.holder.show_player_panel(M)
-		href_list["datumrefresh"] = href_list["mob_player_panel"]
 
 	else if(href_list["give_spell"])
 		if(!check_rights(R_SERVER|R_EVENT))	return
@@ -645,7 +684,6 @@
 			return
 
 		src.give_spell(M)
-		href_list["datumrefresh"] = href_list["give_spell"]
 
 	else if(href_list["givemartialart"])
 		if(!check_rights(R_ADMIN|R_EVENT))	return
@@ -673,7 +711,6 @@
 			var/datum/martial_art/MA = new chosenart
 			MA.teach(C)
 
-		href_list["datumrefresh"] = href_list["givemartialart"]
 
 	else if(href_list["give_disease"])
 		if(!check_rights(R_ADMIN|R_EVENT))	return
@@ -684,7 +721,6 @@
 			return
 
 		src.give_disease(M)
-		href_list["datumrefresh"] = href_list["give_spell"]
 
 	else if(href_list["give_taipan_hud"])
 		if(!check_rights(R_ADMIN|R_EVENT))	return
@@ -711,7 +747,6 @@
 			return
 
 		src.cmd_admin_godmode(M)
-		href_list["datumrefresh"] = href_list["godmode"]
 
 	else if(href_list["gib"])
 		if(!check_rights(R_ADMIN|R_EVENT))	return
@@ -732,7 +767,6 @@
 			return
 
 		togglebuildmode(M)
-		href_list["datumrefresh"] = href_list["build_mode"]
 
 	else if(href_list["drop_everything"])
 		if(!check_rights(R_DEBUG|R_ADMIN))	return
@@ -770,7 +804,6 @@
 
 		H.makeSkeleton()
 		log_and_message_admins("has turned [key_name_admin(H)] into a skeleton")
-		href_list["datumrefresh"] = href_list["make_skeleton"]
 
 	else if(href_list["offer_control"])
 		if(!check_rights(R_ADMIN))	return
@@ -789,7 +822,8 @@
 		if(!D)
 			to_chat(usr, "Unable to locate item!", confidential=TRUE)
 		admin_delete(D)
-		href_list["datumrefresh"] = href_list["delete"]
+		if (isturf(D))  // show the turf that took its place
+			debug_variables(D)
 
 	else if(href_list["delall"])
 		if(!check_rights(R_DEBUG|R_SERVER))	return
@@ -930,7 +964,6 @@
 			return
 
 		src.cmd_admin_explosion(A)
-		href_list["datumrefresh"] = href_list["explode"]
 
 	else if(href_list["emp"])
 		if(!check_rights(R_DEBUG|R_EVENT))	return
@@ -941,7 +974,6 @@
 			return
 
 		src.cmd_admin_emp(A)
-		href_list["datumrefresh"] = href_list["emp"]
 
 	else if(href_list["mark_object"])
 		if(!check_rights(0))	return
@@ -952,7 +984,10 @@
 			return
 
 		src.holder.marked_datum = D
-		href_list["datumrefresh"] = href_list["mark_object"]
+		if(holder.marked_datum)
+			vv_update_display(holder.marked_datum, "marked", "")
+		holder.marked_datum = D
+		vv_update_display(D, "marked", VV_MSG_MARKED)
 
 	else if(href_list["proc_call"])
 		if(!check_rights(R_PROCCALL))
@@ -1052,7 +1087,6 @@
 		var/turf/T = get_turf(A)
 		if(T)
 			usr.client.jumptoturf(T)
-		href_list["datumrefresh"] = href_list["jump_to"]
 
 
 	else if(href_list["rotatedatum"])
@@ -1068,7 +1102,7 @@
 			if("left")	A.dir = turn(A.dir, 45)
 
 		log_and_message_admins("has rotated \the [A]")
-		href_list["datumrefresh"] = href_list["rotatedatum"]
+		vv_update_display(A, "dir", dir2text(A.dir))
 
 	else if(href_list["makemonkey"])
 		if(!check_rights(R_SPAWN))	return
@@ -1378,6 +1412,7 @@
 			to_chat(usr, "Mob doesn't exist anymore", confidential=TRUE)
 			return
 
+		var/newamt
 		switch(Text)
 			if("brute")
 				if(ishuman(L))
@@ -1385,29 +1420,36 @@
 					H.adjustBruteLoss(amount, affect_robotic = TRUE)
 				else
 					L.adjustBruteLoss(amount)
+				newamt = L.getBruteLoss()
 			if("fire")
 				if(ishuman(L))
 					var/mob/living/carbon/human/H = L
 					H.adjustFireLoss(amount, affect_robotic = TRUE)
 				else
 					L.adjustFireLoss(amount)
+				newamt = L.getFireLoss()
 			if("toxin")
 				L.adjustToxLoss(amount)
+				newamt = L.getToxLoss()
 			if("oxygen")
 				L.adjustOxyLoss(amount)
+				newamt = L.getOxyLoss()
 			if("brain")
 				L.adjustBrainLoss(amount)
+				newamt = L.getBrainLoss()
 			if("clone")
 				L.adjustCloneLoss(amount)
+				newamt = L.getCloneLoss()
 			if("stamina")
 				L.adjustStaminaLoss(amount)
+				newamt = L.getStaminaLoss()
 			else
 				to_chat(usr, "You caused an error. DEBUG: Text:[Text] Mob:[L]", confidential=TRUE)
 				return
 
 		if(amount != 0)
 			log_and_message_admins("dealt [amount] amount of [Text] damage to [L]")
-			href_list["datumrefresh"] = href_list["mobToDamage"]
+			vv_update_display(L, Text, "[newamt]")
 
 	else if(href_list["traitmod"])
 		if(!check_rights(R_DEBUG|R_ADMIN))
