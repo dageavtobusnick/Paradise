@@ -47,7 +47,7 @@ SUBSYSTEM_DEF(explosions)
 	return SS_INIT_SUCCESS
 
 
-/datum/controller/subsystem/explosions/fire()
+/datum/controller/subsystem/explosions/fire(resumed = 0)
 	while(!explosion_queue.is_empty())
 		var/datum/explosion_data/data = explosion_queue.peek()
 		while(!data.affected_turfs_queue.is_empty())
@@ -62,10 +62,16 @@ SUBSYSTEM_DEF(explosions)
 					dist += data.floor_block["[T.z]"] + 1
 
 			if(reactionary_explosions)
-				var/turf/Trajectory = T
-				while(!(Trajectory in data.epicenter_list))
-					Trajectory = get_step_towards(Trajectory, data.epicenter)
-					dist += data.cached_exp_block[Trajectory]
+				var/turf_block = data.cached_turf_exp_block[T] ? data.cached_turf_exp_block[T] : count_turf_block(T)
+				var/total_cords = "[T.x],[T.y],[T.z]"
+				if(T == data.epicenter)
+					data.cached_exp_block[total_cords] = turf_block
+				else
+					var/turf/next_turf = get_step_towards(T, data.epicenter)
+					var/next_cords = "[next_turf.x],[next_turf.y],[next_turf.z]"
+					var/prev_block = data.cached_exp_block[next_cords] ? data.cached_exp_block[next_cords] : count_turf_block(next_turf)
+					dist += prev_block
+					data.cached_exp_block[total_cords] = prev_block + turf_block
 
 			var/flame_dist = 0
 
@@ -161,6 +167,7 @@ SUBSYSTEM_DEF(explosions)
 	var/light_impact_range
 	var/breach
 	var/queue/affected_turfs_queue = new()
+	var/list/cached_turf_exp_block = list()
 	var/list/cached_exp_block = list()
 	var/list/epicenter_list = list()
 	var/list/floor_block = list()
@@ -198,6 +205,14 @@ SUBSYSTEM_DEF(explosions)
 
 /datum/explosion_data/Destroy()
 	qdel(affected_turfs_queue)
+	LAZYCLEARLIST(epicenter_list)
+	LAZYNULL(epicenter_list)
+	LAZYCLEARLIST(cached_exp_block)
+	LAZYNULL(cached_exp_block)
+	LAZYCLEARLIST(cached_turf_exp_block)
+	LAZYNULL(cached_turf_exp_block)
+	LAZYCLEARLIST(floor_block)
+	LAZYNULL(floor_block )
 	. = ..()
 
 /datum/explosion_data/proc/clamp_ranges()
@@ -206,6 +221,7 @@ SUBSYSTEM_DEF(explosions)
 	light_impact_range = clamp(light_impact_range, 0, GLOB.max_ex_light_range)
 	flash_range = clamp(flash_range, 0, GLOB.max_ex_flash_range)
 	flame_range = clamp(flame_range, 0, GLOB.max_ex_flame_range)
+
 
 /datum/explosion_data/proc/create_effect(smoke)
 	if(heavy_impact_range > 1)
@@ -245,14 +261,18 @@ SUBSYSTEM_DEF(explosions)
 		floor_block["[below.z]"] = below.explosion_vertical_block
 
 /datum/explosion_data/proc/count_reactionary_explosions(list/affected_turfs)
-	for(var/turf/T as anything in affected_turfs) // we cache the explosion block rating of every turf in the explosion area
-		cached_exp_block[T] = 0
-		if(T.density && T.explosion_block)
-			cached_exp_block[T] += T.explosion_block
+	for(var/turf/counted_turf as anything in affected_turfs) // we cache the explosion block rating of every turf in the explosion area
+		cached_turf_exp_block[counted_turf] = count_turf_block(counted_turf)
 
-		for(var/atom/O as anything in T)
-			var/the_block = O.explosion_block
-			cached_exp_block[T] += the_block == EXPLOSION_BLOCK_PROC ? O.get_explosion_block() : the_block
+/proc/count_turf_block(turf/counted_turf)
+	var/block = 0
+	if(counted_turf.density && counted_turf.explosion_block)
+		block += counted_turf.explosion_block
+
+	for(var/atom/object as anything in counted_turf)
+		var/the_block = object.explosion_block
+		block += the_block == EXPLOSION_BLOCK_PROC ? object.get_explosion_block() : the_block
+	return block
 
 /datum/explosion_data/proc/explosion_log(cause)
 	var/cause_str
