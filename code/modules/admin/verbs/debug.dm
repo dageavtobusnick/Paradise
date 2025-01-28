@@ -585,6 +585,8 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 	var/delete_pocket
 	var/mob/living/carbon/human/H
 	if(isobserver(M))
+		if(!check_rights(R_SPAWN))
+			return
 		var/mob/dead/observer/ghost = M
 		H = ghost.incarnate_ghost()
 	else
