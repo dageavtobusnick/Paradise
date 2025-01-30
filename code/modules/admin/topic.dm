@@ -3134,7 +3134,7 @@
 						var/turf/turf = get_random_station_turf()
 						while(iswallturf(turf))
 							turf = get_random_station_turf()
-						addtimer(CALLBACK(GLOBAL_PROC, .proc/doPortalSpawn, turf, pathToSpawn, prefs["amount"]["value"], storm), i*prefs["delay"]["value"])
+						addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(doPortalSpawn), turf, pathToSpawn, prefs["amount"]["value"], storm), i*prefs["delay"]["value"])
 			if("tripleAI")
 				usr.client.triple_ai()
 				SSblackbox.record_feedback("tally", "admin_secrets_fun_used", 1, "Triple AI")
