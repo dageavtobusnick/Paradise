@@ -3087,6 +3087,54 @@
 			if("gimmickteam")
 				if(usr.client.gimmick_team())
 					SSblackbox.record_feedback("tally", "admin_secrets_fun_used", 1, "Send Team - Gimmick Team")
+			if("customportal")
+				if(!check_rights(R_EVENT))
+					return
+
+				var/list/settings = list(
+					"mainsettings" = list(
+					"typepath" = list("desc" = "Тип мобов для спавна", "type" = "datum", "path" = "/mob/living", "subtypesonly" = TRUE, "value" = /mob/living/simple_animal/hostile/poison/bees),
+					"amount" = list("desc" = "Число мобов", "type" = "number", "value" = 1),
+					"portalnum" = list("desc" = "Число порталов", "type" = "number", "value" = 10),
+					"delay" = list("desc" = "Время между порталами(в децесекундах)", "type" = "number", "value" = 50),
+					"color" = list("desc" = "Цвет портала", "type" = "color", "value" = "#00FF00"),
+					"playlightning" = list("desc" = "Проигрывать звук молнии при оповещении", "type" = "boolean", "value" = "Да"),
+					"announce_players" = list("desc" = "Делать оповещении", "type" = "boolean", "value" = "Да"),
+					"announcement" = list("desc" = "Оповещение", "type" = "string", "value" = "Массивная блюспейс аномалия зафиксирована вблизи станции %STATION%. Готовьтесь к худшему."),
+					)
+				)
+
+				message_admins("[key_name(usr)] is creating a custom portal storm...")
+				var/list/prefreturn = presentpreflikepicker(usr,"Настройка портального шторма", "Настройка портального шторма", Button1="Старт", width = 600, StealFocus = 1,Timeout = 0, settings=settings)
+
+				if (prefreturn["button"] == 1)
+					var/list/prefs = settings["mainsettings"]
+
+					if (prefs["amount"]["value"] < 1 || prefs["portalnum"]["value"] < 1)
+						to_chat(usr, "Число порталов для спавна должно быть минимум 1")
+						return
+
+					var/pathToSpawn = prefs["typepath"]["value"]
+					if (!ispath(pathToSpawn))
+						pathToSpawn = text2path(pathToSpawn)
+
+					if (!ispath(pathToSpawn))
+						to_chat(usr, "Некорректный тип [pathToSpawn]")
+						return
+
+					if (prefs["announce_players"]["value"] == "Да")
+						portalAnnounce(prefs["announcement"]["value"], (prefs["playlightning"]["value"] == "Да" ? TRUE : FALSE))
+
+					var/mutable_appearance/storm = mutable_appearance('icons/obj/stationobjs.dmi', "portal-projector0", FLY_LAYER)
+					storm.color = prefs["color"]["value"]
+
+					log_and_message_admins("has created a customized portal storm that will spawn [prefs["portalnum"]["value"]] portals, each of them spawning [prefs["amount"]["value"]] of [pathToSpawn]")
+
+					for (var/i in 1 to prefs["portalnum"]["value"])
+						var/turf/turf = get_random_station_turf()
+						while(iswallturf(turf))
+							turf = get_random_station_turf()
+						addtimer(CALLBACK(GLOBAL_PROC, .proc/doPortalSpawn, turf, pathToSpawn, prefs["amount"]["value"], storm), i*prefs["delay"]["value"])
 			if("tripleAI")
 				usr.client.triple_ai()
 				SSblackbox.record_feedback("tally", "admin_secrets_fun_used", 1, "Triple AI")
@@ -3996,3 +4044,20 @@
 /proc/you_realy_want_do_this()
 	var/sure = tgui_alert(usr, "Вы действительно хотите сделать это?", "Подтверждение", list("Да", "Нет"))
 	return sure == "Да"
+
+
+/proc/portalAnnounce(announcement, playlightning)
+	set waitfor = 0
+	if (playlightning)
+		sound_to_playing_players('sound/magic/lightning_chargeup.ogg')
+		sleep(80)
+	GLOB.priority_announcement.Announce(replacetext(announcement, "%STATION%", station_name()))
+	if (playlightning)
+		sleep(20)
+		sound_to_playing_players('sound/magic/lightningbolt.ogg')
+
+/proc/doPortalSpawn(turf/loc, mobtype, numtospawn, portal_appearance)
+	loc.flick_overlay_static(portal_appearance, 15)
+	playsound(loc, "sparks", rand(80, 100), 1)
+	for (var/i in 1 to numtospawn)
+		new mobtype(loc)
