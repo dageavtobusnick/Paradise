@@ -251,7 +251,7 @@
 
 /client/verb/open_pms_ui()
 	set name = "My PMs"
-	set category = "Admin.Tickets"
+	set category = "Admin.Admin Tickets"
 	pm_tracker.show_ui(usr)
 
 /client/proc/set_typing(client/target, value)
