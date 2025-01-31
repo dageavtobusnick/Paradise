@@ -20,7 +20,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	materials = list(MAT_METAL=2000) //one sheet, but where can you make them?
 	origin_tech = "materials=2;engineering=3"
-	attack_verb = list("hit", "pierced", "sliced", "attacked")
+	attack_verb = list("ударил", "проколол", "атаковал")
 	var/drill_verb = "picking"
 	sharp = 1
 	embed_chance = 15
@@ -59,7 +59,7 @@
 	item_state = "safety_pickaxe"
 	force = 1
 	throwforce = 1
-	attack_verb = list("ineffectively hit")
+	attack_verb = list("неэффективно ударил")
 
 /obj/item/pickaxe/mini
 	name = "compact pickaxe"
@@ -238,7 +238,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	materials = list(MAT_METAL=50)
 	origin_tech = "materials=2;engineering=2"
-	attack_verb = list("bashed", "bludgeoned", "thrashed", "whacked")
+	attack_verb = list("ударил", "огрел")
 	hitsound = 'sound/effects/Shovel_hitting_sound.ogg'
 	usesound = 'sound/effects/shovel_dig.ogg'
 	toolspeed = 0.8
@@ -288,4 +288,4 @@
 	desc = "Массивный инструмент для вскапывания и перемещения земли. Данная версия была модифицирована для большей безопасности и крайне неэффективна в качестве оружия."
 	force = 1
 	throwforce = 1
-	attack_verb = list("ineffectively hit")
+	attack_verb = list("неэффективно ударил")

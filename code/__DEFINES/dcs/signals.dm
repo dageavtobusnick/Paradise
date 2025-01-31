@@ -519,6 +519,9 @@
 /// Performed after the hands are swapped.
 #define COMSIG_MOB_SWAP_HANDS "mob_swap_hands"
 
+#define COMSIG_MOB_AUTOMUTE_CHECK "automute_check"
+	#define WAIVE_AUTOMUTE_CHECK (1<<0)
+
 /// from mob/get_status_tab_items(): (list/items)
 #define COMSIG_MOB_GET_STATUS_TAB_ITEMS "mob_get_status_tab_items"
 
@@ -682,6 +685,11 @@
 	#define MOVE_ARG_DIRECTION 2
 /// From base of /client/Move(): (direction, old_dir)
 #define COMSIG_MOB_CLIENT_MOVED "mob_client_moved"
+
+/// From base of /client/Move(), invoked when a non-living mob is attempting to move: (list/move_args)
+#define COMSIG_MOB_CLIENT_PRE_NON_LIVING_MOVE "mob_client_pre_non_living_move"
+	/// Cancels the move attempt
+	#define COMSIG_MOB_CLIENT_BLOCK_PRE_NON_LIVING_MOVE COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /// From base of /client/Move(): (list/move_args)
 #define COMSIG_MOB_CLIENT_PRE_LIVING_MOVE "mob_client_pre_living_move"
@@ -1287,3 +1295,6 @@
 
 /// Source: /datum/component/ritual_object/proc/pre_ritual_check (status_bitflag, mob/living/carbon/human, list/invokers, list/used_things)
 #define COMSIG_RITUAL_ENDED "ritual_ended"
+
+/// Source: /datum/component/object_possession/proc/on_move (mob/mob, new_loc, direct)
+#define COMSIG_POSSESSED_MOVEMENT "possessed_movement"
