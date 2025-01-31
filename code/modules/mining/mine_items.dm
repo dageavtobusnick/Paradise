@@ -96,7 +96,7 @@
 	if(!inserted_gem)
 		. += span_notice("Внутри лампы есть небольшое отверстие под гем.")
 	else
-		. += span_notice("Внутри лампы находится [inserted_gem.declent_ru(NOMINATIVE)]. Его можно снять с помощью лома.")
+		. += span_notice("Внутри лампы находится [inserted_gem.declent_ru(NOMINATIVE)]. Его можно извлечь с помощью лома.")
 
 /obj/item/flashlight/lantern/update_icon_state()
 	cut_overlay(lantern_light_overlay)
