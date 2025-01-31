@@ -3189,7 +3189,8 @@
 								if(A == ACCESS_SECURITY)
 									security = TRUE
 					var/turf/prison_cell = pick((security? GLOB.prisonsecuritywarp : GLOB.prisonwarp))
-					if(!prison_cell)	continue
+					if(!prison_cell)
+						continue
 
 					var/obj/structure/closet/supplypod/centcompod/prison_warp/pod = new()
 					pod.reverse_dropoff_coords = list(prison_cell.x, prison_cell.y, prison_cell.z)
