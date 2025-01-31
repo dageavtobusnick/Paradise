@@ -150,7 +150,7 @@
 		return ..()
 	GLOB.prisonwarped += target
 	var/turf/return_turf = locate(reverse_dropoff_coords[1], reverse_dropoff_coords[2], reverse_dropoff_coords[3])
-	var/obj/structure/closet/secure_closet/brig/locker = new /obj/structure/closet/secure_closet/brig(return_turf)
+	var/obj/structure/closet/secure_closet/brig/locker = new /obj/structure/closet/secure_closet/brig(holder)
 	locker.opened = 0
 	locker.locked = 1
 
