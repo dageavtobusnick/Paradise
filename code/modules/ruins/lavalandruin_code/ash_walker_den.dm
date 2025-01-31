@@ -87,7 +87,7 @@
 	desc = "Жёлтое яйцо размером с человека, порождённое каким-то непостижимым существом. Внутри проглядывает гуманоидный силуэт."
 	mob_name = "an ash walker"
 	icon = 'icons/mob/lavaland/lavaland_monsters.dmi'
-	icon_state = "large_egg"
+	icon_state = "ashwalker_egg"
 	mob_species = /datum/species/unathi/ashwalker
 	outfit = /datum/outfit/ashwalker
 	mob_gender = MALE
@@ -120,6 +120,7 @@
 /obj/effect/mob_spawn/human/ash_walker/shaman
 	name = "ash walker shaman egg"
 	desc = "Янтарное яйцо размером с человека, порождённое каким-то непостижимым существом. Внутри проглядывает гуманоидный силуэт."
+	icon_state = "shaman_egg"
 	mob_name = "an ash walker shaman"
 	mob_species = /datum/species/unathi/ashwalker/shaman
 	outfit = /datum/outfit/ashwalker/shaman //might be OP, but the flavour is there

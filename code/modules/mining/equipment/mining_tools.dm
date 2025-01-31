@@ -1,6 +1,14 @@
 /*****************Pickaxes & Drills & Shovels****************/
 /obj/item/pickaxe
 	name = "pickaxe"
+	ru_names = list(
+		NOMINATIVE = "кирка",
+		GENITIVE = "кирки",
+		DATIVE = "кирке",
+		ACCUSATIVE = "кирку",
+		INSTRUMENTAL = "киркой",
+		PREPOSITIONAL = "кирке"
+	)
 	desc = "Стандартная кирка, предназначенная для разрушения камней."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "pickaxe"
@@ -24,12 +32,28 @@
 
 /obj/item/pickaxe/emergency
 	name = "emergency disembarkation tool"
+	ru_names = list(
+		NOMINATIVE = "инструмент для экстренной раскопки",
+		GENITIVE = "инструмента для экстренной раскопки",
+		DATIVE = "инструменту для экстренной раскопки",
+		ACCUSATIVE = "инструмент для экстренной раскопки",
+		INSTRUMENTAL = "инструментом для экстренной раскопки",
+		PREPOSITIONAL = "инструменте для экстренной раскопки"
+	)
 	desc = "Кирка, предназначенная для спасения из затруднительных ситуаций."
 	icon_state = "emergency_disembarkation_tool"
 	item_state = "emergency_disembarkation_tool"
 
 /obj/item/pickaxe/safety
 	name = "safety pickaxe"
+	ru_names = list(
+		NOMINATIVE = "безопасная кирка",
+		GENITIVE = "безопасной кирки",
+		DATIVE = "безопасной кирке",
+		ACCUSATIVE = "безопасную кирку",
+		INSTRUMENTAL = "безопасной киркой",
+		PREPOSITIONAL = "безопасной кирке"
+	)
 	desc = "Кирка, специально спроектированная исключительно для добычи ресурсов. Крайне неэффективна в качестве оружия."
 	icon_state = "safety_pickaxe"
 	item_state = "safety_pickaxe"
@@ -39,6 +63,14 @@
 
 /obj/item/pickaxe/mini
 	name = "compact pickaxe"
+	ru_names = list(
+		NOMINATIVE = "компактная кирка",
+		GENITIVE = "компактной кирки",
+		DATIVE = "компактной кирке",
+		ACCUSATIVE = "компактую кирку",
+		INSTRUMENTAL = "компактной киркой",
+		PREPOSITIONAL = "компактной кирке"
+	)
 	desc = "Сильно уменьшенная версия стандартной кирки."
 	icon_state = "compact_pickaxe"
 	item_state = "compact_pickaxe"
@@ -49,6 +81,14 @@
 
 /obj/item/pickaxe/silver
 	name = "silver-plated pickaxe"
+	ru_names = list(
+		NOMINATIVE = "кирка с серебрянным наконечником",
+		GENITIVE = "кирки с серебрянным наконечником",
+		DATIVE = "кирке с серебрянным наконечником",
+		ACCUSATIVE = "кирку с серебрянным наконечником",
+		INSTRUMENTAL = "киркой с серебрянным наконечником",
+		PREPOSITIONAL = "кирке с серебрянным наконечником"
+	)
 	icon_state = "spickaxe"
 	item_state = "spickaxe"
 	belt_icon = "silver-plated pickaxe"
@@ -58,7 +98,15 @@
 	force = 17
 
 /obj/item/pickaxe/gold
-	name = "golden pickaxe"
+	name = "gold-tipped pickaxe"
+	ru_names = list(
+		NOMINATIVE = "кирка с золотым наконечником",
+		GENITIVE = "кирки с золотым наконечником",
+		DATIVE = "кирке с золотым наконечником",
+		ACCUSATIVE = "кирку с золотым наконечником",
+		INSTRUMENTAL = "киркой с золотым наконечником",
+		PREPOSITIONAL = "кирке с золотым наконечником"
+	)
 	icon_state = "gpickaxe"
 	item_state = "gpickaxe"
 	belt_icon = "golden pickaxe"
@@ -69,6 +117,14 @@
 
 /obj/item/pickaxe/diamond
 	name = "diamond-tipped pickaxe"
+	ru_names = list(
+		NOMINATIVE = "кирка с алмазным наконечником",
+		GENITIVE = "кирки с алмазным наконечником",
+		DATIVE = "кирке с алмазным наконечником",
+		ACCUSATIVE = "кирку с алмазным наконечником",
+		INSTRUMENTAL = "киркой с алмазным наконечником",
+		PREPOSITIONAL = "кирке с алмазным наконечником"
+	)
 	icon_state = "dpickaxe"
 	item_state = "dpickaxe"
 	belt_icon = "diamond-tipped pickaxe"
@@ -79,6 +135,14 @@
 
 /obj/item/pickaxe/drill
 	name = "mining drill"
+	ru_names = list(
+		NOMINATIVE = "шахтерская дрель",
+		GENITIVE = "шахтерской дрели",
+		DATIVE = "шахтерской дрели",
+		ACCUSATIVE = "шахтерскую дрель",
+		INSTRUMENTAL = "шахтерской дрелью",
+		PREPOSITIONAL = "шахтерской дрели"
+	)
 	icon_state = "handdrill"
 	item_state = "jackhammer"
 	toolspeed = 0.4 //available from roundstart, faster than a pickaxe.
@@ -90,6 +154,14 @@
 
 /obj/item/pickaxe/drill/cyborg
 	name = "cyborg mining drill"
+	ru_names = list(
+		NOMINATIVE = "шахтерская дрель киборга",
+		GENITIVE = "шахтерской дрели киборга",
+		DATIVE = "шахтерской дрели киборга",
+		ACCUSATIVE = "шахтерскую дрель киборга",
+		INSTRUMENTAL = "шахтерской дрелью киборга",
+		PREPOSITIONAL = "шахтерской дрели киборга"
+	)
 	desc = "Встроенная электрическая буровая дрелль."
 
 
@@ -100,6 +172,14 @@
 
 /obj/item/pickaxe/drill/diamonddrill
 	name = "diamond-tipped mining drill"
+	ru_names = list(
+		NOMINATIVE = "алмазная шахтерская дрель",
+		GENITIVE = "алмазной шахтерской дрели",
+		DATIVE = "алмазной шахтерской дрели",
+		ACCUSATIVE = "алмазную шахтерскую дрель",
+		INSTRUMENTAL = "алмазной шахтерской дрелью",
+		PREPOSITIONAL = "алмазной шахтерской дрели"
+	)
 	icon_state = "diamonddrill"
 	origin_tech = "materials=6;powerstorage=4;engineering=4"
 	desc = "У тебя есть дрелль, которая пронзит небеса!"
@@ -107,11 +187,27 @@
 
 /obj/item/pickaxe/drill/cyborg/diamond //This is the BORG version!
 	name = "diamond-tipped cyborg mining drill" //To inherit the NODROP trait, and easier to change borg specific drill mechanics.
+	ru_names = list(
+		NOMINATIVE = "алмазная шахтерская дрель киборга",
+		GENITIVE = "алмазной шахтерской дрели киборга",
+		DATIVE = "алмазной шахтерской дрели киборга",
+		ACCUSATIVE = "алмазную шахтерскую дрель киборга",
+		INSTRUMENTAL = "алмазной шахтерской дрелью киборга",
+		PREPOSITIONAL = "алмазной шахтерской дрели киборга"
+	)
 	icon_state = "diamonddrill"
 	toolspeed = 0.1
 
 /obj/item/pickaxe/drill/jackhammer
 	name = "sonic jackhammer"
+	ru_names = list(
+		NOMINATIVE = "звуковой отбойный молот",
+		GENITIVE = "звукового отбойного молота",
+		DATIVE = "звуковому отбойному молоту",
+		ACCUSATIVE = "звуковой отбойный молот",
+		INSTRUMENTAL = "звуковым отбойным молотом",
+		PREPOSITIONAL = "звуковом отбойным молоте"
+	)
 	icon_state = "jackhammer"
 	item_state = "jackhammer"
 	origin_tech = "materials=6;powerstorage=4;engineering=5;magnets=4"
@@ -123,6 +219,14 @@
 
 /obj/item/shovel
 	name = "shovel"
+	ru_names = list(
+		NOMINATIVE = "лопата",
+		GENITIVE = "лопаты",
+		DATIVE = "лопате",
+		ACCUSATIVE = "лопату",
+		INSTRUMENTAL = "лопатой",
+		PREPOSITIONAL = "лопате"
+	)
 	desc = "Массивный инструмент для вскапывания и перемещения земли."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "shovel"
@@ -141,6 +245,14 @@
 
 /obj/item/shovel/spade
 	name = "spade"
+	ru_names = list(
+		NOMINATIVE = "лопатка",
+		GENITIVE = "лопатки",
+		DATIVE = "лопатке",
+		ACCUSATIVE = "лопатку",
+		INSTRUMENTAL = "лопаткой",
+		PREPOSITIONAL = "лопатке"
+	)
 	desc = "Маленький инструмент для вскапывания и перемещения земли."
 	icon_state = "spade"
 	item_state = "spade"
@@ -149,8 +261,28 @@
 	throwforce = 7
 	w_class = WEIGHT_CLASS_SMALL
 
+/obj/item/shovel/spade/wooden
+	name = "wooden spade"
+	ru_names = list(
+		NOMINATIVE = "деревянная лопатка",
+		GENITIVE = "деревянной лопатки",
+		DATIVE = "деревянной лопатке",
+		ACCUSATIVE = "деревянную лопатку",
+		INSTRUMENTAL = "деревянной лопаткой",
+		PREPOSITIONAL = "деревянной лопатке"
+	)
+	desc = "Маленький инструмент для вскапывания и перемещения земли. Эта модель сделана из древесины."
+
 /obj/item/shovel/safety
 	name = "safety shovel"
+	ru_names = list(
+		NOMINATIVE = "безопасная лопата",
+		GENITIVE = "безопасной лопаты",
+		DATIVE = "безопасной лопате",
+		ACCUSATIVE = "безопасную лопату",
+		INSTRUMENTAL = "безопасной лопатой",
+		PREPOSITIONAL = "безопасной лопате"
+	)
 	icon_state = "safety_shovel"
 	item_state = "safety_shovel"
 	desc = "Массивный инструмент для вскапывания и перемещения земли. Данная версия была модифицирована для большей безопасности и крайне неэффективна в качестве оружия."

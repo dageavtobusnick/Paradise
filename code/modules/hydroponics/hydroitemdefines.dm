@@ -81,6 +81,12 @@
 	flags = NONE
 	resistance_flags = FLAMMABLE
 
+/obj/item/cultivator/wooden
+	icon_state = "cultivator_wooden"
+	hitsound = null
+	materials = null
+	flags = NONE
+
 /obj/item/hatchet
 	name = "hatchet"
 	desc = "A very sharp axe blade upon a short fibremetal handle. It has a long history of chopping things, but now it is used for chopping wood."
