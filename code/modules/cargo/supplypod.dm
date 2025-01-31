@@ -150,8 +150,8 @@
 		return ..()
 	GLOB.prisonwarped += target
 	var/obj/structure/closet/secure_closet/brig/locker = new /obj/structure/closet/secure_closet/brig(holder)
-	locker.opened = 0
-	locker.locked = 1
+	locker.opened = FALSE
+	locker.locked = TRUE
 
 	for(var/obj/item/item in target)
 		target.drop_transfer_item_to_loc(item, locker)
@@ -159,6 +159,7 @@
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/prisoner = target
+
 		if(isplasmaman(prisoner))
 			prisoner.equipOutfit(/datum/outfit/prisoner/plasmamen)
 		else if(isvox(prisoner) || isvoxarmalis(prisoner))
