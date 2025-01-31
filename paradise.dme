@@ -645,6 +645,7 @@
 #include "code\datums\outfits\outfit.dm"
 #include "code\datums\outfits\outfit_admin.dm"
 #include "code\datums\outfits\outfit_debug.dm"
+#include "code\datums\outfits\outfit_prisoner.dm"
 #include "code\datums\outfits\outfit_security_clown.dm"
 #include "code\datums\outfits\plasmamen.dm"
 #include "code\datums\outfits\vv_outfit.dm"
