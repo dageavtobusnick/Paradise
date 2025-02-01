@@ -55,23 +55,33 @@ SUBSYSTEM_DEF(explosions)
 			if(QDELETED(T))
 				continue
 			var/dist = HYPOTENUSE(T.x, T.y, data.x0, data.y0)
-			if(multiz_explosions && T.z != data.z0)
-				if(T.z < data.z0) // we hit the turf that is below our epicenter. Check epicenter turf
-					dist += data.floor_block["[T.z + 1]"] + 1 //cheapest way to implement hypotenuse with z coordinates
-				else
-					dist += data.floor_block["[T.z]"] + 1
 
 			if(reactionary_explosions)
-				var/turf_block = data.cached_turf_exp_block[T] ? data.cached_turf_exp_block[T] : count_turf_block(T)
+				var/turf_block
 				var/total_cords = "[T.x],[T.y],[T.z]"
+				var/prev_block
+				if(data.multiz_explosion)
+					turf_block = data.cached_turf_vert_exp_block[T] ? data.cached_turf_vert_exp_block[T] : count_turf_vert_block(T)
+					if(T != data.epicenter)
+						var/turf/next_turf = get_step_towards_multiz(T, data.epicenter)
+						var/next_cords = "[next_turf.x],[next_turf.y],[next_turf.z]"
+						if(next_turf.z != T.z)
+							prev_block = data.cached_exp_block[next_cords] ? data.cached_exp_block[next_cords] : count_turf_vert_block(next_turf)
+						else
+							prev_block = data.cached_exp_block[next_cords] ? data.cached_exp_block[next_cords] : count_turf_block(next_turf)
+
+				else
+					turf_block = data.cached_turf_exp_block[T] ? data.cached_turf_exp_block[T] : count_turf_block(T)
+
+					if(T != data.epicenter)
+						var/turf/next_turf = get_step_towards(T, data.epicenter)
+						var/next_cords = "[next_turf.x],[next_turf.y],[next_turf.z]"
+						prev_block = data.cached_exp_block[next_cords] ? data.cached_exp_block[next_cords] : count_turf_block(next_turf)
+
 				if(T == data.epicenter)
 					data.cached_exp_block[total_cords] = turf_block
-				else
-					var/turf/next_turf = get_step_towards(T, data.epicenter)
-					var/next_cords = "[next_turf.x],[next_turf.y],[next_turf.z]"
-					var/prev_block = data.cached_exp_block[next_cords] ? data.cached_exp_block[next_cords] : count_turf_block(next_turf)
-					dist += prev_block
-					data.cached_exp_block[total_cords] = prev_block + turf_block
+				dist += prev_block
+				data.cached_exp_block[total_cords] = prev_block + turf_block
 
 			var/flame_dist = 0
 
@@ -124,21 +134,21 @@ SUBSYSTEM_DEF(explosions)
 	if(!silent)
 		data.play_sounds_and_shake()
 	data.create_effect(smoke)
-	data.enqueue_affected_turfs(multiz_explosions, reactionary_explosions)
+	data.enqueue_affected_turfs(reactionary_explosions)
 	explosion_queue.enqueue(data, data.affected_turfs_queue.count)
 
-/datum/controller/subsystem/explosions/proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog = TRUE, ignorecap = FALSE, flame_range = 0, silent = FALSE, smoke = TRUE, cause = null, breach = TRUE)
+/datum/controller/subsystem/explosions/proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog = TRUE, ignorecap = FALSE, flame_range = 0, silent = FALSE, smoke = TRUE, cause = null, breach = TRUE, protect_epicenter, explosion_direction, explosion_arc)
 	if(!epicenter)
 		return FALSE
 
-	var/datum/explosion_data/data = new(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, ignorecap, flame_range, breach)
+	var/datum/explosion_data/data = new(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, ignorecap, flame_range, breach, multiz_explosions, protect_epicenter, explosion_direction, explosion_arc)
 	INVOKE_ASYNC(src, PROC_REF(start_explosion), data, adminlog, cause, smoke, silent)
 
 	return TRUE
 
 
-/proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog, ignorecap, flame_range, silent, smoke, cause, breach)
-	SSexplosions.explosion(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog, ignorecap, flame_range, silent, smoke, cause, breach)
+/proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog, ignorecap, flame_range, silent, smoke, cause, breach, protect_epicenter = FALSE, explosion_direction = 0, explosion_arc = 360)
+	SSexplosions.explosion(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog, ignorecap, flame_range, silent, smoke, cause, breach, protect_epicenter, explosion_direction, explosion_arc)
 
 /*
 * DON'T USE THIS!!! It is not processed by the system and has no radius restrictions.
@@ -159,21 +169,27 @@ SUBSYSTEM_DEF(explosions)
 	var/x0
 	var/y0
 	var/z0
+	var/min_z
+	var/max_z
 	var/far_dist = 0
 	var/flame_range
 	var/flash_range
 	var/devastation_range
 	var/heavy_impact_range
 	var/light_impact_range
+	var/explosion_direction = 0
+	var/explosion_arc = 360
+	var/protect_epicenter = FALSE
 	var/breach
+	var/multiz_explosion = FALSE
 	var/queue/affected_turfs_queue = new()
 	var/list/cached_turf_exp_block = list()
+	var/list/cached_turf_vert_exp_block = list()
 	var/list/cached_exp_block = list()
 	var/list/epicenter_list = list()
-	var/list/floor_block = list()
 	var/watch
 
-/datum/explosion_data/New(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, ignorecap = FALSE, flame_range = 0, breach = TRUE)
+/datum/explosion_data/New(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, ignorecap = FALSE, flame_range = 0, breach = TRUE, multiz = FALSE, protect_epicenter = FALSE, explosion_direction = 0, explosion_arc = 360)
 	. = ..()
 	src.epicenter = get_turf(epicenter)
 	src.flame_range = flame_range
@@ -183,12 +199,22 @@ SUBSYSTEM_DEF(explosions)
 	src.light_impact_range = light_impact_range
 	src.breach = breach
 	src.max_range = max(devastation_range, heavy_impact_range, light_impact_range, flame_range)
+	src.explosion_arc = explosion_arc
+	src.explosion_direction = explosion_direction
+	src.protect_epicenter = protect_epicenter
 
 	orig_dev_range = devastation_range
 	orig_heavy_range = heavy_impact_range
 	orig_light_range = light_impact_range
 
 	orig_max_distance = max(devastation_range, heavy_impact_range, light_impact_range, flash_range, flame_range)
+
+	if(multiz)
+		var/turf/top_turf = get_highest_turf(epicenter)
+		var/turf/low_turf = get_lowest_turf(epicenter)
+		max_z = min(top_turf.z, epicenter.z + orig_max_distance)
+		min_z = max(low_turf.z, epicenter.z - orig_max_distance)
+		multiz_explosion = multiz && max_z != min_z
 
 	x0 = epicenter.x
 	y0 = epicenter.y
@@ -197,7 +223,6 @@ SUBSYSTEM_DEF(explosions)
 	far_dist = 0
 	far_dist += heavy_impact_range * 15
 	far_dist += devastation_range * 20
-
 	if(!ignorecap)
 		clamp_ranges()
 	epicenter_list += epicenter
@@ -211,8 +236,8 @@ SUBSYSTEM_DEF(explosions)
 	LAZYNULL(cached_exp_block)
 	LAZYCLEARLIST(cached_turf_exp_block)
 	LAZYNULL(cached_turf_exp_block)
-	LAZYCLEARLIST(floor_block)
-	LAZYNULL(floor_block )
+	LAZYCLEARLIST(cached_turf_vert_exp_block)
+	LAZYNULL(cached_turf_vert_exp_block)
 	. = ..()
 
 /datum/explosion_data/proc/clamp_ranges()
@@ -233,36 +258,19 @@ SUBSYSTEM_DEF(explosions)
 		E.set_up(epicenter)
 		E.start()
 
-/datum/explosion_data/proc/enqueue_affected_turfs(multiz_explosions, reactionary_explosions)
-	var/list/affected_turfs = prepare_explosion_turfs(max_range, epicenter)
-	if(multiz_explosions)
-		get_multiz_affect(affected_turfs)
-
+/datum/explosion_data/proc/enqueue_affected_turfs(reactionary_explosions)
+	var/list/affected_turfs = prepare_explosion_turfs(max_range, epicenter, protect_epicenter, explosion_direction, explosion_arc, multiz_explosion, min_z, max_z)
 	if(reactionary_explosions)
 		count_reactionary_explosions(affected_turfs)
 
 	for(var/turf in affected_turfs)
 		affected_turfs_queue.enqueue(turf)
 
-/datum/explosion_data/proc/get_multiz_affect(list/affected_turfs)
-	var/turf/above = GET_TURF_ABOVE(epicenter)
-	var/turf/below = GET_TURF_BELOW(epicenter)
-	floor_block["[z0]"] = epicenter.explosion_vertical_block
-
-	//We check for multi-z here. So in the code below(readtional explosives), we don't need to care about checking for above or below.
-	if(above)
-		affected_turfs += prepare_explosion_turfs(max_range, above)
-		epicenter_list += above
-		floor_block["[above.z]"] = above.explosion_vertical_block
-
-	if(below)
-		affected_turfs += prepare_explosion_turfs(max_range, below)
-		epicenter_list += below
-		floor_block["[below.z]"] = below.explosion_vertical_block
-
 /datum/explosion_data/proc/count_reactionary_explosions(list/affected_turfs)
 	for(var/turf/counted_turf as anything in affected_turfs) // we cache the explosion block rating of every turf in the explosion area
 		cached_turf_exp_block[counted_turf] = count_turf_block(counted_turf)
+		if(multiz_explosion)
+			cached_turf_vert_exp_block[counted_turf] = count_turf_vert_block(counted_turf)
 
 /proc/count_turf_block(turf/counted_turf)
 	var/block = 0
@@ -272,6 +280,15 @@ SUBSYSTEM_DEF(explosions)
 	for(var/atom/object as anything in counted_turf)
 		var/the_block = object.explosion_block
 		block += the_block == EXPLOSION_BLOCK_PROC ? object.get_explosion_block() : the_block
+	return block
+
+/proc/count_turf_vert_block(turf/counted_turf)
+	var/block = 0
+	if(counted_turf.density && counted_turf.explosion_block)
+		block += counted_turf.explosion_vertical_block
+
+	for(var/atom/object as anything in counted_turf)
+		block += object.explosion_vertical_block
 	return block
 
 /datum/explosion_data/proc/explosion_log(cause)
@@ -361,13 +378,17 @@ SUBSYSTEM_DEF(explosions)
 /// Returns in a unique order, spiraling outwards
 /// This is done to ensure our progressive cache of blast resistance is always valid
 /// This is quite fast
-/proc/prepare_explosion_turfs(range, turf/epicenter, protect_epicenter, explosion_direction = 0, explosion_arc = 360)
+/proc/prepare_explosion_turfs(range, turf/epicenter, protect_epicenter, explosion_direction = 0, explosion_arc = 360, multiz = FALSE, min_z, max_z)
 	var/list/outlist = list()
 	var/list/candidates = list()
 
 	var/our_x = epicenter.x
 	var/our_y = epicenter.y
 	var/our_z = epicenter.z
+
+	if(!multiz)
+		min_z = our_z
+		max_z = our_z
 
 	var/max_x = world.maxx
 	var/max_y = world.maxy
@@ -405,24 +426,35 @@ SUBSYSTEM_DEF(explosions)
 	for(var/i in 1 to range)
 		var/lowest_x = our_x - i
 		var/lowest_y = our_y - i
+		var/lowest_z = our_z - i
 		var/highest_x = our_x + i
 		var/highest_y = our_y + i
+		var/highest_z = our_z + i
 		// top left to one before top right
 		if(highest_y <= max_y)
-			candidates += block(max(lowest_x, 1), highest_y, our_z,
-								min(highest_x - 1, max_x), highest_y, our_z)
+			candidates += block(lowest_x, highest_y, min_z,
+								highest_x - 1, highest_y, max_z)
 		// top right to one before bottom right
 		if(highest_x <= max_x)
-			candidates += block(highest_x, min(highest_y, max_y), our_z,
-								highest_x, max(lowest_y + 1, 1), our_z)
+			candidates += block(highest_x, highest_y, min_z,
+								highest_x, lowest_y + 1, max_z)
+
+		if(multiz && highest_z <= max_z)
+			candidates += block(lowest_x + 1, highest_y - 1, max_z,
+								highest_x - 1, lowest_y + 1, max_z)
+
 		// bottom right to one before bottom left
 		if(lowest_y >= 1)
-			candidates += block(min(highest_x, max_x), lowest_y, our_z,
-								max(lowest_x + 1, 1), lowest_y, our_z)
+			candidates += block(highest_x, lowest_y, min_z,
+								lowest_x + 1, lowest_y, max_z)
 		// bottom left to one before top left
 		if(lowest_x >= 1)
-			candidates += block(lowest_x, max(lowest_y, 1), our_z,
-								lowest_x, min(highest_y - 1, max_y), our_z)
+			candidates += block(lowest_x, lowest_y, min_z,
+								lowest_x, highest_y - 1, max_z)
+
+		if(multiz && lowest_z >= min_z)
+			candidates += block(lowest_x + 1, highest_y - 1, min_z,
+								highest_x - 1, lowest_y + 1, max_z)
 
 	if(!do_directional)
 		outlist = candidates
