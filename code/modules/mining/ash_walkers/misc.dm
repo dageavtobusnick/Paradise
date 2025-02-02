@@ -145,3 +145,35 @@
 	name = "bone totem"
 	icon_state = "totem_bone"
 	desc = "Массивная статуя, сделанная из огромной кости. Вы не знаете, какому именно животному принадлежит эта кость, и вы явно не хотите это узнавать."
+
+/obj/structure/chair/stool/wooden
+	name = "wooden stool"
+	ru_names = list(
+		NOMINATIVE = "деревянная табуретка",
+		GENITIVE = "деревянной табуретки",
+		DATIVE = "деревянной табуретке",
+		ACCUSATIVE = "деревянную табуретку",
+		INSTRUMENTAL = "деревянной табуреткой",
+		PREPOSITIONAL = "деревянной табуретке"
+	)
+	desc = "Деревянная табуретка. Достаточно удобная, чтобы на ней сидеть."
+	icon_state = "wooden_stool"
+	item_chair = /obj/item/chair/stool/wooden
+
+/obj/item/chair/stool/wooden
+	name = "wooden stool"
+	ru_names = list(
+		NOMINATIVE = "деревянная табуретка",
+		GENITIVE = "деревянной табуретки",
+		DATIVE = "деревянной табуретке",
+		ACCUSATIVE = "деревянную табуретку",
+		INSTRUMENTAL = "деревянной табуреткой",
+		PREPOSITIONAL = "деревянной табуретке"
+	)
+	desc = "Деревянная табуретка. Достаточно удобная, чтобы держать ее в руках."
+	icon = 'icons/obj/chairs.dmi'
+	icon_state = "wooden_stool_toppled"
+	item_state = "stool"
+	force = 8
+	origin_type = /obj/structure/chair/stool/wooden
+	break_chance = 10 //It's too sturdy.

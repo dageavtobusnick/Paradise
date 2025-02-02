@@ -53,6 +53,54 @@
 	icon_state = "catwalkcouch1"
 	comfort = 0
 
+/obj/structure/bed/wicker
+	name = "wicker bed"
+	ru_names = list(
+		NOMINATIVE = "плетеная кровать",
+		GENITIVE = "плетеной кровати",
+		DATIVE = "плетеной кровати",
+		ACCUSATIVE = "плетеную кровать",
+		INSTRUMENTAL = "плетеной кроватью",
+		PREPOSITIONAL = "плетеной кровати"
+	)
+	desc = "Большая кровать, сотканная из чего-то, напоминающего ткань. Выглядит достаточно удобно."
+	icon_state = "wicker_bed"
+	comfort = 1.5
+	buildstacktype = /obj/item/stack/sheet/cloth
+	buildstackamount = 5
+
+/obj/structure/bed/leather
+	name = "leather bed"
+	ru_names = list(
+		NOMINATIVE = "кровать из кожи",
+		GENITIVE = "кровати из кожи",
+		DATIVE = "кровати из кожи",
+		ACCUSATIVE = "кровать из кожи",
+		INSTRUMENTAL = "кроватью из кожи",
+		PREPOSITIONAL = "кровати из кожи"
+	)
+	desc = "Куски кожи, грубо сшитые друг с другом и прикрепленные к деревянной раме. Не самое удобное место для лежания."
+	icon_state = "leather_bed"
+	comfort = 1.2
+	buildstacktype = /obj/item/stack/sheet/leather
+	buildstackamount = 2
+
+/obj/structure/bed/wooden
+	name = "wooden bed"
+	ru_names = list(
+		NOMINATIVE = "деревянная кровать",
+		GENITIVE = "деревянной кровати",
+		DATIVE = "деревянной кровати",
+		ACCUSATIVE = "деревянную кровать",
+		INSTRUMENTAL = "деревянной кроватью",
+		PREPOSITIONAL = "деревянной кровати"
+	)
+	desc = "Кровать, сделанная из качественной древесины. Выглядит очень мило и уютно."
+	icon_state = "wooden_bed"
+	comfort = 2.5
+	buildstacktype = /obj/item/stack/sheet/wood
+	buildstackamount = 5
+
 /obj/structure/bed/proc/handle_rotation()
 	return
 

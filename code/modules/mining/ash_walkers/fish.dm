@@ -62,7 +62,7 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 	throwforce = 5
 	force = 1
-	attack_verb = list("slapped", "humiliated", "hit", "rubbed") //attacks aren't translated, so in order to escape "You has ударил ssferhes ssusshes with generic lavaland fish" this has to be in english
+	attack_verb = list("охлестал", "ударил", "стукнул", "опозорил")
 	hitsound = 'sound/effects/snap.ogg'
 
 	/// If this fish should do the flopping animation
