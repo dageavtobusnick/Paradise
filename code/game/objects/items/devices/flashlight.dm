@@ -348,9 +348,17 @@
 
 /obj/item/flashlight/flare/torch
 	name = "torch"
-	desc = "A torch fashioned from some leaves and a log."
+	ru_names = list(
+		NOMINATIVE = "факел",
+		GENITIVE = "факела",
+		DATIVE = "факелу",
+		ACCUSATIVE = "факел",
+		INSTRUMENTAL = "факелом",
+		PREPOSITIONAL = "факеле",
+	)
+	desc = "Простейший факел, сделанный из листьев, намотанных на древесину."
 	w_class = WEIGHT_CLASS_BULKY
-	light_range = 7
+	light_range = 6
 	icon_state = "torch"
 	item_state = "torch"
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
