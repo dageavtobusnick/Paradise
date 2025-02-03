@@ -96,12 +96,12 @@ GLOBAL_LIST_INIT(VVpixelmovement, list("step_x", "step_y", "step_size", "bound_h
 
 	switch(.["class"])
 		if(VV_TEXT)
-			.["value"] = tgui_input_text(src, "Введите текст:", "Текст", current_value, encode = FALSE)
+			.["value"] = tgui_input_text(src, "Введите текст:", "Текст", current_value, encode = FALSE, trim = FALSE)
 			if(.["value"] == null)
 				.["class"] = null
 				return
 		if(VV_MESSAGE)
-			.["value"] = tgui_input_text(src, "Введите текст:", "Текст", current_value, multiline = TRUE, encode = FALSE)
+			.["value"] = tgui_input_text(src, "Введите текст:", "Текст", current_value, multiline = TRUE, encode = FALSE, trim = FALSE)
 			if(.["value"] == null)
 				.["class"] = null
 				return
@@ -236,7 +236,7 @@ GLOBAL_LIST_INIT(VVpixelmovement, list("step_x", "step_y", "step_size", "bound_h
 				return
 			.["type"] = type
 			var/list/arguments
-			
+
 			if(tgui_alert(usr, "Вы хотите добавить аргументы?", "Новый атом", list("Да", "Нет")) == "Да")
 				arguments = get_callproc_args(FALSE)
 			else
@@ -252,7 +252,7 @@ GLOBAL_LIST_INIT(VVpixelmovement, list("step_x", "step_y", "step_size", "bound_h
 				return
 			.["type"] = type
 			var/list/arguments
-			
+
 			if(tgui_alert(usr, "Вы хотите добавить аргументы?", "Новый атом", list("Да", "Нет")) == "Да")
 				arguments = get_callproc_args(FALSE)
 			else
@@ -272,7 +272,7 @@ GLOBAL_LIST_INIT(VVpixelmovement, list("step_x", "step_y", "step_size", "bound_h
 
 			.["type"] = type
 			var/list/arguments
-			
+
 			if(tgui_alert(usr, "Вы хотите добавить аргументы?", "Новый атом", list("Да", "Нет")) == "Да")
 				arguments = get_callproc_args(FALSE)
 			else
