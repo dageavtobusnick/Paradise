@@ -129,8 +129,6 @@
 
 		if("start_ritual")
 			var/ritual_status = pre_ritual_check(ui.user)
-			if(ritual_status)
-				active_ui = FALSE
 			. = TRUE
 
 /datum/component/ritual_object/ui_close(mob/user)
@@ -138,10 +136,6 @@
 	active_ui = FALSE
 
 /datum/component/ritual_object/proc/handle_ritual_selection(mob/living/carbon/human/human, choosen_ritual)
-	if(!choosen_ritual)
-		active_ui = FALSE
-		return
-
 	for(var/datum/ritual/ritual as anything in rituals)
 		if(choosen_ritual != ritual.name)
 			continue
