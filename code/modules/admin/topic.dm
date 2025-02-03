@@ -1256,7 +1256,8 @@
 		log_and_message_admins("<span class='notice'>set the mode as [GLOB.master_mode].</span>")
 		to_chat(world, "<span class='boldnotice'>The mode is now: [GLOB.master_mode]</span>")
 		Game() // updates the main game menu
-		world.save_mode(GLOB.master_mode)
+		if (tgui_alert(usr, " Хотите ли вы сохранить этот режим как режим по умолчанию?", "Сохранить режим", list("Да", "Нет")) == "Да")
+			world.save_mode(GLOB.master_mode)
 		.(href, list("c_mode"=1))
 
 	else if(href_list["f_secret2"])
