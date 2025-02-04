@@ -311,7 +311,7 @@
 	switch(param)
 		if("reason")
 			if(!value)
-				value = input("Insert the new reason for [pckey]'s ban", "New Reason", "[reason]", null) as null|text
+				value = tgui_input_text(usr, "Insert the new reason for [pckey]'s ban", "New Reason", "[reason]", multiline = TRUE, encode = FALSE)
 				if(!value)
 					to_chat(usr, "Cancelled", confidential=TRUE)
 					return
@@ -330,7 +330,7 @@
 			message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s reason from [reason] to [value]")
 		if("duration")
 			if(!value)
-				value = input("Insert the new duration (in minutes) for [pckey]'s ban", "New Duration", "[duration]", null) as null|num
+				value = tgui_input_number(usr, "Insert the new duration (in minutes) for [pckey]'s ban", "New Duration", duration)
 				if(!isnum(value) || !value)
 					to_chat(usr, "Cancelled", confidential=TRUE)
 					return
@@ -348,7 +348,7 @@
 			qdel(update_query)
 			message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s duration from [duration] to [value]")
 		if("unban")
-			if(alert("Unban [pckey]?", "Unban?", "Yes", "No") == "Yes")
+			if(tgui_alert(usr, "Unban [pckey]?", "Unban?", list("Yes", "No")) == "Yes")
 				DB_ban_unban_by_id(banid)
 				if(job && length(job))
 					jobban_unban_client(pckey, job)

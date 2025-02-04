@@ -26267,6 +26267,12 @@
 	icon_state = "dark"
 	},
 /area/centcom/specops)
+"mwA" = (
+/obj/effect/landmark/prisonsecuritywarp,
+/turf/simulated/floor/plasteel{
+	icon_state = "grimy"
+	},
+/area/centcom/jail)
 "mxj" = (
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -33235,6 +33241,7 @@
 /obj/structure/sign/poster/contraband/punch_shit{
 	pixel_y = 32
 	},
+/obj/effect/landmark/prisonsecuritywarp,
 /turf/simulated/floor/plasteel{
 	icon_state = "grimy"
 	},
@@ -46044,6 +46051,7 @@
 /area/centcom/specops)
 "vdf" = (
 /obj/structure/chair/stool,
+/obj/effect/landmark/prisonsecuritywarp,
 /turf/simulated/floor/plasteel{
 	icon_state = "grimy"
 	},
@@ -97017,7 +97025,7 @@ pqb
 vdf
 vdf
 vdf
-hwc
+mwA
 ntW
 uVO
 rWg
@@ -97274,7 +97282,7 @@ pqb
 pxs
 vdf
 vdf
-hwc
+mwA
 xmb
 fXZ
 myp

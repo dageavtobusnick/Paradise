@@ -326,7 +326,7 @@
 		popup.open()
 		onclose(usr, "roundstatus")
 	else
-		alert("The game hasn't started yet!")
+		tgui_alert(usr, "The game hasn't started yet!")
 
 /datum/admins/proc/check_role_table(name, list/members, show_objectives=1)
 	var/txt = "<br><table cellspacing=5><tr><td><b>[name]</b></td><td></td></tr>"
