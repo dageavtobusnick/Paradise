@@ -26267,12 +26267,6 @@
 	icon_state = "dark"
 	},
 /area/centcom/specops)
-"mwA" = (
-/obj/effect/landmark/prisonsecuritywarp,
-/turf/simulated/floor/plasteel{
-	icon_state = "grimy"
-	},
-/area/centcom/jail)
 "mxj" = (
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -97025,7 +97019,7 @@ pqb
 vdf
 vdf
 vdf
-mwA
+hwc
 ntW
 uVO
 rWg
@@ -97282,7 +97276,7 @@ pqb
 pxs
 vdf
 vdf
-mwA
+hwc
 xmb
 fXZ
 myp
