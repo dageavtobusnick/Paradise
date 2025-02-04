@@ -3230,7 +3230,7 @@
 					if(!loc?.z)
 						continue
 					var/datum/space_level/level = GLOB.space_manager.get_zlev(loc.z)
-					if(level.name == ADMIN_ZONE || GLOB.prisonwarped.Find(H)) //don't warp them if they aren't ready or are already there
+					if(!is_station_level(loc.z) || level.name != CENTCOMM || GLOB.prisonwarped.Find(H)) //don't warp them if they aren't ready or are already there
 						continue
 					if(H.wear_id)
 						var/obj/item/card/id/id = H.get_id_card()
