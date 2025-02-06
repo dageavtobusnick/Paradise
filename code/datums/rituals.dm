@@ -44,16 +44,16 @@
 	LAZYNULL(required_things)
 	LAZYNULL(invokers)
 	return ..()
-		
+
 /datum/ritual/proc/pre_ritual_check(mob/living/carbon/human/invoker)
 	var/failed = FALSE
 	var/cause_disaster = FALSE
-	
+
 	var/del_things = FALSE
 	var/start_cooldown = FALSE
 
 	handle_ritual_object(RITUAL_STARTED)
-	
+
 	. = ritual_invoke_check(invoker)
 	switch(.)
 		if(RITUAL_SUCCESSFUL)
@@ -74,7 +74,7 @@
 			start_cooldown = TRUE
 		if(NONE)
 			failed = TRUE
-	
+
 	if(start_cooldown && cooldown_after_cast)
 		COOLDOWN_START(src, ritual_cooldown, cooldown_after_cast)
 
@@ -92,7 +92,7 @@
 
 	if(failed)
 		addtimer(CALLBACK(src, PROC_REF(handle_ritual_object), RITUAL_FAILED), 2 SECONDS)
-	
+
 	/// We use pre-defines
 	LAZYCLEARLIST(invokers)
 	LAZYCLEARLIST(used_things)
@@ -113,7 +113,7 @@
 			. = RITUAL_FAILED
 			if(!silent)
 				playsound(ritual_object.loc, 'sound/effects/empulse.ogg', 50, TRUE)
-				
+
 	return .
 
 /datum/ritual/proc/del_things() // This is a neutral variant with item delete. Override it to change.
@@ -179,7 +179,7 @@
 
 		if(LAZYLEN(invokers) >= extra_invokers)
 			break
-				
+
 	if(LAZYLEN(invokers) < extra_invokers)
 		ritual_object.balloon_alert(invoker, "требуется больше участников!")
 		return FALSE
@@ -214,7 +214,7 @@
 		for(var/req_type in requirements)
 			if(requirements[req_type] <= 0)
 				continue
-			
+
 			if(!istype(atom, req_type))
 				continue
 
@@ -229,7 +229,7 @@
 	var/list/what_are_we_missing = list()
 	for(var/req_type in requirements)
 		var/number_of_things = requirements[req_type]
-		
+
 		if(number_of_things <= 0)
 			continue
 
@@ -275,7 +275,7 @@
 		return FALSE
 
 	var/list/shaman_invokers = list()
-	
+
 	if(extra_shaman_invokers)
 		for(var/mob/living/carbon/human/human as anything in invokers)
 			if(human == invoker)
@@ -286,7 +286,7 @@
 
 			if(LAZYLEN(shaman_invokers) >= extra_shaman_invokers)
 				break
-				
+
 		if(LAZYLEN(shaman_invokers) < extra_shaman_invokers)
 			ritual_object.balloon_alert(invoker, "требуется больше шаманов!")
 			return FALSE
@@ -407,7 +407,7 @@
 /datum/ritual/ashwalker/transformation/disaster(mob/living/carbon/human/invoker)
 	invoker.adjustBrainLoss(15)
 	invoker.SetKnockdown(5 SECONDS)
-	
+
 	var/mob/living/carbon/human/human = locate() in used_things
 
 	if(QDELETED(human))
@@ -496,8 +496,8 @@
 	switch(.)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/weapons/zapbang.ogg', 50, TRUE)
-			var/datum/effect_system/smoke_spread/smoke = new
-			smoke.set_up(5, FALSE, ritual_object.loc)
+			var/datum/effect_system/fluid_spread/smoke/smoke = new
+			smoke.set_up(amount = 5, location = ritual_object.loc)
 			smoke.start()
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/forcewall.ogg', 50, TRUE)
@@ -544,7 +544,7 @@
 	for(var/mob/living/carbon/human/human in SSmobs.clients_by_zlevel[invoker.z])
 		if(!isashwalker(human))
 			LAZYADD(humans, human)
-			
+
 	if(!LAZYLEN(humans))
 		return RITUAL_FAILED_ON_PROCEED
 
@@ -855,8 +855,8 @@
 		if(!isturf(human.loc))
 			continue
 
-		var/datum/effect_system/smoke_spread/smoke = new
-		smoke.set_up(5, FALSE, get_turf(human.loc))
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(amount = 5, location = get_turf(human.loc))
 		smoke.start()
 
 		for(var/obj/item/obj as anything in human.get_equipped_items(TRUE, TRUE))
@@ -870,14 +870,14 @@
 	switch(.)
 		if(RITUAL_ENDED)
 			playsound(ritual_object.loc, 'sound/magic/demon_consume.ogg', 50, TRUE)
-			var/datum/effect_system/smoke_spread/smoke = new
-			smoke.set_up(5, FALSE, get_turf(ritual_object.loc))
+			var/datum/effect_system/fluid_spread/smoke/smoke = new
+			smoke.set_up(amount = 5, location = get_turf(ritual_object.loc))
 			smoke.start()
 		if(RITUAL_STARTED)
 			playsound(ritual_object.loc, 'sound/magic/cult_spell.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/magic/teleport_diss.ogg', 50, TRUE)
-			
+
 	return .
 
 /datum/ritual/ashwalker/soul
@@ -925,8 +925,8 @@
 	return TRUE
 
 /datum/ritual/ashwalker/soul/do_ritual(mob/living/carbon/human/invoker)
-	var/datum/effect_system/smoke_spread/smoke = new
-	smoke.set_up(5, FALSE, get_turf(invoker.loc))
+	var/datum/effect_system/fluid_spread/smoke/smoke = new
+	smoke.set_up(amount = 5, location = get_turf(invoker.loc))
 	smoke.start()
 	invoker.set_species(/datum/species/unathi/draconid)
 
@@ -1046,7 +1046,7 @@
 	var/mob/living/carbon/human/human = locate() in used_things
 	if(!human || QDELETED(human))
 		return RITUAL_FAILED_ON_PROCEED
-		
+
 	if(human.stat == DEAD || !human.mind)
 		to_chat(invoker, "Гуманоид должен быть жив и иметь разум.")
 		return FALSE
@@ -1073,8 +1073,8 @@
 		SEND_SOUND(turf, sound('sound/items/airhorn.ogg'))
 		human.AdjustHallucinate(150 SECONDS)
 		human.EyeBlind(5 SECONDS)
-		var/datum/effect_system/smoke_spread/smoke = new
-		smoke.set_up(5, FALSE, turf)
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(amount = 5, location = turf)
 		smoke.start()
 
 	return
@@ -1089,7 +1089,7 @@
 			playsound(ritual_object.loc, 'sound/effects/hulk_hit_airlock.ogg', 50, TRUE)
 		if(RITUAL_FAILED)
 			playsound(ritual_object.loc, 'sound/effects/forge_destroy.ogg', 50, TRUE)
-			
+
 	return .
 
 /datum/ritual/ashwalker/creation
@@ -1203,7 +1203,7 @@
 
 /datum/ritual/ashwalker/command/do_ritual(mob/living/carbon/human/invoker)
 	var/mob/living/simple_animal/animal = locate() in used_things
-	
+
 	if(QDELETED(animal))
 		return RITUAL_FAILED_ON_PROCEED
 
@@ -1237,10 +1237,10 @@
 		if(!isturf(human.loc))
 			continue
 
-		var/datum/effect_system/smoke_spread/smoke = new
-		smoke.set_up(5, FALSE, get_turf(human.loc))
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(amount = 5, location = get_turf(human.loc))
 		smoke.start()
-		
+
 	var/mob/living/simple_animal/mob = locate() in used_things
 	qdel(mob)
 
@@ -1260,4 +1260,4 @@
 			playsound(ritual_object.loc, 'sound/magic/castsummon.ogg', 50, TRUE)
 
 	return .
-	
+
