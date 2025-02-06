@@ -79,8 +79,8 @@
 	var/turn_on = 0
 	var/auto_spawn = 1
 
-/mob/living/simple_animal/hostile/hivebot/tele/New()
-	..()
+/mob/living/simple_animal/hostile/hivebot/tele/Initialize(mapload)
+	. = ..()
 	var/datum/effect_system/fluid_spread/smoke/smoke = new
 	smoke.set_up(amount = 5, location = src.loc)
 	smoke.start()

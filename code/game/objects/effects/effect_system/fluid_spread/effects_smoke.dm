@@ -73,7 +73,7 @@
 
 
 /obj/effect/particle_effect/fluid/smoke/spread(seconds_per_tick = 0.1 SECONDS)
-	if(group.total_size > group.target_size)
+	if(!group || group.total_size > group.target_size)
 		return
 	var/turf/t_loc = get_turf(src)
 	if(!t_loc)
