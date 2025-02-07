@@ -35,6 +35,7 @@
 			else
 				dat += span_danger("<B>Emergency shuttle lockdowned</B>")
 				dat += "<BR><a href='byond://?src=[UID()];stop_lockdown=1'>Stop lockdown</a><br>"
+		dat += "<a href='byond://?src=[UID()];full_lockdown=1'>Full Lockdown</a>Now: [GLOB.full_lockdown? "ON" : "OFF"]<br>"
 		dat += "<a href='byond://?src=[UID()];delay_round_end=1'>[SSticker.delay_end ? "End Round Normally" : "Delay Round End"]</a><br>"
 		var/connected_players = GLOB.clients.len
 		var/lobby_players = 0
