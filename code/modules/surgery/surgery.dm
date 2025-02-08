@@ -356,7 +356,7 @@
 
 	SEND_SIGNAL(user, COMSIG_SURGERY_STEP_INIT, &step_time)
 
-	var/modded_time = slowdown_immune(user) ? step_time : step_time * speed_mod
+	var/modded_time = slowdown_immune(user) ? step_time : (step_time * speed_mod)
 
 	if(implement_type)	// If this is set, we aren't in an allow_hand or allow_any_item step.
 		prob_success = allowed_tools[implement_type]
