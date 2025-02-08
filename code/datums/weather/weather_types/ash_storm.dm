@@ -111,7 +111,7 @@
 
 
 /datum/weather/ash_storm/weather_act(mob/living/target)
-	if(!target.mind || !ishuman(target))
+	if(!target.mind && target.stat == DEAD || !ishuman(target))
 		target.adjustFireLoss(4)
 		return
 
