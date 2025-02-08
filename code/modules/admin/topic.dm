@@ -419,7 +419,7 @@
 			return
 
 		GLOB.full_lockdown = !GLOB.full_lockdown
-		log_and_message_admins(span_adminnotice("[key_name_admin(usr)] [GLOB.full_lockdown? "enabled" : "disabled"] Full Lockdown"))
+		log_and_message_admins("[GLOB.full_lockdown? "enabled" : "disabled"] Full Lockdown")
 		href_list["secrets"] =  "check_antagonist"
 
 	else if(href_list["delay_round_end"])
