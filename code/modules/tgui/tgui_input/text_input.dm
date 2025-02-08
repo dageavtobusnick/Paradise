@@ -174,4 +174,4 @@
 		return
 
 	var/converted_entry = encode ? html_encode(entry) : entry
-	src.entry = trim? trim(converted_entry, max_length + 1) : trim_length(converted_entry, max_length + 1)
+	src.entry = trim ? trim(converted_entry, max_length + 1) : trim_length(converted_entry, max_length + 1)
