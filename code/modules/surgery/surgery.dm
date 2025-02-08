@@ -534,7 +534,7 @@
 	// germ spread from surgeon touching the patient
 	if(user.gloves)
 		var/obj/item/clothing/gloves/gloves = user.gloves
-		germ_level = !(istype(gloves) && prob(gloves.surgery_germ_chance))? user.gloves.germ_level : 0
+		germ_level = !(istype(gloves) && prob(gloves.surgery_germ_chance)) ? user.gloves.germ_level : 0
 	target_organ.germ_level = max(germ_level, target_organ.germ_level)
 	spread_germs_by_incision(target_organ, tool) //germ spread from environement to patient
 
