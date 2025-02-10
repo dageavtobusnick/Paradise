@@ -207,25 +207,32 @@ class ChatRenderer {
         .map((str) => str.trim())
         .filter(
           (str) =>
+            // Must be longer than one character
             str &&
             str.length > 1 &&
+            // Must be alphanumeric (with some punctuation)
             allowedRegex.test(str) &&
+            // Reset lastIndex so it does not mess up the next word
             ((allowedRegex.lastIndex = 0) || true)
         );
 
+      // Nothing to match, reset highlighting
       if (lines.length === 0) {
         return;
       }
 
       let highlightWords = [];
       let regexExpressions = [];
-
+      // Organize each highlight entry into regex expressions and words
       for (let line of lines) {
+        // Regex expression syntax is /[exp]/
         if (line.charAt(0) === '/' && line.charAt(line.length - 1) === '/') {
           const expr = line.substring(1, line.length - 1);
+          // Check if this is more than one character
           if (/^(\[.*\]|\\.|.)$/.test(expr)) continue;
           regexExpressions.push(expr);
         } else {
+          // We're not going to let regex characters fuck up our RegEx operation.
           line = line.replace(regexEscapeCharacters, '\\$&');
           highlightWords.push(line);
         }
@@ -236,9 +243,11 @@ class ChatRenderer {
 
       let highlightRegex;
 
+      // We wrap this in a try-catch to ensure that broken regex doesn't break
+      // the entire chat.
       try {
+        // setting regex overrides matchword
         if (regexStr) {
-          // Проверяем кеш для регулярного выражения
           if (!this.regexCache.has(regexStr)) {
             this.regexCache.set(
               regexStr,
@@ -254,11 +263,11 @@ class ChatRenderer {
           highlightRegex = this.regexCache.get(pattern);
         }
       } catch {
-        // В случае ошибки сбрасываем регулярное выражение
+        // We just reset it if it's invalid.
         highlightRegex = null;
       }
 
-      // Ленивая инициализация для highlightParsers
+      // Lazy init
       if (!this.highlightParsers) {
         this.highlightParsers = [];
       }
@@ -308,8 +317,11 @@ class ChatRenderer {
     for (let i = from; i >= to; i--) {
       const message = this.visibleMessages[i];
       if (
+        // Is not an internal message
         !message.type.startsWith(MESSAGE_TYPE_INTERNAL) &&
+        // Text payload must fully match
         isSameMessage(message, predicate) &&
+        // Must land within the specified time window
         now < message.createdAt + COMBINE_MAX_TIME_WINDOW
       ) {
         return message;
