@@ -43,7 +43,7 @@ PROCESSING_SUBSYSTEM_DEF(dcs)
 				fullid += key
 			else
 				if (!istext(value) && !isnum(value))
-					value = UID_of(value)
+					value = islist(value)? "\ref[value]" : UID_of(value)
 
 				if (!named_arguments)
 					named_arguments = list()
@@ -51,6 +51,8 @@ PROCESSING_SUBSYSTEM_DEF(dcs)
 			continue
 		if (isnum(key))
 			fullid += key
+		else if(islist(key))
+			fullid += "\ref[key]"
 		else
 			fullid += UID_of(key)
 
