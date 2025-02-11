@@ -43,7 +43,7 @@ PROCESSING_SUBSYSTEM_DEF(dcs)
 				fullid += key
 			else
 				if (!istext(value) && !isnum(value))
-					value = islist(value)? "\ref[value]" : UID_of(value)
+					value = isdatum(value)? UID_of(value) : "\ref[value]"
 
 				if (!named_arguments)
 					named_arguments = list()
@@ -51,10 +51,10 @@ PROCESSING_SUBSYSTEM_DEF(dcs)
 			continue
 		if (isnum(key))
 			fullid += key
-		else if(islist(key))
-			fullid += "\ref[key]"
-		else
+		else if(isdatum(key))
 			fullid += UID_of(key)
+		else
+			fullid += "\ref[key]"
 
 	if(named_arguments)
 		named_arguments = sortTim(named_arguments, GLOBAL_PROC_REF(cmp_text_asc))
