@@ -215,7 +215,7 @@
 
 //Removes any null entries from the list
 /proc/listclearnulls(list/list)
-	list.RemoveAll(null)
+	list?.RemoveAll(null)
 	return
 
 /*
