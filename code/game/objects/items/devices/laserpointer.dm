@@ -98,7 +98,6 @@
 
 	. = TRUE
 	var/outmsg
-	var/turf/targloc = get_turf(target)
 
 	//human/alien mobs
 	if(iscarbon(target))
