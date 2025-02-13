@@ -458,7 +458,7 @@
 		E.GiveTarget(owner) //so it starts running right away
 		E.Goto(owner, E.move_to_delay, E.minimum_distance)
 		owner.alpha = 0
-		owner.visible_message("<span class='danger'>[owner] is hit by [attack_text] in the chest!</span>") //We pretend to be hit, since blocking it would stop the message otherwise
+		owner.visible_message(span_danger("[owner] is hit by [attack_text] in the chest!")) //We pretend to be hit, since blocking it would stop the message otherwise
 		spawn(40)
 			owner.alpha = initial(owner.alpha)
 		return 1

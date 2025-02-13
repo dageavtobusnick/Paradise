@@ -205,7 +205,7 @@
 
 /obj/structure/spider/terrorweb/bullet_act(obj/item/projectile/Proj)
 	if(Proj.damage_type != BRUTE && Proj.damage_type != BURN)
-		visible_message("<span class='danger'>[src] is undamaged by [Proj]!</span>")
+		visible_message(span_danger("[src] is undamaged by [Proj]!"), projectile_message = TRUE)
 		// Webs don't care about disablers, tasers, etc. Or toxin damage. They're organic, but not alive.
 		return
 	..()
