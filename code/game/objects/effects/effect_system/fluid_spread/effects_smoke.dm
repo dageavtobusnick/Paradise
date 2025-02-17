@@ -1,4 +1,4 @@
-#define SMOKE_TICK_TO_SECONDS *1.5
+#define SMOKE_TICK_TO_SECONDS *15
 
 /**
  * A fluid which spreads through the air affecting every mob it engulfs.
@@ -16,7 +16,7 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	animate_movement = FALSE
 	/// How long the smoke sticks around before it dissipates.
-	var/lifetime = 5 SMOKE_TICK_TO_SECONDS SECONDS
+	var/lifetime = 5 SMOKE_TICK_TO_SECONDS
 	/// Makes the smoke react to changes on/of its turf.
 	var/static/loc_connections = list(
 		COMSIG_TURF_CALCULATED_ADJACENT_ATMOS = PROC_REF(react_to_atmos_adjacency_changes)
@@ -193,7 +193,7 @@
 
 /// Smoke that makes you cough and reduces the power of lasers.
 /obj/effect/particle_effect/fluid/smoke/bad
-	lifetime = 8 SMOKE_TICK_TO_SECONDS SECONDS
+	lifetime = 8 SMOKE_TICK_TO_SECONDS
 	var/beam_resistance = 2
 
 /obj/effect/particle_effect/fluid/smoke/bad/Initialize(mapload)
@@ -232,7 +232,7 @@
 	effect_type = /obj/effect/particle_effect/fluid/smoke/bad
 
 /obj/effect/particle_effect/fluid/smoke/bad/solid
-	lifetime = 9 SMOKE_TICK_TO_SECONDS SECONDS
+	lifetime = 9 SMOKE_TICK_TO_SECONDS
 
 /////////////////////////////////////////////
 // Solid smoke
@@ -274,7 +274,7 @@
 /obj/effect/particle_effect/fluid/smoke/bad/bombarda
 	name = "bombarda smoke"
 	color = "#800080"
-	lifetime = 20 SMOKE_TICK_TO_SECONDS SECONDS
+	lifetime = 20 SMOKE_TICK_TO_SECONDS
 
 /// A factory which produces green smoke that makes you cough.
 /datum/effect_system/fluid_spread/smoke/bad/green
@@ -377,7 +377,7 @@
 /// Smoke which knocks you out if you breathe it in.
 /obj/effect/particle_effect/fluid/smoke/sleeping
 	color = "#9C3636"
-	lifetime = 10 SMOKE_TICK_TO_SECONDS SECONDS
+	lifetime = 10 SMOKE_TICK_TO_SECONDS
 
 /obj/effect/particle_effect/fluid/smoke/sleeping/smoke_mob(mob/living/carbon/smoker, seconds_per_tick)
 	if(..())
@@ -396,7 +396,7 @@
 
 /obj/effect/particle_effect/fluid/smoke/vomiting
 	color = "#752424"
-	lifetime = 3 SMOKE_TICK_TO_SECONDS SECONDS
+	lifetime = 3 SMOKE_TICK_TO_SECONDS
 
 /obj/effect/particle_effect/fluid/smoke/smoke_mob(mob/living/carbon/victim)
 	. = ..()
