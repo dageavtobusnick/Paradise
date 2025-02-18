@@ -6,10 +6,9 @@
 	telegraph_message = "<span class='danger'>Вы замечаете мелкие частицы паутины в воздухе</span>"
 
 	weather_message = "<span class='userdanger'><i>Вы ощущаете поток мелких частиц паутины, липнуших ко всему вокруг.</i></span>"
-	weather_overlay = "ash_storm"
+	weather_overlay = "web_storm"
 	weather_duration_lower = 30 SECONDS
 	weather_duration_upper = 1 MINUTES
-	weather_color = COLOR_WHITE
 	overlay_layer = MOB_LAYER
 	overlay_plane = GAME_PLANE
 	weather_sound = 'sound/creatures/terrorspiders/queen_shriek.ogg'
@@ -24,7 +23,7 @@
 	immunity_type = TRAIT_WEATHER_IMMUNE
 
 	self_fire = TRUE
-	var/turfs_per_tick = 30
+	var/turfs_per_tick = 40
 	var/list/affected_turfs_list = list()
 
 
@@ -56,7 +55,7 @@
 	if(!SSticker || !SSticker.mode)
 		return
 	status_alarm(FALSE)
-	SSticker.mode.on_web_storm_ended()
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_WEB_STORM_ENDED)
 
 /datum/weather/web_storm/proc/status_alarm(active)
 	if(active)

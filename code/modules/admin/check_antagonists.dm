@@ -275,9 +275,6 @@
 		if(SSticker.mode.devils.len)
 			dat += check_role_table("Devils", SSticker.mode.devils)
 
-		if(SSticker.mode.xenos.len)
-			dat += check_role_table("Xenos", SSticker.mode.xenos)
-
 		if(SSticker.mode.superheroes.len)
 			dat += check_role_table("Superheroes", SSticker.mode.superheroes)
 
@@ -289,32 +286,6 @@
 
 		if(SSticker.mode.eventmiscs.len)
 			dat += check_role_table("Event Roles", SSticker.mode.eventmiscs)
-
-		if(SSticker?.mode?.terror_spiders?.len)
-			var/datum/game_mode/mode = SSticker?.mode
-			var/list/terror_queens = mode?.main_spiders[TERROR_QUEEN]
-			var/list/terror_princes = mode?.main_spiders[TERROR_PRINCE]
-			var/list/terror_princesses = mode?.main_spiders[TERROR_PRINCESS]
-			var/list/terror_defilers = mode?.main_spiders[TERROR_DEFILER]
-			var/list/spider_minds = mode?.terror_spiders
-
-			if(terror_queens?.len || terror_princes?.len || terror_princesses?.len || terror_defilers?.len)
-				if(check_rights(R_EVENT))
-					dat += "<tr><td><a href='byond://?src=[UID()];delay_terror_end=1'>Отложить победу Терроров</a> Сейчас: [mode.delay_terror_end? "ON" : "OFF"]<br></td></tr>"
-				dat += check_role_table("Королевы", terror_queens)
-				dat += check_role_table("Принцы", terror_princes)
-				dat += check_role_table("Принцессы", terror_princesses)
-				dat += check_role_table("Осквернители", terror_defilers)
-				dat += check_role_table("Пауки Ужаса", spider_minds)
-				var/count_eggs = 0
-				var/count_spiderlings = 0
-				for(var/obj/structure/spider/eggcluster/terror_eggcluster/E in GLOB.ts_egg_list)
-					if(is_station_level(E.z))
-						count_eggs += E.spiderling_number
-				for(var/obj/structure/spider/spiderling/terror_spiderling/L in GLOB.ts_spiderling_list)
-					if(!L.stillborn && is_station_level(L.z))
-						count_spiderlings += 1
-				dat += "<table cellspacing=5><TR><TD>Растущие ПУ на станции: яйца - [count_eggs], спайдерлинги - [count_spiderlings]. </TD></TR></TABLE>"
 
 		if(SSticker.mode.ert.len)
 			dat += check_role_table("ERT", SSticker.mode.ert)

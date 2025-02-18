@@ -94,6 +94,10 @@
 				log_admin("[key_name(usr)] has spawned a terror spiders.")
 				if(!makeTerrorSpiders())
 					to_chat(usr, "<span class='warning'>Unfortunately there weren't enough candidates available.</span>", confidential=TRUE)
+			if("14")
+				log_admin("[key_name(usr)] has spawned a xemonorphs.")
+				if(!makeAliens())
+					to_chat(usr, "<span class='warning'>Unfortunately there weren't enough candidates available.</span>", confidential=TRUE)
 
 	else if(href_list["dbsearchckey"] || href_list["dbsearchadmin"] || href_list["dbsearchip"] || href_list["dbsearchcid"] || href_list["dbsearchbantype"])
 		var/adminckey = href_list["dbsearchadmin"]
@@ -2049,25 +2053,8 @@
 
 		log_admin("[key_name(usr)] has [mode.delay_blob_end? "stopped" : "returned"] stopped delayed blob win")
 		message_admins("[key_name_admin(usr)] has [mode.delay_blob_end? "stopped" : "returned"] delayed blob win")
-	else if(href_list["delay_terror_end"])
-		if(!check_rights(R_ADMIN) || !check_rights(R_EVENT))
-			return
 
-		if(!SSticker || !SSticker.mode)
-			return
 
-		var/datum/game_mode/mode = SSticker.mode
-		if(tgui_alert(usr,"Вы действительно хотите [mode.delay_blob_end? "вернуть" : "преостановить"] конец раунда в случае победы Пауков Ужаса?", "", list("Да", "Нет")) == "Нет")
-			return
-
-		if(!mode.delay_terror_end)
-			mode.delay_terror_win()
-		else
-			mode.return_terror_win()
-
-		log_admin("[key_name(usr)] has [mode.delay_terror_end? "stopped" : "returned"] stopped delayed terror win")
-		message_admins("[key_name_admin(usr)] has [mode.delay_terror_end? "stopped" : "returned"] delayed terror win")
-	
 	else if(href_list["toggle_blob_infinity_points"])
 		if(!check_rights(R_ADMIN))
 			return
@@ -2162,6 +2149,8 @@
 				var/datum/objective/objective = locateUID(href_list["objective"])
 				if(objective)
 					team.admin_remove_objective(usr, objective)
+			else
+				team.Topic(href, href_list)
 
 		check_teams()
 

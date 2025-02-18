@@ -43,10 +43,8 @@
 	/// Upper bound on time before intercept arrives.
 	var/const/waittime_h = 180 SECONDS
 	var/list/player_draft_log = list()
-	var/list/datum/mind/xenos = list()
 	var/list/datum/mind/eventmiscs = list()
 	var/list/datum/mind/traders = list()
-	var/list/datum/mind/terror_spiders = list()
 	var/list/datum/mind/morphs = list()
 	var/list/datum/mind/swarmers = list()
 	var/list/datum/mind/guardians = list()
@@ -787,7 +785,3 @@
 		intercepttext += "<BR>Примечание. в случае нарушения карантина или неконтролируемого распространения биологической угрозы директива 7-10 может быть дополнена директивой 7-12.<BR>"
 		intercepttext += "Конец сообщения."
 	print_command_report(intercepttext, interceptname, FALSE)
-
-#undef NUKE_INTACT
-#undef NUKE_CORE_MISSING
-#undef NUKE_MISSING

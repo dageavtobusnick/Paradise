@@ -34,16 +34,18 @@
 /obj/structure/spider/spiderling/terror_spiderling/Initialize(mapload)
 	. = ..()
 	GLOB.ts_spiderling_list += src
+	var/datum/team/terror_spiders/spider_team = GLOB.antagonist_teams[/datum/team/terror_spiders]
 	if(is_away_level(z))
 		spider_awaymission = TRUE
 	else
-		SSticker?.mode?.terror_eggs |= src
+		spider_team?.terror_eggs |= src
 
 /obj/structure/spider/spiderling/terror_spiderling/Destroy()
 	GLOB.ts_spiderling_list -= src
 	for(var/obj/structure/spider/spiderling/terror_spiderling/S in view(7, src))
 		S.immediate_ventcrawl = TRUE
-	SSticker?.mode?.terror_eggs -= src
+	var/datum/team/terror_spiders/spider_team = GLOB.antagonist_teams[/datum/team/terror_spiders]
+	spider_team?.terror_eggs -= src
 	return ..()
 
 /obj/structure/spider/spiderling/terror_spiderling/proc/score_surroundings(atom/A = src)
@@ -86,7 +88,7 @@
 	var/turf/T = get_turf(src)
 	if(spider_awaymission && !is_away_level(T.z))
 		stillborn = TRUE
-	if(SSticker?.mode?.global_degenerate && !spider_awaymission && !QDELETED(src))
+	if(GLOB.global_degenerate && !spider_awaymission && !QDELETED(src))
 		qdel(src)
 		return
 	if(stillborn)
@@ -206,8 +208,9 @@
 	C.spider_myqueen = spider_myqueen
 	C.spider_mymother = src
 	C.enemies = enemies
+	var/datum/team/terror_spiders/spider_team = GLOB.antagonist_teams[/datum/team/terror_spiders]
 	if(mind)
-		SSticker?.mode?.terror_eggs |= C
+		spider_team?.terror_eggs |= C
 	if(spider_growinstantly)
 		C.amount_grown = 250
 		C.spider_growinstantly = TRUE
@@ -223,7 +226,7 @@
 	var/spider_growinstantly = FALSE
 	var/mob/living/simple_animal/hostile/poison/terror_spider/queen/spider_myqueen = null
 	var/mob/living/simple_animal/hostile/poison/terror_spider/spider_mymother = null
-	var/spiderling_type = null
+	var/mob/living/simple_animal/hostile/poison/terror_spider/spiderling_type = null
 	var/spiderling_number = 1
 	var/list/enemies = list()
 	var/list/asigned_ghosts = list()
@@ -285,12 +288,13 @@
 
 /obj/structure/spider/eggcluster/terror_eggcluster/Destroy()
 	GLOB.ts_egg_list -= src
-	SSticker?.mode?.terror_eggs -= src
+	var/datum/team/terror_spiders/spider_team = GLOB.antagonist_teams[/datum/team/terror_spiders]
+	spider_team?.terror_eggs -= src
 	return ..()
 
 /obj/structure/spider/eggcluster/terror_eggcluster/proc/find_spider_owner()
 	ghost_poll = TRUE
-	var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите занять роль Паука Ужаса([nameof(spiderling_type)])?", ROLE_TERROR_SPIDER, TRUE, TERROR_VOTE_LEN, source = spiderling_type, role_cleanname = "Паук Ужаса")
+	var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите занять роль Паука Ужаса([spiderling_type.name])?", ROLE_TERROR_SPIDER, TRUE, TERROR_VOTE_LEN, source = spiderling_type, role_cleanname = "Паук Ужаса")
 	if(QDELETED(src))
 		return FALSE
 	ghost_poll = FALSE
@@ -303,7 +307,7 @@
 
 /obj/structure/spider/eggcluster/terror_eggcluster/process()
 	amount_grown += 1
-	if(SSticker?.mode?.global_degenerate && !spider_mymother.spider_awaymission && !QDELETED(src))
+	if(GLOB.global_degenerate && !spider_mymother.spider_awaymission && !QDELETED(src))
 		qdel(src)
 		return
 	if(grown_tick_count - amount_grown <= TERROR_VOTE_TICKS && !asigned_ghosts?.len \
@@ -343,7 +347,7 @@
 	max_integrity = 1000
 	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 100, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50)
 	explosion_block = 100
-	grown_tick_count = 150
+	grown_tick_count = 250
 	explosion_vertical_block = 100
 	var/save_burst = FALSE
 
@@ -353,15 +357,17 @@
 
 /obj/structure/spider/eggcluster/terror_eggcluster/empress/Destroy()
 	. = ..()
+	var/datum/team/terror_spiders/spider_team = GLOB.antagonist_teams[/datum/team/terror_spiders]
 	if(!save_burst)
-		SSticker?.mode?.on_empress_egg_destroyed()
+		spider_team?.on_empress_egg_destroyed()
 
 /obj/structure/spider/eggcluster/terror_eggcluster/empress/ex_act(severity)
 	return
 
 /obj/structure/spider/eggcluster/terror_eggcluster/empress/burst_eggs()
 	save_burst = TRUE
-	SSticker?.mode?.on_empress_egg_burst()
+	var/datum/team/terror_spiders/spider_team = GLOB.antagonist_teams[/datum/team/terror_spiders]
+	spider_team?.on_empress_egg_burst()
 	. = ..()
 
 /obj/structure/spider/royaljelly

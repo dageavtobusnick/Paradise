@@ -61,7 +61,7 @@
 	// Safety first.
 	if(!owner)
 		return
-	if(SSticker?.mode?.global_degenerate && !awaymission_infection && !QDELETED(src))
+	if(GLOB.global_degenerate && !awaymission_infection && !QDELETED(src))
 		qdel(src)
 		return
 	// Parasite growth
@@ -75,7 +75,7 @@
 		if(is_away_level(owner.z))
 			awaymission_infection = TRUE
 		else
-			SSticker?.mode?.on_terror_infection_created(src)
+			SEND_GLOBAL_SIGNAL(COMSIG_GLOB_IFECTION_CREATED, src)
 	if(awaymission_infection)
 		var/turf/T = get_turf(owner)
 		if(istype(T) && !is_away_level(T.z))
@@ -139,7 +139,7 @@
 
 /obj/item/organ/internal/body_egg/terror_eggs/remove(mob/living/carbon/M, special = ORGAN_MANIPULATION_DEFAULT)
 	..()
-	SSticker.mode.on_terror_infection_removed(src)
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_IFECTION_REMOVED, src)
 	if(!QDELETED(src))
 		qdel(src) // prevent people re-implanting them into others
 	return null

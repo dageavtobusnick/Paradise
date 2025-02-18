@@ -7,6 +7,7 @@
 	icon_state = "aliend_s"
 	time_to_open_doors = 0.2 SECONDS
 	can_evolve = TRUE
+	role_text = "Вы трутень. Ваша основная задача - помощь королеве в обустройстве гнезда. Если в улье все еще нет, вам необходимо как можно быстрее в нее эволюционировать."
 	var/sterile = FALSE
 
 

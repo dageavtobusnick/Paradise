@@ -16,6 +16,7 @@
 	time_to_open_doors = 0.2 SECONDS
 	environment_smash = ENVIRONMENT_SMASH_RWALLS
 	pressure_resistance = 200 //Because big, stompy xenos should not be blown around like paper.
+	antag_datum_type = /datum/antagonist/xenomorph/queen
 	tts_seed = "Queen"
 
 /mob/living/carbon/alien/humanoid/queen/New()

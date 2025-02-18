@@ -39,6 +39,7 @@
 	var/datum/action/innate/terrorspider/queen/empress/empresslings/empresslings_action
 	var/datum/action/innate/terrorspider/queen/empress/empresserase/empresserase_action
 	tts_seed = "Queen"
+	spider_intro_text = "Вы - Императрица Ужаса. Вы - вершина иерархии гнезда и одно из самых опасных существ этого мира. Управляйте, разрушайте, захватывайте. Теперь это ВАША станция."
 
 /mob/living/simple_animal/hostile/poison/terror_spider/queen/empress/New()
 	..()
@@ -128,7 +129,8 @@
 		if(T.spider_tier < spider_tier)
 			T.degenerate = TRUE
 			to_chat(T, span_userdanger("Через коллективный разум грубая сила [declent_ru(GENITIVE)] вливается в ваше тело, сжигая его изнутри!"))
-	SSticker?.mode?.erase_eggs()
+	var/datum/team/terror_spiders/spider_team = GLOB.antagonist_teams[/datum/team/terror_spiders]
+	spider_team?.erase_eggs()
 	to_chat(src, span_userdanger("Все пауки ужаса, кроме вас, вскоре вымрут."))
 
 

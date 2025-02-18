@@ -26,6 +26,12 @@
 /// cable was placed or joined somewhere : (turf)
 #define COMSIG_GLOB_CABLE_UPDATED "!cable_updated"
 
+#define COMSIG_GLOB_WEB_STORM_ENDED "!web_storm_ended"
+#define COMSIG_GLOB_EMPRESS_EGG_DESTROYED "!empress_egg_destroyed"
+#define COMSIG_GLOB_EMPRESS_EGG_BURST "!empress_egg_burst"
+#define COMSIG_GLOB_IFECTION_CREATED "!infection_created"
+#define COMSIG_GLOB_IFECTION_REMOVED "!infection_removed"
+
 /// signals from globally accessible objects
 
 ///from SSsun when the sun changes position : (azimuth)
@@ -1303,6 +1309,8 @@
 #define COMSIG_TERROR_SPIDER_DIED "terror_spider_died"
 
 #define COMSIG_EMPRESS_EGG_LAYED "empress_egg_layed"
+
+#define COMSIG_ALIEN_EVOLVE "alien_evolve"
 
 /// Source: /datum/component/object_possession/proc/on_move (mob/mob, new_loc, direct)
 #define COMSIG_POSSESSED_MOVEMENT "possessed_movement"

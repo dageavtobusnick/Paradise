@@ -1,5 +1,5 @@
 /datum/objective/spider_protect
-	name = "защищать гнездо"
+	name = "Защищать гнездо"
 	needs_target = FALSE
 	explanation_text = "Ошибка. Текст не сгенерирован. Напишите атикет и создайте баг репорт."
 
@@ -7,9 +7,9 @@
 	. = ..()
 	generate_text()
 
-/datum/objective/spider_protect/proc/generate_text()
+/datum/objective/spider_protect/proc/generate_text(datum/team/terror_spiders/spider_team)
 	var/list/possible_spiders = list()
-	var/list/spiders = SSticker?.mode?.main_spiders
+	var/list/spiders = spider_team.main_spiders
 	if(!spiders)
 		return
 	for(var/spiter_type in spiders)
@@ -17,22 +17,21 @@
 			possible_spiders += spiter_type
 	explanation_text = "Помогите вашему гнезду отложить яйцо Императрицы Ужаса. Это могут сделать: [possible_spiders.Join(", ")]. Защищайте их и помогите им набрать силу, чтобы они могли отложить яйцо."
 
-/datum/objective/spider_protect/check_completion()
+/datum/objective/spider_protect/check_completion(datum/team/terror_spiders/spider_team)
 	. = ..()
 
 	if(completed)
 		return .
 
-	var/datum/game_mode/mode = SSticker?.mode
-	if(mode?.infect_target?.completed || \
-	mode?.lay_eggs_target?.completed|| \
-	mode?.prince_target?.completed)
+	if(spider_team?.infect_target?.completed || \
+	spider_team?.lay_eggs_target?.completed|| \
+	spider_team?.prince_target?.completed)
 		completed = TRUE
 		return TRUE
 	return .
 
 /datum/objective/spider_protect_egg
-	name = "защищайте яйцо императрицы"
+	name = "Защищайть яйцо императрицы"
 	needs_target = FALSE
 	explanation_text = "Ошибка. Текст не сгенерирован. Напишите атикет и создайте баг репорт."
 
@@ -40,10 +39,10 @@
 	. = ..()
 	generate_text()
 
-/datum/objective/spider_protect_egg/proc/generate_text()
-	if(!SSticker?.mode?.empress_egg)
+/datum/objective/spider_protect_egg/proc/generate_text(datum/team/terror_spiders/spider_team)
+	if(spider_team?.empress_egg)
 		return
-	explanation_text = "Защищайте яйцо императрицы ужаса. Оно находится в [get_area(SSticker?.mode?.empress_egg)]. Его уничтожение приведет к гибели всего гнезда."
+	explanation_text = "Защищайте яйцо императрицы ужаса. Оно находится в [get_area(spider_team?.empress_egg)]. Его уничтожение приведет к гибели всего гнезда."
 
 /datum/objective/spider_get_power
 	name = "spider bug"
@@ -56,61 +55,58 @@
 	return
 
 /datum/objective/spider_get_power/proc/generate_targets_count()
-	targets_need = 2 + num_station_players() / 5
+	targets_need = EMPRESS_EGG_TARGET_COUNT
 	return
 
 /datum/objective/spider_get_power/alife_spiders
-	name = "размножаться"
+	name = "Размножаться"
 
 /datum/objective/spider_get_power/alife_spiders/generate_text()
 	. = ..()
 	explanation_text = "Расплодитесь. Для того, чтобы вы могли отложить яйцо императрицы в вашем гнезде должно быть [targets_need] пауков."
 
-/datum/objective/spider_get_power/alife_spiders/check_completion()
+/datum/objective/spider_get_power/alife_spiders/check_completion(datum/team/terror_spiders/spider_team)
 	. = ..()
 
 	if(completed)
 		return .
 
-	var/datum/game_mode/mode = SSticker?.mode
-	var/alife_count = mode?.get_terror_spiders_alife_count()
+	var/alife_count = spider_team?.get_terror_spiders_alife_count()
 
 	if(alife_count >= targets_need)
 		completed = TRUE
-		mode.other_target?.check_completion()
+		spider_team.other_target?.check_completion()
 		return TRUE
 	return .
 
 /datum/objective/spider_get_power/spider_infections
-	name = "заражать гуманоидов"
+	name = "Заражать гуманоидов"
 
 /datum/objective/spider_get_power/spider_infections/generate_text()
 	. = ..()
 	explanation_text = "Заражайте. Для того, чтобы вы могли отложить яйцо императрицы должно быть заражено [targets_need] гуманоидов."
 
-/datum/objective/spider_get_power/spider_infections/check_completion()
+/datum/objective/spider_get_power/spider_infections/check_completion(datum/team/terror_spiders/spider_team)
 	. = ..()
 
 	if(completed)
 		return .
 
-	var/datum/game_mode/mode = SSticker?.mode
-
-	if(mode?.terror_infections.len >= targets_need)
+	if(spider_team?.terror_infections.len >= targets_need)
 		completed = TRUE
-		mode.other_target?.check_completion()
+		spider_team?.other_target?.check_completion()
 		return TRUE
 	return .
 
 
 /datum/objective/spider_get_power/eat_humans
-	name = "поедать гуманоидов"
+	name = "Поедать гуманоидов"
 
 /datum/objective/spider_get_power/eat_humans/generate_text()
 	. = ..()
 	explanation_text = "Ешьте и набирайтесь сил. Для того, чтобы вы могли отложить яйцо императрицы вам нужно заплести в кокон [targets_need] гуманоидов. "
 
-/datum/objective/spider_get_power/eat_humans/check_completion(human_count)
+/datum/objective/spider_get_power/eat_humans/check_completion(human_count, datum/team/terror_spiders/spider_team)
 	. = ..()
 
 	if(completed)
@@ -118,6 +114,6 @@
 
 	if(human_count >= targets_need)
 		completed = TRUE
-		SSticker?.mode?.other_target?.check_completion()
+		spider_team?.other_target?.check_completion()
 		return TRUE
 	return .

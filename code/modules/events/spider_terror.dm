@@ -53,7 +53,7 @@
 			spider_type = TERROR_PRINCE
 			spawncount = 1
 
-	successSpawn = SSticker?.mode?.create_terror_spiders(spider_type, spawncount)
+	successSpawn = create_terror_spiders(spider_type, spawncount)
 	if(!successSpawn)
 		log_and_message_admins("Warning: Could not spawn any mobs for event Terror Spiders")
 		return kill()

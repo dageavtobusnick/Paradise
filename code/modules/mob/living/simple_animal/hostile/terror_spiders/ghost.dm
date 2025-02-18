@@ -11,7 +11,7 @@
 	else if(!ai_playercontrol_allowtype)
 		to_chat(harbinger, "Этот конкретный тип паука ужаса не может управляться игроком.")
 		return FALSE
-	else if(degenerate || SSticker?.mode?.global_degenerate)
+	else if(degenerate || GLOB.global_degenerate)
 		to_chat(harbinger, "Умирающими пауками нельзя управлять.")
 		return FALSE
 	else if(!(harbinger in GLOB.respawnable_list))
@@ -27,4 +27,4 @@
 
 /mob/living/simple_animal/hostile/poison/terror_spider/proc/add_datum_if_not_exist()
 	if(mind && !mind.has_antag_datum(/datum/antagonist/terror_spider))
-		mind.add_antag_datum(datum_type)
+		mind.add_antag_datum(datum_type, /datum/team/terror_spiders)
