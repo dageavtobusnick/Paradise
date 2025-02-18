@@ -433,6 +433,8 @@
 #define COMSIG_MOB_ITEM_ATTACK "mob_item_attack"
 	#define COMPONENT_ITEM_NO_ATTACK (1<<0)
 
+#define COMSIG_GLOVES_DOUBLE_HANDS_TOUCH "gloves_double_hands_touch"
+
 ///from base of /mob/living/proc/get_incoming_damage_modifier(): (list/damage_mods, damage, damagetype, def_zone, sharp, used_weapon)
 #define COMSIG_MOB_APPLY_DAMAGE_MODIFIERS "mob_apply_damage_modifiers"
 ///from base of /mob/living/proc/get_blocking_resistance(): (list/damage_resistances, damage, damagetype, def_zone, sharp, used_weapon)
@@ -683,6 +685,11 @@
 	#define MOVE_ARG_DIRECTION 2
 /// From base of /client/Move(): (direction, old_dir)
 #define COMSIG_MOB_CLIENT_MOVED "mob_client_moved"
+
+/// From base of /client/Move(), invoked when a non-living mob is attempting to move: (list/move_args)
+#define COMSIG_MOB_CLIENT_PRE_NON_LIVING_MOVE "mob_client_pre_non_living_move"
+	/// Cancels the move attempt
+	#define COMSIG_MOB_CLIENT_BLOCK_PRE_NON_LIVING_MOVE COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /// From base of /client/Move(): (list/move_args)
 #define COMSIG_MOB_CLIENT_PRE_LIVING_MOVE "mob_client_pre_living_move"
@@ -1296,3 +1303,6 @@
 #define COMSIG_TERROR_SPIDER_DIED "terror_spider_died"
 
 #define COMSIG_EMPRESS_EGG_LAYED "empress_egg_layed"
+
+/// Source: /datum/component/object_possession/proc/on_move (mob/mob, new_loc, direct)
+#define COMSIG_POSSESSED_MOVEMENT "possessed_movement"
