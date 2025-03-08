@@ -1,7 +1,7 @@
 /obj/item/gun/projectile/automatic/l6_saw
 	name = "\improper L6 SAW"
 	desc = "A heavily modified 5.56 light machine gun, designated 'L6 SAW'. Has 'Aussec Armoury - 2531' engraved on the receiver below the designation."
-	icon_state = "l6closed100"
+	icon_state = "l6"
 	item_state = "l6closedmag"
 	w_class = WEIGHT_CLASS_HUGE
 	slot_flags = 0
@@ -16,10 +16,13 @@
 	fire_delay = 1
 	burst_size = 1
 	actions_types = null
+	overlays_offset = list(COVER= list(0, 4))
 
 /obj/item/gun/projectile/automatic/l6_saw/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
+	overlays_order += COVER
+	update_icon(UPDATE_OVERLAYS)
 
 /obj/item/gun/projectile/automatic/l6_saw/attack_self(mob/user)
 	cover_open = !cover_open
@@ -29,9 +32,21 @@
 
 
 /obj/item/gun/projectile/automatic/l6_saw/update_icon_state()
-	icon_state = "l6[cover_open ? "open" : "closed"][magazine ? CEILING(get_ammo(FALSE)/25, 1)*25 : "-empty"][suppressed ? "-suppressed" : ""]"
 	item_state = "l6[cover_open ? "openmag" : "closedmag"]"
 
+
+/obj/item/gun/projectile/automatic/l6_saw/update_overlays()
+	if(COVER in overlays_order)
+		var/cover_overlay = "l6-cover-[cover_open ? "open" : "closed"]"
+		var/list/offset = (cover_open)? get_offset(COVER) : NONE_OFFSET
+		var/mutable_appearance/appearance = mutable_appearance(icon, cover_overlay)
+		appearance.pixel_x = offset[1]
+		appearance.pixel_y = offset[2]
+		total_overlays[COVER] = appearance
+	. = ..()
+
+/obj/item/gun/projectile/automatic/l6_saw/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "l6-mag-[CEILING(get_ammo(FALSE) / 25, 1) * 25]" : null
 
 /obj/item/gun/projectile/automatic/l6_saw/can_shoot(mob/user)
 	if(cover_open)

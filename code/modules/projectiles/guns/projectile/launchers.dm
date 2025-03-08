@@ -9,6 +9,8 @@
 	mag_type = /obj/item/ammo_box/magazine/internal/grenadelauncher
 	fire_sound = 'sound/weapons/gunshots/1grenlauncher.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
+	initial_overlays = list()
+	overlays_order = list()
 
 
 /obj/item/gun/projectile/revolver/grenadelauncher/multi
@@ -44,7 +46,7 @@
 
 
 /obj/item/gun/projectile/automatic/gyropistol/update_icon_state()
-	icon_state = "[initial(icon_state)][magazine ? "loaded" : ""]"
+	icon_state = "[initial(icon_state)][magazine ? "" : "-e"]"
 
 
 /obj/item/gun/projectile/automatic/speargun

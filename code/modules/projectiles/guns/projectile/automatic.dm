@@ -11,7 +11,7 @@
 
 
 /obj/item/gun/projectile/automatic/update_icon_state()
-	icon_state = "[initial(icon_state)][magazine ? "-[magazine.max_ammo]" : ""][chambered ? "" : "-e"][suppressed ? "-suppressed" : ""]"
+	icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
 
 
 /obj/item/gun/projectile/automatic/update_overlays()
@@ -20,12 +20,6 @@
 		. += "[initial(icon_state)]semi"
 	if(select == 1)
 		. += "[initial(icon_state)]burst"
-
-	if(gun_light && gun_light_overlay)
-		var/iconF = gun_light_overlay
-		if(gun_light.on)
-			iconF = "[gun_light_overlay]_on"
-		. += image(icon = icon, icon_state = iconF, pixel_x = flight_x_offset, pixel_y = flight_y_offset)
 
 
 /obj/item/gun/projectile/automatic/attackby(obj/item/I, mob/user, params)
@@ -91,6 +85,7 @@
 	mag_type = /obj/item/ammo_box/magazine/smgm9mm
 	origin_tech = "combat=4;materials=2"
 	fire_sound = 'sound/weapons/gunshots/1c20.ogg'
+	overlays_offset = list(SUPPRESSOR = list(3, 0))
 
 //C-20r SMG//
 /obj/item/gun/projectile/automatic/c20r
@@ -106,6 +101,7 @@
 	can_bayonet = TRUE
 	bayonet_x_offset = 26
 	bayonet_y_offset = 12
+	overlays_offset = list(SUPPRESSOR = list(2, 0))
 
 
 /obj/item/gun/projectile/automatic/c20r/Initialize()
@@ -119,9 +115,10 @@
 
 
 /obj/item/gun/projectile/automatic/c20r/update_icon_state()
-	icon_state = "c20r[magazine ? "-[CEILING(get_ammo(FALSE)/4, 1)*4]" : ""][chambered ? "" : "-e"][suppressed ? "-suppressed" : ""]"
+	icon_state = "c20r[chambered ? "" : "-e"]"
 
-
+/obj/item/gun/projectile/automatic/c20r/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "c20r-mag-[CEILING(get_ammo(FALSE) / 4, 1) * 4]" : null
 
 //WT550//
 /obj/item/gun/projectile/automatic/wt550
@@ -143,9 +140,8 @@
 	gun_light_overlay = "wt-light"
 
 
-/obj/item/gun/projectile/automatic/wt550/update_icon_state()
-	icon_state = "wt550[magazine ? "-[CEILING(get_ammo(FALSE)/4, 1)*4]" : ""]"
-
+/obj/item/gun/projectile/automatic/wt550/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "wt550-mag-[CEILING(get_ammo(FALSE) / 4, 1) * 4]" : null
 
 /obj/item/gun/projectile/automatic/wt550/ui_action_click(mob/user, datum/action/action, leftclick)
 	if(..())
@@ -170,11 +166,15 @@
 	burst_size = 3
 	can_bayonet = FALSE
 	gun_light_overlay = "SP-91-RC-light"
+	initial_overlays = list(HANDGUARD = "SP-91-RC-9mmalt")
+	overlays_order = list(HANDGUARD)
 
 
 /obj/item/gun/projectile/automatic/sp91rc/update_icon_state()
-	icon_state = "SP-91-RC[magazine ? "-[CEILING(get_ammo(FALSE)/5, 1)*5]" : ""]"
 	item_state = "SP-91-RC[magazine ? "-[get_ammo(FALSE) ? "20" : "0"]" : ""]"
+
+/obj/item/gun/projectile/automatic/sp91rc/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "[total_overlays[HANDGUARD]]-mag-[CEILING(get_ammo(FALSE)/5, 1)*5]" : null
 
 
 /obj/item/gun/projectile/automatic/sp91rc/ui_action_click(mob/user, datum/action/action, leftclick)
@@ -194,6 +194,7 @@
 	mag_type = /obj/item/ammo_box/magazine/uzim9mm
 	fire_sound = 'sound/weapons/gunshots/1uzi.ogg'
 	burst_size = 4
+	overlays_offset = list(SUPPRESSOR = list(1, 0))
 
 //M-90gl Carbine//
 /obj/item/gun/projectile/automatic/m90
@@ -238,22 +239,23 @@
 
 
 /obj/item/gun/projectile/automatic/m90/update_icon_state()
-	icon_state = "[initial(icon_state)][magazine ? "" : "-e"][suppressed ? "-suppressed" : ""]"
+	icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
+
 	if(magazine)
 		item_state = "m90-[CEILING(get_ammo(FALSE)/7.5, 1)]"
 	else
 		item_state = "m90-0"
 
-
 /obj/item/gun/projectile/automatic/m90/update_overlays()
 	. = ..()
-	if(magazine)
-		. += image(icon = icon, icon_state = "m90-[CEILING(get_ammo(FALSE)/6, 1)*6]")
 	switch(select)
 		if(0)
 			. += "[initial(icon_state)]gren"
 		if(1)
 			.  += "[initial(icon_state)]burst"
+
+/obj/item/gun/projectile/automatic/m90/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "[initial(icon_state)]-mag-[CEILING(get_ammo(FALSE) / 6, 1) * 6]" : null
 
 
 /obj/item/gun/projectile/automatic/m90/burst_select()
@@ -348,10 +350,8 @@
 	icon_state = "bulldog[chambered ? "" : "-e"]"
 
 
-/obj/item/gun/projectile/automatic/shotgun/bulldog/update_overlays()
-	. = ..()
-	if(magazine)
-		. += "[magazine.icon_state]"
+/obj/item/gun/projectile/automatic/shotgun/bulldog/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "[magazine.icon_state]" : null
 
 
 /obj/item/gun/projectile/automatic/shotgun/bulldog/update_weight()
@@ -403,6 +403,9 @@
 	..()
 	empty_alarm()
 
+/obj/item/gun/projectile/automatic/shotgun/minotaur/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "[initial(icon_state)]-mag[magazine.max_ammo]" : null
+
 //Combat Automatic Tactical Shotgun//
 
 /obj/item/gun/projectile/automatic/cats
@@ -419,7 +422,7 @@
 
 
 /obj/item/gun/projectile/automatic/cats/update_icon_state()
-	icon_state = "tla_cats[magazine ? "" : "-e"]"
+	icon_state = "tla_cats[chambered ? "" : "-e"]"
 
 
 /obj/item/gun/projectile/automatic/cats/examine(mob/user)
@@ -445,8 +448,15 @@
 	can_suppress = 0
 	burst_size = 2
 
-/obj/item/gun/projectile/automatic/lasercarbine/update_icon_state()
-	icon_state = "lasercarbine[magazine ? "-[CEILING(get_ammo(FALSE)/5, 1)*5]" : ""]"
+/obj/item/gun/projectile/automatic/lasercarbine/update_overlays()
+	. = ..()
+	if(magazine)
+		. += "[initial(icon_state)]-mag-[CEILING(get_ammo(FALSE) / 5, 1) * 5]"
+
+
+/obj/item/gun/projectile/automatic/lasercarbine/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "[initial(icon_state)]-mag-[CEILING(get_ammo(FALSE) / 5, 1) * 5]" : null
+
 
 /obj/item/gun/projectile/automatic/lr30
 	name = "\improper LR-30 Laser Rifle"
@@ -463,8 +473,9 @@
 	burst_size = 1
 	actions_types = null
 
-/obj/item/gun/projectile/automatic/lr30/update_icon_state()
-	icon_state = "lr30[magazine ? "-[CEILING(get_ammo(FALSE)/4, 1)*4]" : ""]"
+
+/obj/item/gun/projectile/automatic/lr30/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "[initial(icon_state)]-mag-[CEILING(get_ammo(FALSE)/4, 1) * 4]" : null
 
 //Semi-Machine Gun SFG
 
@@ -477,10 +488,6 @@
 	burst_size = 3
 	can_flashlight = TRUE
 	gun_light_overlay = "sfg-light"
-
-
-/obj/item/gun/projectile/automatic/sfg/update_icon_state()
-	icon_state = "[initial(icon_state)][magazine ? "" : "-e"][suppressed ? "-suppressed" : ""]"
 
 
 /obj/item/gun/projectile/automatic/sfg/ui_action_click(mob/user, datum/action/action, leftclick)
@@ -501,3 +508,5 @@
 	mag_type = /obj/item/ammo_box/magazine/m52mag
 	can_suppress = 0
 
+/obj/item/gun/projectile/automatic/m52/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "[initial(icon_state)]-mag-[get_ammo(FALSE)? 24 : 0]" : null

@@ -232,6 +232,11 @@
 	bayonet_y_offset = 13
 	pb_knockback = 0
 
+/obj/item/gun/projectile/shotgun/boltaction/Initialize(mapload)
+	. = ..()
+	overlays_order += BOLT
+	update_icon(UPDATE_OVERLAYS)
+
 /obj/item/gun/projectile/shotgun/boltaction/pump(mob/M)
 	playsound(M, 'sound/weapons/gun_interactions/rifle_load.ogg', 60, 1)
 	if(bolt_open)
@@ -239,12 +244,14 @@
 	else
 		pump_unload(M)
 	bolt_open = !bolt_open
-	update_icon(UPDATE_ICON_STATE)
-	return 1
+	update_icon(UPDATE_ICON_STATE|UPDATE_OVERLAYS)
+	return TRUE
 
+/obj/item/gun/projectile/shotgun/boltaction/update_overlays()
+	if(BOLT in overlays_order)
+		total_overlays[BOLT] = "[initial(icon_state)]-bolt-[bolt_open ? "open" : "closed"]"
+	. = ..()
 
-/obj/item/gun/projectile/shotgun/boltaction/update_icon_state()
-	icon_state = "[initial(icon_state)][bolt_open ? "-open" : ""]"
 
 
 /obj/item/gun/projectile/shotgun/blow_up(mob/user)

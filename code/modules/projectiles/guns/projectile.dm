@@ -15,6 +15,7 @@
 	. = ..()
 	if(!magazine && mag_type)
 		magazine = new mag_type(src)
+		overlays_order += MAGAZINE
 	chamber_round()
 	update_weight()
 	update_icon()
@@ -38,16 +39,18 @@
 
 /obj/item/gun/projectile/update_icon_state()
 	if(current_skin)
-		icon_state = "[current_skin][suppressed ? "-suppressed" : ""][sawn_state ? "-sawn" : ""]"
+		icon_state = "[current_skin][sawn_state ? "-sawn" : ""]"
 	else
-		icon_state = "[initial(icon_state)][suppressed ? "-suppressed" : ""][sawn_state ? "-sawn" : ""][bolt_open ? "-open" : ""]"
+		icon_state = "[initial(icon_state)][sawn_state ? "-sawn" : ""]"
 
 
 /obj/item/gun/projectile/update_overlays()
+	if((MAGAZINE in overlays_order))
+		update_magazine()
 	. = ..()
-	if(bayonet && bayonet_overlay)
-		. += bayonet_overlay
 
+/obj/item/gun/projectile/proc/update_magazine()
+	total_overlays[MAGAZINE] = (magazine)? "[initial(icon_state)]-mag" : null
 
 /obj/item/gun/proc/update_weight()
 	return

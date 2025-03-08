@@ -73,12 +73,15 @@
 
 
 /obj/item/melee/baton/security/update_icon_state()
-	if(active)
-		icon_state = "[base_icon_state]_active"
-	else if(!cell)
+	if(!cell)
 		icon_state = "[base_icon_state]_nocell"
 	else
 		icon_state = "[base_icon_state]"
+
+/obj/item/melee/baton/security/update_overlays()
+	. = ..()
+	if(active)
+		. += mutable_appearance(icon, "[base_icon_state]_active")
 
 
 /obj/item/melee/baton/security/examine(mob/user)
@@ -170,7 +173,7 @@
 			balloon_alert(user, "отсутствует батарейка!")
 		else
 			balloon_alert(user, "разряжено!")
-	update_icon(UPDATE_ICON_STATE)
+	update_icon(UPDATE_ICON_STATE | UPDATE_OVERLAYS)
 	add_fingerprint(user)
 
 

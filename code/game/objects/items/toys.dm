@@ -28,6 +28,11 @@
 	force = 0
 	var/unique_toy_rename = FALSE
 
+/obj/item/toy/Initialize(mapload)
+	. = ..()
+	update_icon()
+
+
 
 /obj/item/toy/examine(mob/user)
 	. = ..()
@@ -1856,6 +1861,8 @@
 	icon_state = "revolver"
 	max_shots = 1
 	var/fake_bullets = 0
+	initial_overlays = list(SIGHT = "revolver_sight_iron")
+	overlays_order = list(SIGHT)
 
 /obj/item/toy/russian_revolver/trick_revolver/New()
 	..()

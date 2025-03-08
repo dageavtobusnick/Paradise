@@ -23,7 +23,7 @@
 /obj/item/gun/dartgun
 	name = "dart gun"
 	desc = "A small gas-powered dartgun, capable of delivering chemical cocktails swiftly across short distances."
-	icon_state = "dartgun-empty"
+	icon_state = "dartgun"
 
 	var/list/beakers = list() //All containers inside the gun.
 	var/list/mixing = list() //Containers being used for mixing.
@@ -33,19 +33,14 @@
 	var/containers_type = /obj/item/reagent_containers/glass/beaker
 	var/list/starting_chems = null
 
+/obj/item/gun/dartgun/Initialize(mapload)
+	. = ..()
+	overlays_order += MAGAZINE
 
-/obj/item/gun/dartgun/update_icon_state()
-	if(!cartridge)
-		icon_state = "dartgun-e"
-		return
 
-	if(!cartridge.darts)
-		icon_state = "dartgun-0"
-	else if(cartridge.darts > 5)
-		icon_state = "dartgun-5"
-	else
-		icon_state = "dartgun-[cartridge.darts]"
-
+/obj/item/gun/dartgun/update_overlays()
+	total_overlays[MAGAZINE] = (!cartridge)? null : (cartridge.darts > 5)? "dartgun-mag-5" : "dartgun-mag-[cartridge.darts]"
+	. = ..()
 
 /obj/item/gun/dartgun/Initialize()
 	. = ..()

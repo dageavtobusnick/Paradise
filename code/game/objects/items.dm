@@ -202,6 +202,15 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 	///Datum used in item pixel shift TGUI
 	var/datum/ui_module/item_pixel_shift/item_pixel_shift
 
+	/// List of overlays that are added to a weapon after its initialization and can be replaced with overlays from modules
+	var/list/initial_overlays = list()
+	/// Order of overlays that can be added to a weapon
+	var/list/overlays_order = list()
+	/// List of offsets of overlays that can be added to a weapon
+	var/list/overlays_offset= list()
+	/// List of overlays applied to weapons
+	var/list/total_overlays = list()
+
 /obj/item/New()
 	..()
 	for(var/path in actions_types)
@@ -224,6 +233,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 		if(damtype == "brute")
 			hitsound = "swing_hit"
 	add_eatable_component()
+	total_overlays += initial_overlays
+
 
 /obj/item/proc/add_eatable_component()
 	AddComponent(/datum/component/eatable)
@@ -1152,6 +1163,25 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 		for(var/datum/action/action as anything in actions)
 			action.UpdateButtonIcon()
 
+/obj/item/update_overlays()
+	. = ..()
+	for(var/overlay in overlays_order)
+		var/item_overlay = total_overlays[overlay]
+		if(!item_overlay)
+			continue
+
+		if(istype(item_overlay, /mutable_appearance))
+			. += item_overlay
+			continue
+
+		var/list/offset = get_offset(overlay)
+		var/mutable_appearance/appearance = mutable_appearance(icon, item_overlay)
+		appearance.pixel_x = offset[1]
+		appearance.pixel_y = offset[2]
+		. += appearance
+
+/obj/item/proc/get_offset(overlay)
+	return (overlays_offset[overlay])? overlays_offset[overlay] : NONE_OFFSET
 
 /obj/item/proc/update_materials_coeff(new_coeff)
 	if(new_coeff <= 1)

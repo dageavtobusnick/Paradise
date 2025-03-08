@@ -8,12 +8,15 @@
 	/// If TRUE will show empty casing on examine
 	var/show_live_rounds = TRUE
 
+	initial_overlays = list(SIGHT = "revolver_sight_iron")
+	overlays_order = list(SIGHT)
+
+
 
 /obj/item/gun/projectile/revolver/Initialize(mapload)
 	. = ..()
 	if(!istype(magazine, /obj/item/ammo_box/magazine/internal/cylinder))
 		verbs -= /obj/item/gun/projectile/revolver/verb/spin
-
 
 /obj/item/gun/projectile/revolver/chamber_round(spin = TRUE)
 	if(!magazine)
@@ -114,15 +117,18 @@
 	unique_rename = TRUE
 	unique_reskin = TRUE
 
+	initial_overlays = list(ROD = "detective_rod_short")
+	overlays_order = list(ROD)
+
 
 /obj/item/gun/projectile/revolver/detective/update_gun_skins()
 	add_skin("The Original", "detective")
-	add_skin("Leopard Spots", "detective_leopard")
-	add_skin("Black Panther", "detective_panther")
-	add_skin("White Gold", "detective_gold")
-	add_skin("Gold Wood", "detective_gold_alt")
-	add_skin("The Peacemaker", "detective_peacemaker")
-	add_skin("Silver", "detective_silver")
+	//add_skin("Leopard Spots", "detective_leopard")
+	//add_skin("Black Panther", "detective_panther")
+	//add_skin("White Gold", "detective_gold")
+	//add_skin("Gold Wood", "detective_gold_alt")
+	//add_skin("The Peacemaker", "detective_peacemaker")
+	//add_skin("Silver", "detective_silver")
 
 
 /obj/item/gun/projectile/revolver/fingergun //Summoned by the Finger Gun spell, from advanced mimery traitor item
@@ -141,6 +147,8 @@
 	clumsy_check = FALSE //Stole your uplink! Honk!
 	needs_permit = FALSE //go away beepsky
 	var/obj/effect/proc_holder/spell/mime/fingergun/parent_spell
+	initial_overlays = list()
+	overlays_order = list()
 
 
 /obj/item/gun/projectile/revolver/fingergun/Initialize(mapload)
@@ -193,6 +201,8 @@
 	name = "\improper Unica 6 auto-revolver"
 	desc = "A retro high-powered autorevolver typically used by officers of the New Russia military. Uses .357 ammo."	//>10mm hole >.357
 	icon_state = "mateba"
+	initial_overlays = list()
+	overlays_order = list()
 
 /obj/item/gun/projectile/revolver/ga12
 	name = "\improper Tkach Ya-Sui GA 12 revolver"
@@ -203,6 +213,8 @@
 	spread = 15
 	recoil = 1
 	fire_delay = 5
+	initial_overlays = list()
+	overlays_order = list()
 
 /obj/item/gun/projectile/revolver/golden
 	name = "golden revolver"
@@ -210,6 +222,8 @@
 	icon_state = "goldrevolver"
 	fire_sound = 'sound/weapons/resonator_blast.ogg'
 	recoil = 8
+	initial_overlays = list()
+	overlays_order = list()
 
 /obj/item/gun/projectile/revolver/nagant
 	name = "nagant revolver"
@@ -218,6 +232,9 @@
 	origin_tech = "combat=3"
 	can_suppress = TRUE
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev762
+	initial_overlays = list()
+	overlays_order = list()
+	overlays_offset = list(SUPPRESSOR = list(-3, 0))
 
 /obj/item/gun/projectile/revolver/c36
 	name = ".36 revolver"
@@ -225,6 +242,8 @@
 	icon_state = "detective"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev36
 	fire_sound = 'sound/weapons/gunshots/1rev38.ogg'
+	initial_overlays = list(ROD = "detective_rod_short")
+	overlays_order = list(ROD)
 
 // A gun to play Russian Roulette!
 // You can spin the chamber to randomize the position of the bullet.
@@ -363,7 +382,8 @@
 	fire_sound = 'sound/weapons/gunshots/1rev257.ogg'
 	var/unscrewed = TRUE
 	var/obj/item/weaponcrafting/revolverbarrel/barrel
-
+	initial_overlays = list()
+	overlays_order = list()
 
 /obj/item/gun/projectile/revolver/improvised/Initialize(mapload)
 	. = ..()
@@ -498,6 +518,8 @@
 	unique_rename = TRUE
 	unique_reskin = TRUE
 	pb_knockback = 3
+	initial_overlays = list()
+	overlays_order = list()
 
 
 /obj/item/gun/projectile/revolver/doublebarrel/update_gun_skins()

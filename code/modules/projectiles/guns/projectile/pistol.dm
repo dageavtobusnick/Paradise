@@ -14,10 +14,11 @@
 	burst_size = 1
 	fire_delay = 0
 	actions_types = null
+	overlays_offset = list(SUPPRESSOR = list(5, 0))
 
 
 /obj/item/gun/projectile/automatic/pistol/update_icon_state()
-	icon_state = "[initial(icon_state)][chambered ? "" : "-e"][suppressed ? "-suppressed" : ""]"
+	icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
 
 
 //M1911//
@@ -29,6 +30,7 @@
 	mag_type = /obj/item/ammo_box/magazine/m45
 	fire_sound = 'sound/weapons/gunshots/1colt.ogg'
 	can_suppress = FALSE
+	overlays_offset = list()
 
 //Enforcer//
 /obj/item/gun/projectile/automatic/pistol/enforcer
@@ -42,6 +44,7 @@
 	unique_reskin = TRUE
 	can_flashlight = TRUE
 	gun_light_overlay = "enforcer-light"
+	overlays_offset = list(SUPPRESSOR = list(4, 0))
 
 
 /obj/item/gun/projectile/automatic/pistol/enforcer/update_gun_skins()
@@ -60,12 +63,6 @@
 		icon_state = "[current_skin][chambered ? "" : "-e"]"
 	else
 		icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
-
-
-/obj/item/gun/projectile/automatic/pistol/enforcer/update_overlays()
-	. = ..()
-	if(suppressed)
-		. += image(icon = icon, icon_state = "enforcer_supp", pixel_x = 4)
 
 
 /obj/item/gun/projectile/automatic/pistol/enforcer/ui_action_click(mob/user, datum/action/action, leftclick)
@@ -99,6 +96,7 @@
 	unique_reskin = TRUE
 	can_flashlight = TRUE
 	gun_light_overlay = "sp8-light"
+	overlays_offset = list(SUPPRESSOR = NONE_OFFSET)
 
 
 /obj/item/gun/projectile/automatic/pistol/sp8/update_gun_skins()
@@ -117,12 +115,6 @@
 		icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
 
 
-/obj/item/gun/projectile/automatic/pistol/sp8/update_overlays()
-	. = ..()
-	if(suppressed)
-		. += image(icon = icon, icon_state = "sp8_supp")
-
-
 /obj/item/gun/projectile/automatic/pistol/sp8/ui_action_click(mob/user, datum/action/action, leftclick)
 	toggle_gunlight()
 
@@ -135,6 +127,7 @@
 	can_suppress = FALSE
 	unique_reskin = TRUE
 	can_flashlight = TRUE
+	overlays_offset = list()
 
 
 /obj/item/gun/projectile/automatic/pistol/sp8/sp8t/update_gun_skins()
@@ -150,6 +143,7 @@
 	can_suppress = FALSE
 	unique_reskin = FALSE
 	can_flashlight = TRUE
+	overlays_offset = list()
 
 
 //Desert Eagle//
@@ -164,6 +158,7 @@
 	magin_sound = 'sound/weapons/gun_interactions/hpistol_magin.ogg'
 	magout_sound = 'sound/weapons/gun_interactions/hpistol_magout.ogg'
 	can_suppress = FALSE
+	overlays_offset = list()
 
 
 /obj/item/gun/projectile/automatic/pistol/deagle/update_icon_state()
@@ -192,3 +187,4 @@
 	burst_size = 3
 	fire_delay = 2
 	actions_types = list(/datum/action/item_action/toggle_firemode)
+	overlays_offset = list(SUPPRESSOR = list(7, 0))

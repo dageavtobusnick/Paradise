@@ -42,6 +42,7 @@
 /obj/item/twohanded/Initialize(mapload)
 	. = ..()
 	apply_twohanded_component()
+	update_icon()
 
 
 /**
@@ -581,7 +582,7 @@
 
 ///CHAINSAW///
 /obj/item/twohanded/chainsaw
-	icon_state = "chainsaw0"
+	icon_state = "chainsaw"
 	name = "Chainsaw"
 	desc = "Perfect for felling trees or fellow spacemen."
 	force = 15
@@ -612,7 +613,7 @@
 
 
 /obj/item/twohanded/chainsaw/update_icon_state()
-	icon_state = "chainsaw[HAS_TRAIT(src, TRAIT_WIELDED)]"
+	icon_state = "[initial(icon_state)][HAS_TRAIT(src, TRAIT_WIELDED)]"
 
 
 /obj/item/twohanded/chainsaw/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)

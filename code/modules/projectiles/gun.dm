@@ -105,6 +105,11 @@
 	/// Responsible for the range of the throwing back when shooting at point blank range
 	var/pb_knockback = 0
 
+	/// List of modules types that can be installed on weapons
+	var/list/available_modules = list()
+	/// List of modules that are installed on weapons
+	var/list/total_modules = list()
+
 
 /obj/item/gun/Initialize()
 	. = ..()
@@ -113,12 +118,31 @@
 	if(rusted_weapon)
 		malf_counter = rand(malf_low_bound, malf_high_bound)
 	update_gun_skins()
+	if(can_flashlight)
+		overlays_order += FLIGHT
+	if(can_bayonet)
+		overlays_order += BAYONET
+	if(can_suppress)
+		overlays_order += SUPPRESSOR
 
 
 /obj/item/gun/Destroy()
 	QDEL_NULL(gun_light)
 	QDEL_NULL(bayonet)
 	return ..()
+
+
+/obj/item/gun/update_overlays()
+	if((SUPPRESSOR in overlays_order))
+		total_overlays[SUPPRESSOR] = (suppressed)?"[initial(icon_state)]-supp" : null
+	if(gun_light && gun_light_overlay && (FLIGHT in overlays_order))
+		var/iconF = gun_light_overlay
+		if(gun_light.on)
+			iconF = "[gun_light_overlay]_on"
+		. += image(icon = icon, icon_state = iconF, pixel_x = flight_x_offset, pixel_y = flight_y_offset)
+	if((BAYONET in overlays_order))
+		total_overlays[BAYONET] = (bayonet && bayonet_overlay)? bayonet_overlay : null
+	. = ..()
 
 
 /obj/item/gun/handle_atom_del(atom/target)
