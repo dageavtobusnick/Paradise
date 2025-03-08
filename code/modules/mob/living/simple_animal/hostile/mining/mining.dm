@@ -2,13 +2,10 @@
 /mob/living/simple_animal/hostile/asteroid
 	vision_range = 2
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	heat_damage_per_tick = 20
 	faction = list("mining")
 	weather_immunities = list(TRAIT_LAVA_IMMUNE, TRAIT_ASHSTORM_IMMUNE)
 	obj_damage = 30
 	environment_smash = ENVIRONMENT_SMASH_WALLS
-	minbodytemp = 0
-	maxbodytemp = INFINITY
 	response_help = "pokes"
 	response_disarm = "shoves"
 	response_harm = "strikes"
@@ -26,6 +23,14 @@
 	var/crusher_drop_mod = 25
 	var/has_laser_resist = TRUE //If we want the mob to have 66% resist from burn damage projectiles
 
+/mob/living/simple_animal/hostile/asteroid/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		maxbodytemp = INFINITY, \
+		minbodytemp = 0, \
+		heat_damage = 20, \
+	)
+
 /mob/living/simple_animal/hostile/asteroid/Aggro()
 	..()
 	if(vision_range != aggro_vision_range)
@@ -42,7 +47,7 @@
 		Aggro()
 	if(P.damage < 30 && P.damage_type != BRUTE && has_laser_resist)
 		P.damage = (P.damage / 3)
-		visible_message("<span class='danger'>[P] has a reduced effect on [src]!</span>")
+		visible_message(span_danger("[P] has a reduced effect on [src]!"), projectile_message = TRUE)
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum) //No floor tiling them to death, wiseguy

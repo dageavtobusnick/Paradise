@@ -16,7 +16,6 @@
 	var/det_time = 5 SECONDS
 	var/display_timer = TRUE
 
-
 /obj/item/grenade/deconstruct(disassembled = TRUE)
 	if(!disassembled)
 		prime()
@@ -56,7 +55,7 @@
 
 /obj/item/grenade/attack_self(mob/user)
 	if(!active && clown_check(user))
-		to_chat(user, "<span class='warning'>You prime the [name]! [det_time/10] seconds!</span>")
+		to_chat(user, span_warning("You prime the [name]! [det_time/10] seconds!"))
 		active = TRUE
 		update_icon(UPDATE_ICON_STATE)
 		add_fingerprint(user)
@@ -71,6 +70,7 @@
 
 
 /obj/item/grenade/proc/prime(mob/user)
+	SEND_SIGNAL(src, COMSIG_GRENADE_DETONATE, user)
 	return
 
 
@@ -102,3 +102,6 @@
 	SSmove_manager.stop_looping(src)
 	. = ..()
 
+
+/obj/item/grenade/blob_vore_act(obj/structure/blob/special/core/voring_core)
+	obj_destruction(MELEE)

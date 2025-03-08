@@ -5,14 +5,7 @@
 
 /datum/event/pda_spam/setup()
 	last_spam_time = world.time
-	pick_message_server()
-
-/datum/event/pda_spam/proc/pick_message_server()
-	if(GLOB.message_servers)
-		for(var/obj/machinery/message_server/MS in GLOB.message_servers)
-			if(MS.active)
-				useMS = MS
-				break
+	find_pda_server()
 
 /datum/event/pda_spam/tick()
 	if(world.time > last_spam_time + 3000)
@@ -21,8 +14,7 @@
 		return
 
 	if(!useMS || !useMS.active)
-		useMS = null
-		pick_message_server()
+		useMS = find_pda_server()
 
 	if(useMS)
 		if(prob(5))
@@ -168,7 +160,7 @@
 					"…ася, хватить, блядь! Водки он напился, идиот. У НАС ЗАВТРА НА ТРАНС СОЛНЕЧНУЮ ФЕДЕРАЦИЮ НАЛЁТ, КАКАЯ ВОДКА! Сука, офицер СССП ещё называе…",\
 					"…ы меня не любишь? Потому что я скрелл?! …извини, я сорвалась. Я вся на нервах из-за работы… Прилетай ко мне, я соску…",\
 					"…еальные стулья! У нас лучшие стулья в секторе! С обивкой и без, с кожей и с инкрустированным ураном! Есть даже передвижные стулья с педалями! Кроме тог…",\
-					"…а сковороду тем временем налейте еще немного масла и выложите тертую свеклу. Обжарьте пару минут и добавьте уксус. Тушите еще минут 5, а после выложите томатную пасту. Томите на медленном огне еще 5-7 минут. Зате…")
+					"…а сковороду тем временем налейте ещё немного масла и выложите тертую свеклу. Обжарьте пару минут и добавьте уксус. Тушите ещё минут 5, а после выложите томатную пасту. Томите на медленном огне ещё 5-7 минут. Зате…")
 
 
 			if(useMS.send_pda_message("[P.owner]", sender, message))	//Message been filtered by spam filter.

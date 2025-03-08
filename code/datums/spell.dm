@@ -1,15 +1,3 @@
-#define SPELL_TARGET_CLOSEST 1
-#define SPELL_TARGET_RANDOM 2
-
-#define SPELL_SELECTION_RANGE "range"
-#define SPELL_SELECTION_VIEW "view"
-
-#define SMOKE_NONE		0
-#define SMOKE_HARMLESS	1
-#define SMOKE_COUGHING	2
-#define SMOKE_SLEEPING	3
-
-
 /obj/effect/proc_holder
 	var/active = FALSE //Used by toggle based abilities.
 	var/ranged_mousepointer
@@ -263,7 +251,7 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell))
 /obj/effect/proc_holder/spell/proc/invocation(mob/user = usr) //spelling the spell out and setting it on recharge/reducing charges amount
 	switch(invocation_type)
 		if("shout")
-			if(!user.IsVocal())
+			if(!user.IsVocal()  || user.cannot_speak_loudly())
 				user.custom_emote(EMOTE_VISIBLE, "дела%(ет,ют)% безумные жесты!")
 			else
 				if(prob(50))//Auto-mute? Fuck that noise
@@ -512,15 +500,15 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell))
 			do_sparks(sparks_amt, 0, location)
 
 		if(smoke_type)
-			var/datum/effect_system/smoke_spread/smoke
+			var/datum/effect_system/fluid_spread/smoke/smoke
 			switch(smoke_type)
 				if(SMOKE_HARMLESS)
-					smoke = new /datum/effect_system/smoke_spread()
+					smoke = new /datum/effect_system/fluid_spread/smoke()
 				if(SMOKE_COUGHING)
-					smoke = new /datum/effect_system/smoke_spread/bad()
+					smoke = new /datum/effect_system/fluid_spread/smoke/bad()
 				if(SMOKE_SLEEPING)
-					smoke = new /datum/effect_system/smoke_spread/sleeping()
-			smoke.set_up(smoke_amt, FALSE, location)
+					smoke = new /datum/effect_system/fluid_spread/smoke/sleeping()
+			smoke.set_up(amount = smoke_amt, location = location)
 			smoke.start()
 
 	custom_handler?.after_cast(targets, user, src)
@@ -603,6 +591,9 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell))
 	if((!user.mind || !LAZYIN(user.mind.spell_list, src)) && !LAZYIN(user.mob_spell_list, src))
 		if(show_message)
 			to_chat(user, span_warning("You shouldn't have this spell! Something's wrong."))
+		return FALSE
+
+	if(HAS_TRAIT(user, TRAIT_NO_SPELLS))
 		return FALSE
 
 	if(!centcom_cancast) //Certain spells are not allowed on the centcom zlevel

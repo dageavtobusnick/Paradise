@@ -7,6 +7,9 @@
 	pressure_resistance = 2
 	resistance_flags = FLAMMABLE
 
+	lefthand_file = 'icons/mob/inhands/folder_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/folder_righthand.dmi'
+
 /obj/item/folder/emp_act(severity)
 	..()
 	for(var/i in contents)
@@ -153,4 +156,7 @@
 	new /obj/item/documents/syndicate/mining(src)
 	update_icon(UPDATE_OVERLAYS)
 
-
+/obj/item/folder/ussp
+	name = "folder"
+	desc = "A folder with a hammer and sickle seal."
+	icon_state = "folder_ussp"

@@ -12,6 +12,7 @@
 	russian_wiki_name = "Предатель"
 	clown_gain_text = "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself."
 	clown_removal_text = "You lose your syndicate training and return to your own clumsy, clownish self."
+	antag_menu_name = "Предатель"
 	/// Should the traitor get codewords?
 	var/give_codewords = TRUE
 	/// Whether the traitor should get his uplink.
@@ -37,6 +38,18 @@
 	var/mob/living/datum_owner = mob_override || owner.current
 	datum_owner.AddComponent(/datum/component/codeword_hearing, GLOB.syndicate_code_phrase_regex, "codephrases", src)
 	datum_owner.AddComponent(/datum/component/codeword_hearing, GLOB.syndicate_code_response_regex, "coderesponses", src)
+
+	datum_owner.AddElement( \
+		/datum/element/pref_viewer, \
+		list(/datum/preference_info/take_out_of_the_round_without_obj), \
+	)
+
+/datum/antagonist/traitor/on_body_transfer(mob/living/old_body, mob/living/new_body)
+	. = ..()
+	old_body.RemoveElement(/datum/element/pref_viewer)
+
+/datum/antagonist/traitor/handle_last_instance_removal()
+	owner.current.RemoveElement(/datum/element/pref_viewer)
 
 /datum/antagonist/traitor/remove_innate_effects(mob/living/mob_override)
 	. = ..()
@@ -118,7 +131,7 @@
 			return
 
 	for(var/i = objective_count, i < objective_amount)
-		forge_single_human_objective()
+		forge_single_objective()
 		i += 1
 
 	var/martyr_compatibility = TRUE //You can't succeed in stealing if you're dead.
@@ -182,27 +195,6 @@
 		where = "In your [equipped_slot]"
 	to_chat(mob, "<BR><BR><span class='info'>[where] is a folder containing <b>secret documents</b> that another Syndicate group wants. We have set up a meeting with one of their agents on station to make an exchange. Exercise extreme caution as they cannot be trusted and may be hostile.</span><BR>")
 	mob.update_icons()
-
-
-/**
- * Create and assign a single randomized traitor objective.
- */
-/datum/antagonist/traitor/proc/forge_single_human_objective()
-	if(prob(50))
-		if(length(active_ais()) && prob(100 / length(GLOB.player_list)))
-			add_objective(/datum/objective/destroy)
-
-		else if(prob(5))
-			add_objective(/datum/objective/debrain)
-
-		else if(prob(20))
-			add_objective(/datum/objective/protect)
-
-		else
-			add_objective(/datum/objective/maroon)
-
-	else
-		add_objective(/datum/objective/steal)
 
 
 /**

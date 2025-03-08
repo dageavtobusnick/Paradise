@@ -439,7 +439,7 @@
 	var/list/potential_victims = list()
 
 	for(var/mob/living/carbon/potential_victim in range(aoe_range, get_turf(possessed_object)))
-		if(!can_see(possessed_object, potential_victim, aoe_range)) // You can't see me
+		if(!possessed_object.can_see(potential_victim, aoe_range)) // You can't see me
 			continue
 
 		if(potential_victim.stat != CONSCIOUS) // Don't kill our precious essence-filled sleepy mobs
@@ -516,7 +516,6 @@
 	reveal = 7 SECONDS
 	aoe_range = 4
 
-
 /obj/effect/proc_holder/spell/aoe/revenant/blight/create_new_targeting()
 	var/datum/spell_targeting/aoe/target = new()
 	target.range = aoe_range
@@ -528,6 +527,9 @@
 		return FALSE
 
 	if(target.mind in SSticker.mode.sintouched)
+		return FALSE
+
+	if(locate(/datum/disease/ectoplasmic) in target.diseases)
 		return FALSE
 
 	return TRUE
@@ -546,8 +548,8 @@
  */
 
 /turf/defile()
-	if(flags & NOJAUNT)
-		flags &= ~NOJAUNT
+	if(turf_flags & NOJAUNT)
+		turf_flags &= ~NOJAUNT
 		new /obj/effect/temp_visual/revenant(loc)
 
 /turf/simulated/floor/defile()
@@ -558,13 +560,13 @@
 		make_plating(intact)
 
 /turf/simulated/floor/plating/defile()
-	if(flags & NOJAUNT)
-		flags &= ~NOJAUNT
+	if(turf_flags & NOJAUNT)
+		turf_flags &= ~NOJAUNT
 		new /obj/effect/temp_visual/revenant(loc)
 
 /turf/simulated/floor/engine/cult/defile()
-	if(flags & NOJAUNT)
-		flags &= ~NOJAUNT
+	if(turf_flags & NOJAUNT)
+		turf_flags &= ~NOJAUNT
 		new /obj/effect/temp_visual/revenant(loc)
 
 /turf/simulated/wall/defile()

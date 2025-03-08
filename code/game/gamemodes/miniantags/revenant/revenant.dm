@@ -27,8 +27,6 @@
 	response_disarm = "swings at"
 	response_harm   = "punches"
 	unsuitable_atmos_damage = 0
-	minbodytemp = 0
-	maxbodytemp = INFINITY
 	harm_intent_damage = 0
 	friendly = "touches"
 	status_flags = 0
@@ -60,8 +58,15 @@
 /mob/living/simple_animal/revenant/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_WET_IMMUNITY, INNATE_TRAIT)
 	AddElement(/datum/element/simple_flying)
 
+/mob/living/simple_animal/revenant/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		maxbodytemp = INFINITY, \
+		minbodytemp = 0, \
+	)
 
 /mob/living/simple_animal/revenant/Life(seconds, times_fired)
 	..()
@@ -80,6 +85,9 @@
 		REMOVE_TRAIT(src, TRAIT_NO_TRANSFORM, REVENANT_TRAIT)
 		to_chat(src, "<span class='revenboldnotice'>You can move again!</span>")
 	update_icon(UPDATE_ICON_STATE)
+
+/mob/living/simple_animal/revenant/can_perform_action(atom/target, action_bitflags)
+	return FALSE
 
 /mob/living/simple_animal/revenant/ex_act(severity)
 	return 1 //Immune to the effects of explosions.
@@ -188,7 +196,7 @@
 			messages.Add("<b>You are invincible and invisible to everyone but other ghosts. Most abilities will reveal you, rendering you vulnerable.</b>")
 			messages.Add("<b>To function, you are to drain the life essence from humans. This essence is a resource, as well as your health, and will power all of your abilities.</b>")
 			messages.Add("<b><i>You do not remember anything of your past lives, nor will you remember anything about this one after your death.</i></b>")
-			messages.Add("<span class='motd'>С полной информацией вы можете ознакомиться на вики: <a href=\"https://wiki.ss220.space/index.php/Revenant\">Ревенант</a></span>")
+			messages.Add("<span class='motd'>С полной информацией вы можете ознакомиться на вики: <a href=\"[CONFIG_GET(string/wikiurl)]/index.php/Revenant\">Ревенант</a></span>")
 			var/datum/objective/revenant/objective = new
 			objective.owner = mind
 			mind.objectives += objective
@@ -365,24 +373,25 @@
 
 /datum/objective/revenantFluff
 	needs_target = FALSE
+	antag_menu_name = "Задача ревенанта"
 
 
 
 /datum/objective/revenantFluff/New()
-	var/list/explanationTexts = list("Assist and exacerbate existing threats at critical moments.", \
-									 "Cause as much chaos and anger as you can without being killed.", \
-									 "Damage and render as much of the station rusted and unusable as possible.", \
-									 "Disable and cause malfunctions in as many machines as possible.", \
-									 "Ensure that any holy weapons are rendered unusable.", \
-									 "Hinder the crew while attempting to avoid being noticed.", \
-									 "Make the crew as miserable as possible.", \
-									 "Make the clown as miserable as possible.", \
-									 "Make the captain as miserable as possible.", \
-									 "Make the AI as miserable as possible.", \
-									 "Annoy the ones that insult you the most.", \
-									 "Whisper ghost jokes into peoples heads.", \
-									 "Help the crew in critical situations, but take your payments in souls.", \
-									 "Prevent the use of energy weapons where possible.")
+	var/list/explanationTexts = list("Помогайте существующим угрозам и усугубляйте их в критические моменты.", \
+									 "Вызовите как можно больше хаоса и гнева, не будучи убитыми.", \
+									 "Повредите и сделайте как можно большую часть станции разрушеной и непригодной для использования.", \
+									 "Отключите как можно больше машин и вызовите сбои в их работе.", \
+									 "Убедитесь, что любое святое оружие приведено в негодность.", \
+									 "Мешайте экипажу, пытаясь остаться незамеченным..", \
+									 "Сделайте экипаж как можно более несчастным.", \
+									 "Сделайте клоуна как можно более несчастным.", \
+									 "Сделайте капитана как можно более несчастным.", \
+									 "Сделайте ИИ как можно более несчастным.", \
+									 "Раздражайте тех, кто вас больше всего оскорбляет.", \
+									 "Шепчите шутки о призраках в головы людей.", \
+									 "Помогайте экипажу в критических ситуациях, но принимайте оплату в душах.", \
+									 "По возможности предотвращайте применение энергетического оружия.")
 	explanation_text = pick(explanationTexts)
 	..()
 

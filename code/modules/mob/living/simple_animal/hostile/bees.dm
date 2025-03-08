@@ -40,7 +40,6 @@
 
 	//Spaceborn beings don't get hurt by space
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minbodytemp = 0
 	del_on_death = TRUE
 
 	var/datum/reagent/beegent = null //hehe, beegent
@@ -60,6 +59,13 @@
 	regenerate_icons()
 	AddComponent(/datum/component/swarming)
 	AddElement(/datum/element/simple_flying)
+	AddElement(/datum/element/reagent_attack/bee)
+
+/mob/living/simple_animal/hostile/poison/bees/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		minbodytemp = 0, \
+	)
 
 /mob/living/simple_animal/hostile/poison/bees/Destroy()
 	beegent = null
@@ -151,14 +157,6 @@
 		return //no don't attack the goddamm box
 	else
 		. = ..()
-		if(. && isliving(target) && (!client || a_intent == INTENT_HARM))
-			var/mob/living/L = target
-			if(L.reagents)
-				if(beegent)
-					beegent.reaction_mob(L, REAGENT_INGEST)
-					L.reagents.add_reagent(beegent.id, rand(1, 5))
-				else
-					L.reagents.add_reagent("beetoxin", 5)
 
 /mob/living/simple_animal/hostile/poison/bees/proc/assign_reagent(datum/reagent/R)
 	if(istype(R))

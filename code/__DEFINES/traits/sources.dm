@@ -110,6 +110,9 @@
 
 #define STAMINA_TRAIT "stamina"
 
+/// source trait for /obj/item/mecha_parts/mecha_equipment/cage
+#define MECH_SUPRESSED_TRAIT "mech_supress"
+
 /// trait associated to resting
 #define RESTING_TRAIT "resting"
 /// trait associated to a stat value or range of
@@ -150,8 +153,16 @@
 #define SCRYING_ORB_TRAIT "scrying_orb"
 #define EVIL_FAX_TRAIT "evil_fax"
 #define CORGI_HARDSUIT_TRAIT "corgi_hardsuit"
+/// inherited from riding vehicles
+#define VEHICLE_TRAIT "vehicle"
 
-// blob trait sourses
+/// blob trait sourses
 #define BLOB_INFECTED_TRAIT "blob_infected"
 
 #define VENDOR_FLATTENING_TRAIT "vendor_flattening"
+
+#define WET_TRAIT "wet"
+
+#define BLOB_ZOMBIE_TRAIT "blob_zombie_trait"
+
+#define ADMIN_OFFER_TRAIT "admin_offer"

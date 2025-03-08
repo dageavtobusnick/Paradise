@@ -34,6 +34,11 @@
 	return ..()
 
 
+/obj/item/gun/magic/wand/magic_charge_act(mob/user)
+	. = ..()
+	update_appearance(UPDATE_ICON_STATE)
+
+
 /obj/item/gun/magic/wand/afterattack(atom/target, mob/living/user, proximity, params)
 	if(!charges)
 		shoot_with_empty_chamber(user)
@@ -130,8 +135,8 @@
 
 /obj/item/gun/magic/wand/teleport/zap_self(mob/living/user)
 	do_teleport(user, user, 10)
-	var/datum/effect_system/smoke_spread/smoke = new
-	smoke.set_up(10, 0, user.loc)
+	var/datum/effect_system/fluid_spread/smoke/smoke = new
+	smoke.set_up(amount = 10, location = user.loc)
 	smoke.start()
 	charges--
 	..()

@@ -25,6 +25,7 @@
 	turns_per_move = 10
 	mob_size = MOB_SIZE_SMALL
 	gold_core_spawnable = FRIENDLY_SPAWN
+	hud_type = /datum/hud/corgi
 	var/bark_sound = list('sound/creatures/dog_bark1.ogg','sound/creatures/dog_bark2.ogg') //Used in emote.
 	var/bark_emote = list("ла%(ет,ют)%.", "гавка%(ет,ют)%.")	// used in emote.
 	var/growl_sound = list('sound/creatures/dog_grawl1.ogg','sound/creatures/dog_grawl2.ogg') //Used in emote.
@@ -247,7 +248,8 @@
 	set_light_on(FALSE)
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	REMOVE_TRAIT(src, TRAIT_NO_BREATH, CORGI_HARDSUIT_TRAIT)
-	minbodytemp = initial(minbodytemp)
+	var/datum/component/animal_temperature/temp = GetComponent(/datum/component/animal_temperature)
+	temp?.minbodytemp = initial(temp?.minbodytemp)
 
 	if(inventory_head && inventory_head.dog_fashion)
 		var/datum/dog_fashion/DF = new inventory_head.dog_fashion(src)
@@ -297,6 +299,48 @@
 		else
 			back_icon = DF.get_overlay()
 		add_overlay(back_icon)
+
+/mob/living/simple_animal/pet/dog/corgi/deadchat_plays(mode = DEADCHAT_ANARCHY_MODE, cooldown = 12 SECONDS)
+	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(
+		"speak" = CALLBACK(src, PROC_REF(handle_automated_speech), TRUE),
+		"wear_hat" = CALLBACK(src, PROC_REF(find_new_hat)),
+		"drop_hat" = CALLBACK(src, PROC_REF(drop_hat)),
+		"spin" = CALLBACK(src, TYPE_PROC_REF(/mob, emote), "spin")), cooldown, CALLBACK(src, PROC_REF(end_dchat_plays)))
+
+	if(. == COMPONENT_INCOMPATIBLE)
+		return
+
+	stop_automated_movement = TRUE
+
+///Deadchat plays command that picks a new hat for Ian.
+/mob/living/simple_animal/pet/dog/corgi/proc/find_new_hat()
+	if(!isturf(loc))
+		return
+	var/list/possible_headwear = list()
+	for(var/obj/item/item in loc)
+		if(ispath(item.dog_fashion, /datum/dog_fashion/head))
+			possible_headwear += item
+	if(!length(possible_headwear))
+		for(var/obj/item/item in orange(1))
+			if(ispath(item.dog_fashion, /datum/dog_fashion/head) && Adjacent(item))
+				possible_headwear += item
+	if(!length(possible_headwear))
+		return
+	if(inventory_head)
+		inventory_head.forceMove(drop_location())
+		inventory_head = null
+	place_on_head(pick(possible_headwear))
+	visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] надева[pluralize_ru(gender, "ет", "ют")] [inventory_head.declent_ru(ACCUSATIVE)] на голову каким-то образом."))
+
+///Deadchat plays command that drops the current hat off Ian.
+/mob/living/simple_animal/pet/dog/corgi/proc/drop_hat()
+	if(!inventory_head)
+		return
+	visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] энергично тряс[pluralize_ru(gender, "ёт", "ут")] головой, бросая [inventory_head.declent_ru(ACCUSATIVE)] на землю."))
+	inventory_head.forceMove(drop_location())
+	inventory_head = null
+	update_dog_fluff()
+	regenerate_icons()
 
 //IAN! SQUEEEEEEEEE~
 /mob/living/simple_animal/pet/dog/corgi/Ian
@@ -554,12 +598,17 @@
 	icon_dead = "void_puppy_dead"
 	nofur = TRUE
 	unsuitable_atmos_damage = 0
-	minbodytemp = TCMB
-	maxbodytemp = T0C + 40
 	tts_seed = "Kael"
 	holder_type = /obj/item/holder/void_puppy
 	maxHealth = 60
 	health = 60
+
+/mob/living/simple_animal/pet/dog/corgi/puppy/void/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		maxbodytemp = T0C + 40, \
+		minbodytemp = TCMB, \
+	)
 
 /mob/living/simple_animal/pet/dog/corgi/puppy/void/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
 	return TRUE	//Void puppies can navigate space.
@@ -573,8 +622,13 @@
 	icon_dead = "slime_puppy_dead"
 	nofur = TRUE
 	holder_type = /obj/item/holder/slime_puppy
-	minbodytemp = 250 //Weak to cold
-	maxbodytemp = INFINITY
+
+/mob/living/simple_animal/pet/dog/corgi/puppy/slime/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		maxbodytemp = INFINITY, \
+		minbodytemp = 250, \
+	)
 
 //LISA! SQUEEEEEEEEE~
 /mob/living/simple_animal/pet/dog/corgi/Lisa
@@ -632,13 +686,18 @@
 	tts_seed = "Glados"
 	var/emagged = 0
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minbodytemp = 0
 	loot = list(/obj/effect/decal/cleanable/blood/gibs/robot)
 	del_on_death = 1
 	deathmessage = "blows apart!"
 	animal_species = /mob/living/simple_animal/pet/dog/corgi/borgi
 	nofur = TRUE
 	holder_type = /obj/item/holder/borgi
+
+/mob/living/simple_animal/pet/dog/corgi/borgi/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		minbodytemp = 0, \
+	)
 
 /mob/living/simple_animal/pet/dog/corgi/borgi/emag_act(mob/user)
 	if(!emagged)

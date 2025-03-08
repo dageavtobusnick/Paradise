@@ -291,14 +291,14 @@
 	description = "An old russian listening station, long since defunct and lifeless, however the equipment is likely still in working condition."
 	allow_duplicates = FALSE // because of lore on ussp and in notes on this post there should be only one dj post exists in space, not couple
 
-/datum/map_template/ruin/space/oldstation // edited hardly, hope it will be better to play on as ghost role now, also +1 ghost role as medic added, it was in code already i just placed the spawner back
-	id = "oldstation"
-	suffix = "oldstation.dmm"
+/datum/map_template/ruin/space/oldstation1984 // edited hardly, hope it will be better to play on as ghost role now, also +1 ghost role as medic added, it was in code already i just placed the spawner back
+	id = "oldstation1984"
+	suffix = "old_station_ss1984.dmm"
 	name = "Ancient Space Station"
 	description = "The crew of a space station awaken one hundred years after a crisis. Awaking to a derelict space station on the verge of collapse, and a hostile force of invading \
 	hivebots. Can the surviving crew overcome the odds and survive and rebuild, or will the cold embrace of the stars become their new home?"
 	allow_duplicates = FALSE
-	cost = 4 // fair cost for large structure
+	cost = 5
 	can_found = TRUE
 
 /datum/map_template/ruin/space/spacehotelv1 // new map, duplicated and edited partialy from other ss13 builds
@@ -439,4 +439,14 @@
 	description = "An ordinary church of Carp'Sie, it seems that the carps punished the believers..."
 	cost = 2
 	allow_duplicates = FALSE
+	can_found = TRUE
+
+
+/datum/map_template/ruin/space/abandoned_storage
+	id = "abandoned_storage"
+	suffix = "abandoned_storage.dmm"
+	name = "Abandoned Storage"
+	description = "Just an old and abandoned place, previously used for storing various supplies."
+	allow_duplicates = FALSE
+	cost = 2
 	can_found = TRUE

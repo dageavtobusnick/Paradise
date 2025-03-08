@@ -24,8 +24,6 @@
 	attack_sound = 'sound/weapons/punch1.ogg'
 	faction = list("hostile", "monkey", "jungle")
 	robust_searching = TRUE
-	minbodytemp = 270
-	maxbodytemp = 350
 	nightvision = 8
 	can_collar = TRUE
 	footstep_type = FOOTSTEP_MOB_BAREFOOT
@@ -59,6 +57,12 @@
 	var/static/default_cache = typecacheof(list(/obj/structure/closet/crate))	// Normal crates only please, no weird sized ones
 	carriable_cache = default_cache
 
+/mob/living/simple_animal/hostile/gorilla/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		maxbodytemp = 350, \
+		minbodytemp = 270, \
+	)
 
 /mob/living/simple_animal/hostile/gorilla/Destroy()
 	reset_behavior(play_emote = FALSE)
@@ -116,10 +120,11 @@
 	gorilla.update_icon(UPDATE_ICON_STATE)
 
 
-/mob/living/simple_animal/hostile/gorilla/AltClick(mob/living/simple_animal/hostile/gorilla/user)
+/mob/living/simple_animal/hostile/gorilla/click_alt(mob/living/simple_animal/hostile/gorilla/user)
 	if(!istype(user) || src != user || !gorilla_toggle)
-		return ..()
+		return NONE
 	gorilla_toggle.Activate()
+	return CLICK_ACTION_SUCCESS
 
 
 /**

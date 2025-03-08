@@ -59,7 +59,7 @@
 	if(!Proj)
 		return
 	if(prob(ranged_block_chance))
-		visible_message(span_danger("[src] blocks [Proj] with its shield!"))
+		visible_message(span_danger("[src] blocks [Proj] with its shield!"), projectile_message = TRUE)
 		return FALSE
 	return ..()
 
@@ -133,7 +133,7 @@
 			seen_revived_enemy = TRUE
 			raise_alert("[name] reports intruder [target] has returned from death!")
 			depotarea.list_remove(target, depotarea.dead_list)
-		if(!atoms_share_level(src, target) && prob(20))
+		if(!are_zs_connected(src, target) && prob(20))
 			// This prevents someone from aggroing a depot mob, then hiding in a locker, perfectly safe, while the mob stands there getting killed by their friends.
 			LoseTarget()
 
@@ -149,7 +149,7 @@
 			raise_alert("[name] has reported contact with hostile entity: [seen_enemy_name]")
 	if(scan_cycles >= 15)
 		scan_cycles = 0
-		if(!atoms_share_level(src, spawn_turf))
+		if(!are_zs_connected(src, spawn_turf))
 			if(istype(loc, /obj/structure/closet))
 				var/obj/structure/closet/O = loc
 				forceMove(get_turf(src))
@@ -243,11 +243,16 @@
 	icon_state = "syndicate_stormtrooper_sword"
 	icon_living = "syndicate_stormtrooper_sword"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minbodytemp = 0
 	maxHealth = 200
 	health = 200
 	melee_block_chance = 40
 	alert_on_shield_breach = TRUE
+
+/mob/living/simple_animal/hostile/syndicate/melee/autogib/depot/armory/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		minbodytemp = 0, \
+	)
 
 /mob/living/simple_animal/hostile/syndicate/melee/autogib/depot/armory/Initialize(mapload)
 	. = ..()
@@ -282,13 +287,17 @@
 /mob/living/simple_animal/hostile/syndicate/melee/autogib/depot/space
 	name = "Syndicate Backup"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minbodytemp = 0
 	icon_state = "syndicate_space_sword"
 	icon_living = "syndicate_space_sword"
 	speed = 1
 	wander = 0
 	alert_on_spacing = FALSE
 
+/mob/living/simple_animal/hostile/syndicate/melee/autogib/depot/space/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		minbodytemp = 0, \
+	)
 
 /mob/living/simple_animal/hostile/syndicate/melee/autogib/depot/space/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
 	return TRUE
@@ -297,11 +306,16 @@
 /mob/living/simple_animal/hostile/syndicate/melee/space
 	name = "Syndicate Commando"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minbodytemp = 0
 	icon_state = "syndicate_space_sword"
 	icon_living = "syndicate_space_sword"
 	speed = 1
 	loot = list(/obj/effect/mob_spawn/human/corpse/syndicatecommando, /obj/item/melee/energy/sword/saber/red, /obj/item/shield/energy/syndie)
+
+/mob/living/simple_animal/hostile/syndicate/melee/space/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		minbodytemp = 0, \
+	)
 
 /mob/living/simple_animal/hostile/syndicate/melee/space/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
 	return TRUE
@@ -322,9 +336,14 @@
 	icon_living = "syndicate_space_smg"
 	name = "Syndicate Commando"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minbodytemp = 0
 	speed = 1
 	loot = list(/obj/effect/mob_spawn/human/corpse/syndicatecommando, /obj/item/gun/projectile/automatic/c20r)
+
+/mob/living/simple_animal/hostile/syndicate/ranged/space/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		minbodytemp = 0, \
+	)
 
 /mob/living/simple_animal/hostile/syndicate/ranged/space/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
 	return TRUE
@@ -349,7 +368,6 @@
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	faction = list("syndicate")
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minbodytemp = 0
 	mob_size = MOB_SIZE_TINY
 	bubble_icon = "syndibot"
 	gold_core_spawnable = HOSTILE_SPAWN
@@ -361,3 +379,9 @@
 	. = ..()
 	AddComponent(/datum/component/swarming)
 	AddElement(/datum/element/simple_flying)
+
+/mob/living/simple_animal/hostile/viscerator/ComponentInitialize()
+	AddComponent( \
+		/datum/component/animal_temperature, \
+		minbodytemp = 0, \
+	)

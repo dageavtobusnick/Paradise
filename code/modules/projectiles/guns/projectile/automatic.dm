@@ -131,7 +131,7 @@
 	magin_sound = 'sound/weapons/gun_interactions/batrifle_magin.ogg'
 	magout_sound = 'sound/weapons/gun_interactions/batrifle_magout.ogg'
 	fire_delay = 2
-	can_suppress = FALSE
+	can_suppress = TRUE
 	can_flashlight = TRUE
 	burst_size = 2
 	can_bayonet = TRUE
@@ -142,6 +142,12 @@
 
 /obj/item/gun/projectile/automatic/wt550/update_magazine()
 	total_overlays[MAGAZINE] = (magazine)? "wt550-mag-[CEILING(get_ammo(FALSE) / 4, 1) * 4]" : null
+
+/obj/item/gun/projectile/automatic/wt550/update_overlays()
+	. = ..()
+	if(suppressed)
+		. += image(icon = icon, icon_state = "wt-sp_supp", pixel_x = 3)
+
 
 /obj/item/gun/projectile/automatic/wt550/ui_action_click(mob/user, datum/action/action, leftclick)
 	if(..())
@@ -161,7 +167,7 @@
 	magin_sound = 'sound/weapons/gun_interactions/batrifle_magin.ogg'
 	magout_sound = 'sound/weapons/gun_interactions/batrifle_magout.ogg'
 	fire_delay = 2
-	can_suppress = FALSE
+	can_suppress = TRUE
 	can_flashlight = TRUE
 	burst_size = 3
 	can_bayonet = FALSE
@@ -170,12 +176,13 @@
 	overlays_order = list(HANDGUARD)
 
 
-/obj/item/gun/projectile/automatic/sp91rc/update_icon_state()
-	item_state = "SP-91-RC[magazine ? "-[get_ammo(FALSE) ? "20" : "0"]" : ""]"
-
 /obj/item/gun/projectile/automatic/sp91rc/update_magazine()
 	total_overlays[MAGAZINE] = (magazine)? "[total_overlays[HANDGUARD]]-mag-[CEILING(get_ammo(FALSE)/5, 1)*5]" : null
 
+/obj/item/gun/projectile/automatic/sp91rc/update_overlays()
+	. = ..()
+	if(suppressed)
+		. += image(icon = icon, icon_state = "wt-sp_supp", pixel_x = 3)
 
 /obj/item/gun/projectile/automatic/sp91rc/ui_action_click(mob/user, datum/action/action, leftclick)
 	if(..())

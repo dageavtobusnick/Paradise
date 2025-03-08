@@ -23,6 +23,9 @@
 /obj/item/stock_parts/cell/laser
 	maxcharge = 1500
 
+/obj/item/stock_parts/cell/laser/gatling
+	maxcharge = 9000
+
 /obj/item/stock_parts/cell/get_cell()
 	return src
 
@@ -38,6 +41,31 @@
 /obj/item/stock_parts/cell/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
+
+
+/obj/item/stock_parts/cell/magic_charge_act(mob/user)
+	. = NONE
+
+	if(charge >= maxcharge)
+		return
+
+	if(prob(80) && adjust_maxcharge(-200))
+		. |= RECHARGE_BURNOUT
+
+	charge = maxcharge
+	. |= RECHARGE_SUCCESSFUL
+
+	update_appearance(UPDATE_ICON)
+
+
+/obj/item/stock_parts/cell/proc/adjust_maxcharge(amount)
+	if(self_recharge)
+		return FALSE	// SelfCharging uses static charge values ​​per tick, so we don't want it to mess up the recharge balance.
+
+	var/old_maxcharge = maxcharge
+	maxcharge = max(maxcharge + amount, 1)
+
+	return maxcharge != old_maxcharge
 
 
 /obj/item/stock_parts/cell/vv_edit_var(var_name, var_value)
@@ -369,6 +397,9 @@
 /obj/item/stock_parts/cell/emproof/corrupt()
 	return
 
+/obj/item/stock_parts/cell/emproof/adjust_maxcharge(amount)
+	return FALSE
+
 /obj/item/stock_parts/cell/ninja
 	name = "spider-clan power cell"
 	desc = "A standard ninja-suit power cell."
@@ -385,3 +416,8 @@
 	name = "emitter gun power cell"
 	maxcharge = 2200
 	chargerate = 100
+
+/obj/item/stock_parts/cell/degraded
+	name = "degraded power cell"
+	maxcharge = 750
+	chargerate = 25

@@ -1,3 +1,9 @@
+// simple is_type and similar inline helpers
+#define in_range(source, user) (get_dist(source, user) <= 1 && (get_step(source, 0)?:z) == (get_step(user, 0)?:z))
+
+/// Within given range, but not counting z-levels
+#define IN_GIVEN_RANGE(source, other, given_range) (get_dist(source, other) <= given_range && (get_step(source, 0)?:z) == (get_step(other, 0)?:z))
+
 // Atoms
 #define isatom(A) (isloc(A))
 
@@ -56,6 +62,12 @@
 
 #define isstorage(A) (istype(A, /obj/item/storage))
 
+#define isgrenade(A) (istype(A, /obj/item/grenade))
+
+#define issupplypod(A) (istype(A, /obj/structure/closet/supplypod))
+
+#define isammocasing(A) (istype(A, /obj/item/ammo_casing))
+
 #define ismachinery(A) (istype(A, /obj/machinery))
 
 #define isapc(A) (istype(A, /obj/machinery/power/apc))
@@ -68,6 +80,8 @@
 
 #define iseffect(A) (istype(A, /obj/effect))
 
+#define isvehicle(A) (istype(A, /obj/vehicle))
+
 #define isprojectile(A) (istype(A, /obj/item/projectile))
 
 #define isgun(A) (istype(A, /obj/item/gun))
@@ -79,6 +93,10 @@
 #define isradio(A) istype(A, /obj/item/radio)
 
 #define isclothing(A) (istype(A, /obj/item/clothing))
+
+#define is_internal_organ(A) istype(A, /obj/item/organ/internal)
+
+#define	is_organ(A)			istype((A), /obj/item/organ)
 
 GLOBAL_LIST_INIT(pointed_types, typecacheof(list(
 	/obj/item/pen,
@@ -115,6 +133,8 @@ GLOBAL_LIST_INIT(glass_sheet_types, typecacheof(list(
 
 #define isopenspaceturf(A) (istype(A, /turf/simulated/openspace) || istype(A, /turf/space/openspace))
 
+#define is_space_or_openspace(A) (isopenspaceturf(A) || isspaceturf(A))
+
 #define isfloorturf(A) istype(A, /turf/simulated/floor)
 
 #define iswallturf(A) istype(A, /turf/simulated/wall)
@@ -128,6 +148,8 @@ GLOBAL_LIST_INIT(glass_sheet_types, typecacheof(list(
 #define islava(A) (istype(A, /turf/simulated/floor/lava))
 
 #define ischasm(A) (istype(A, /turf/simulated/floor/chasm))
+
+#define issingularity(atom) (istype(atom, /obj/singularity))
 
 //Structures
 #define isstructure(A) (istype(A, /obj/structure))

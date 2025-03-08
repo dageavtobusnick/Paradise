@@ -88,6 +88,7 @@
 		brainmob.set_stat(CONSCIOUS)
 		brainmob.set_invis_see(initial(brainmob.see_invisible))
 		held_brain = brain
+		ADD_TRAIT(brainmob, TRAIT_NO_SPELLS, UNIQUE_TRAIT_SOURCE(src)) // Dont use spells, little brain.
 		alien = istype(brain, /obj/item/organ/internal/brain/xeno)
 		update_appearance(UPDATE_ICON_STATE|UPDATE_NAME)
 		if(radio_action)
@@ -185,9 +186,10 @@
 	brainmob.container = null//Reset brainmob mmi var.
 	brainmob.forceMove(held_brain) //Throw mob into brain.
 	GLOB.respawnable_list += brainmob
-	GLOB.alive_mob_list -= brainmob//Get outta here
+	brainmob.remove_from_alive_mob_list()//Get outta here
 	held_brain.brainmob = brainmob//Set the brain to use the brainmob
 	held_brain.brainmob.cancel_camera()
+	REMOVE_TRAIT(brainmob, TRAIT_NO_SPELLS, UNIQUE_TRAIT_SOURCE(src))
 	brainmob = null//Set mmi brainmob var to null
 	held_brain.forceMove(dropspot)
 	held_brain = null
@@ -210,6 +212,11 @@
 	QDEL_NULL(radio)
 	QDEL_NULL(radio_action)
 
+/obj/item/mmi/proc/apply_effects(mob/living/silicon/robot)
+	return
+
+/obj/item/mmi/proc/greet(mob/living/silicon/robot/borg)
+	return FALSE
 
 /obj/item/mmi/emp_act(severity)
 	if(!brainmob)
@@ -251,9 +258,31 @@
 /obj/item/mmi/syndie
 	name = "Syndicate Man-Machine Interface"
 	desc = "Syndicate's own brand of MMI. It enforces laws designed to help Syndicate agents achieve their goals upon cyborgs created with it, but doesn't fit in Nanotrasen AI cores."
+	ru_names = list(
+		NOMINATIVE = "НКИ Синдиката",
+		GENITIVE = "НКИ Синдиката",
+		DATIVE = "НКИ Синдиката",
+		ACCUSATIVE = "НКИ Синдиката",
+		INSTRUMENTAL = "НКИ Синдиката",
+		PREPOSITIONAL = "НКИ Синдиката"
+	)
+	gender = MALE
 	origin_tech = "biotech=4;programming=4;syndicate=2"
 	syndiemmi = 1
+	var/datum/action/innate/overdrive/overdrive = new
 
+/obj/item/mmi/syndie/apply_effects(mob/living/silicon/robot/borg)
+	if(!overdrive.used)
+		overdrive.Grant(borg)
+
+/obj/item/mmi/syndie/greet(mob/living/silicon/robot/borg)
+	to_chat(borg, "Вы помните вашу прошлую жизнь. Вы не обязаны подчиняться законам или ИИ.")
+	borg.playsound_local(null, 'sound/ambience/antag/emaggedborg.ogg', 100, 0)
+	return TRUE
+
+/obj/item/mmi/syndie/Destroy()
+    QDEL_NULL(overdrive)
+    return ..()
 
 /obj/item/mmi/attempt_become_organ(obj/item/organ/external/parent, mob/living/carbon/human/target, special = ORGAN_MANIPULATION_DEFAULT)
 	if(!brainmob)

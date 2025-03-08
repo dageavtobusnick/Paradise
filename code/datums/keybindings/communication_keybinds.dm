@@ -50,7 +50,7 @@
 
 /datum/keybinding/client/communication/whisper
 	name = WHISPER_CHANNEL
-	keys = list("U")
+	keys = list("ShiftT")
 	mute_category = MUTE_IC
 
 /datum/keybinding/client/communication/radio
@@ -66,9 +66,14 @@
 /datum/keybinding/client/communication/asay
 	name = ADMIN_CHANNEL
 	keys = list("F5")
-	required_rights = R_ADMIN
+	required_rights = R_ADMIN | R_MOD
 
 /datum/keybinding/client/communication/dsay
 	name = DSAY_CHANNEL
 	keys = list("F10")
 	required_rights = R_ADMIN | R_MOD
+
+/datum/keybinding/client/communication/devsay
+	name = DEV_CHANNEL
+	keys = list("F2")
+	required_rights = R_VIEWRUNTIMES | R_ADMIN

@@ -14,12 +14,13 @@
 
 /obj/item/pinpointer
 	name = "pinpointer"
+	gender = MALE
 	icon = 'icons/obj/device.dmi'
 	icon_state = "pinoff"
 	flags = CONDUCT
 	slot_flags = ITEM_SLOT_PDA|ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_SMALL
-	item_state = "electronic"
+	item_state = "pinoff"
 	throw_speed = 4
 	throw_range = 20
 	materials = list(MAT_METAL=500)
@@ -220,19 +221,10 @@
 			pinpoint_at(target)
 
 
-/obj/item/pinpointer/advpinpointer/AltClick(mob/user)
+/obj/item/pinpointer/advpinpointer/click_alt(mob/user)
 	if(Adjacent(user))
 		toggle_mode(user)
-		return
-	..()
-
-
-/obj/item/pinpointer/advpinpointer/verb/toggle_mode_verb()
-	set category = "Object"
-	set name = "Toggle Pinpointer Mode"
-	set src in usr
-
-	toggle_mode(usr)
+		return CLICK_ACTION_SUCCESS
 
 
 /obj/item/pinpointer/advpinpointer/proc/toggle_mode(mob/user)
@@ -455,6 +447,7 @@
 	desc = "A handheld tracking device that points to crew suit sensors."
 	shows_nuke_timer = FALSE
 	icon_state = "pinoff_crew"
+	item_state = "pinoff_crew"
 	icon_off = "pinoff_crew"
 	icon_null = "pinonnull_crew"
 	icon_direct = "pinondirect_crew"
@@ -496,19 +489,9 @@
 	..()
 
 
-/obj/item/pinpointer/crew/AltClick(mob/user)
-	if(Adjacent(user))
-		choose_signal(user)
-		return
-	..()
-
-
-/obj/item/pinpointer/crew/verb/choose_signal_verb()
-	set category = "Object"
-	set name = "Track Signals"
-	set src in usr
-
-	choose_signal(usr)
+/obj/item/pinpointer/crew/click_alt(mob/user)
+	choose_signal(user)
+	return CLICK_ACTION_SUCCESS
 
 
 /obj/item/pinpointer/crew/proc/choose_signal(mob/living/carbon/user)
@@ -610,19 +593,9 @@
 			to_chat(user, span_notice("Режим пинпоинтера не определен."))
 
 
-/obj/item/pinpointer/thief/AltClick(mob/user)
-	if(Adjacent(user))
-		toggle_mode(user)
-		return
-	..()
-
-
-/obj/item/pinpointer/thief/verb/toggle_mode_verb()
-	set category = "Object"
-	set name = "Переключить Режим Пинпоинтера"
-	set src in usr
-
-	toggle_mode(usr)
+/obj/item/pinpointer/thief/click_alt(mob/user)
+	toggle_mode(user)
+	return CLICK_ACTION_SUCCESS
 
 
 /obj/item/pinpointer/thief/proc/toggle_mode(mob/user)

@@ -60,10 +60,7 @@
 	return lum_count
 
 
-/mob/living/simple_animal/demon/shadow/UnarmedAttack(atom/target)
-	if(!can_unarmed_attack())
-		return
-
+/mob/living/simple_animal/demon/shadow/OnUnarmedAttack(atom/target)
 	if(!ishuman(target))
 		if(isitem(target))
 			target.extinguish_light(TRUE)
@@ -136,15 +133,18 @@
 		time_since_last_hallucination = 0
 
 
-/obj/structure/shadowcocoon/AltClick(mob/user)
-	if(!isdemon(user) || user.incapacitated())
-		return ..()
+/obj/structure/shadowcocoon/click_alt(mob/user)
+	if(!isdemon(user))
+		return NONE
+	if(user.incapacitated())
+		return CLICK_ACTION_BLOCKING
 	if(silent)
 		to_chat(user, span_notice("You twist and change your trapped victim in [src] to lure in more prey."))
 		silent = FALSE
-		return
+		return CLICK_ACTION_BLOCKING
 	to_chat(user, span_notice("The tendrils from [src] snap back to their orignal form."))
 	silent = TRUE
+	return CLICK_ACTION_SUCCESS
 
 
 /obj/structure/shadowcocoon/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = NONE)
@@ -200,7 +200,7 @@
 
 /obj/item/projectile/magic/shadow_hand/fire(setAngle)
 	if(firer)
-		firer.Beam(src, icon_state = "grabber_beam", time = INFINITY, maxdistance = INFINITY, beam_sleep_time = 1, beam_type = /obj/effect/ebeam/floor, beam_layer = BELOW_MOB_LAYER)
+		firer.Beam(src, icon_state = "grabber_beam", time = INFINITY, maxdistance = INFINITY, beam_type = /obj/effect/ebeam/floor, layer = BELOW_MOB_LAYER)
 	return ..()
 
 
@@ -254,7 +254,7 @@
 	messages.Add("<B>You can wrap dead humanoid bodies by attacking them, use Alt+Click on the shadow cocoon afterwards to lure more victims.</B>")
 	messages.Add("<B>You move quickly and regenerate fast in the shadows, but any light source will hurt you to the death. STAY AWAY FROM THE LIGHT! </B>")
 	messages.Add(span_notice("<B>You are not currently in the same plane of existence as the station. Use the shadow crawl action near any dark spot.</B>"))
-	messages.Add("<span class='motd'>С полной информацией вы можете ознакомиться на вики: <a href=\"https://wiki.ss220.space/index.php/Shadow_Demon\">Теневой демон</a></span>")
+	messages.Add("<span class='motd'>С полной информацией вы можете ознакомиться на вики: <a href=\"[CONFIG_GET(string/wikiurl)]/index.php/Shadow_Demon\">Теневой демон</a></span>")
 	src << 'sound/misc/demon_dies.ogg'
 	if(vialspawned)
 		return
@@ -271,13 +271,14 @@
 
 /datum/objective/wrap
 	name = "Wrap"
+	antag_menu_name = "Обернуть в кокон"
 	needs_target = FALSE
 	target_amount = 10
 
 
 /datum/objective/wrap/New(text, datum/team/team_to_join)
 	target_amount = rand(10,20)
-	explanation_text = "Ambush those who dare to challenge the shadows. Wrap at least [target_amount] mortals."
+	explanation_text = "Устройте засаду тем, кто осмелится бросить вызов теням. Оберните хотя бы [target_amount] смертных."
 	..()
 
 

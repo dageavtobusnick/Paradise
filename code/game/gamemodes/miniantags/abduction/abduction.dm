@@ -159,7 +159,7 @@
 	messages.Add("<span class='notice'>You are an agent of [team_name]!</span>")
 	messages.Add("<span class='notice'>With the help of your teammate, kidnap and experiment on station crew members!</span>")
 	messages.Add("<span class='notice'>Use your stealth technology and equipment to incapacitate humans for your scientist to retrieve.</span>")
-	messages.Add("<span class='motd'>С полной информацией вы можете ознакомиться на вики: <a href=\"https://wiki.ss220.space/index.php/Abductor\">Абдуктор</a></span>")
+	messages.Add("<span class='motd'>С полной информацией вы можете ознакомиться на вики: <a href=\"[CONFIG_GET(string/wikiurl)]/index.php/Abductor\">Абдуктор</a></span>")
 	messages.Add(abductor.prepare_announce_objectives())
 	to_chat(abductor.current, chat_box_red(messages.Join("<br>")))
 	log_game("[abductor] has become an abductor agent.")
@@ -174,7 +174,7 @@
 	messages.Add("<span class='notice'>You are a scientist of [team_name]!</span>")
 	messages.Add("<span class='notice'>With the help of your teammate, kidnap and experiment on station crew members!</span>")
 	messages.Add("<span class='notice'>Use your tool and ship consoles to support the agent and retrieve human specimens.</span>")
-	messages.Add("<span class='motd'>For more information, check the wiki page: <a href=\"https://wiki.ss220.space/index.php/Abductor\">Абдуктор</a></span>")
+	messages.Add("<span class='motd'>For more information, check the wiki page: <a href=\"[CONFIG_GET(string/wikiurl)]/index.php/Abductor\">Абдуктор</a></span>")
 	messages.Add(abductor.prepare_announce_objectives())
 	to_chat(abductor.current, chat_box_red(messages.Join("<br>")))
 	abductor.current.create_log(MISC_LOG, "[abductor.current] was made into an abductor scientist")
@@ -246,16 +246,17 @@
 	target_amount = 6
 	/// Which abductor team number does this belong to.
 	var/abductor_team_number
+	antag_menu_name = "Провести эксперимент"
 
 /datum/objective/stay_hidden
 
 /datum/objective/stay_hidden/New()
-	explanation_text = "Limit contact with your targets outside of conducting your experiments and abduction."
+	explanation_text = "Ограничьте контакты со своими целями, за исключением проведения экспериментов и похищений."
 	completed = TRUE
 //No check completion, it defaults to being completed unless an admin sets it to failed.
 
 /datum/objective/experiment/New()
-	explanation_text = "Experiment on [target_amount] humans."
+	explanation_text = "Проведите эксперимент на [target_amount] гуманоид[declension_ru(target_amount, "е", "ах", "ах")]."
 
 
 /datum/objective/experiment/check_completion()
