@@ -121,31 +121,39 @@
 	usr.show_message(t, 1)
 
 
-/mob/proc/show_message(msg, type, alt, alt_type, chat_message_type)
-
+/mob/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)
 	if(!client)
-		return
+		return FALSE
 
+	msg = copytext_char(msg, 1, MAX_MESSAGE_LEN)
+
+	// Return TRUE if we sent the original msg, otherwise return FALSE
+	. = TRUE
 	if(type)
-		if((type & EMOTE_VISIBLE) && !has_vision(information_only = TRUE))	//Vision related
-			if(!alt)
-				return
-			msg = alt
-			type = alt_type
+		if(type & MSG_VISUAL && is_blind())//Vision related
+			if(!alt_msg)
+				return FALSE
+			else
+				msg = alt_msg
+				type = alt_type
+				. = FALSE
 
-		if(type & EMOTE_AUDIBLE && !can_hear())	//Hearing related
-			if(!alt)
-				return
-			msg = alt
-			type = alt_type
-			if((type & EMOTE_VISIBLE) && !has_vision(information_only = TRUE))
-				return
-
-	// Added voice muffling for Issue 41.
-	if(stat == UNCONSCIOUS)
-		to_chat(src, "<i>…Вам почти удаётся расслышать чьи-то слова…</i>", MESSAGE_TYPE_LOCALCHAT)
-	else
-		to_chat(src, msg, chat_message_type)
+		if(type & MSG_AUDIBLE && !can_hear())//Hearing related
+			if(!alt_msg)
+				return FALSE
+			else
+				msg = alt_msg
+				type = alt_type
+				. = FALSE
+				if(type & MSG_VISUAL && is_blind())
+					return FALSE
+	// voice muffling
+	if(stat == UNCONSCIOUS || stat == HARD_CRIT)
+		if(type & MSG_AUDIBLE) //audio
+			to_chat(src, "<i>…Вам почти удаётся расслышать чьи-то слова…</i>", MESSAGE_TYPE_LOCALCHAT)
+		return FALSE
+	to_chat(src, msg, avoid_highlighting = avoid_highlighting)
+	return .
 
 
 // Show a message to all mobs in sight of this one
@@ -153,34 +161,53 @@
 // message is the message output to anyone who can see e.g. "[src] does something!"
 // self_message (optional) is what the src mob sees  e.g. "You do something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
-/mob/visible_message(message, self_message, blind_message, list/ignored_mobs, chat_message_type, projectile_message = FALSE)
-	if(!isturf(loc)) // mobs inside objects (such as lockers) shouldn't have their actions visible to those outside the object
-		for(var/mob/mob as anything in viewers(3, src) - ignored_mobs)
-			if(mob.see_invisible < invisibility)
-				continue //can't view the invisible
-			if(projectile_message && (mob?.client?.prefs.toggles2 & PREFTOGGLE_2_OFF_PROJECTILE_MESSAGES))
-				continue
-			var/msg = message
-			if(self_message && mob == src)
-				msg = self_message
-			if(mob.loc != loc)
-				if(!blind_message) // for some reason VISIBLE action has blind_message param so if we are not in the same object but next to it, lets show it
-					continue
-				msg = blind_message
-			mob.show_message(msg, EMOTE_VISIBLE, blind_message, EMOTE_AUDIBLE, chat_message_type)
+/mob/visible_message(message, self_message, blind_message, list/ignored_mobs, chat_message_type, projectile_message = FALSE, vision_distance = DEFAULT_MESSAGE_RANGE)
+	var/turf/turf = get_turf(src)
+	if(!turf)
 		return
+	if(!isturf(loc))
+		vision_distance = floor(vision_distance / 2)
+	if(!islist(ignored_mobs))
+		ignored_mobs = list(ignored_mobs)
+	var/list/hearers = get_hearers_in_view(vision_distance, src) //caches the hearers and then removes ignored mobs.
+	hearers -= ignored_mobs
 
-	for(var/mob/mob as anything in viewers(7, src) - ignored_mobs)
-		if(mob.see_invisible < invisibility)
-			continue //can't view the invisible
+	if(self_message)
+		hearers -= src
+
+	var/raw_msg = message
+	if(visible_message_flags & WITH_EMPHASIS_MESSAGE)
+		message = apply_message_emphasis(message)
+	if(visible_message_flags & EMOTE_MESSAGE)
+		message = span_emote("<b>[declent_ru(NOMINATIVE)]</b> [message]")
+
+	for(var/mob/mob in hearers)
+		if(!mob.client)
+			continue
 
 		if(projectile_message && (mob?.client?.prefs.toggles2 & PREFTOGGLE_2_OFF_PROJECTILE_MESSAGES))
 			continue
 
+		//This entire if/else chain could be in two lines but isn't for readibilties sake.
 		var/msg = message
-		if(self_message && mob == src)
-			msg = self_message
-		mob.show_message(msg, EMOTE_VISIBLE, blind_message, EMOTE_AUDIBLE, chat_message_type)
+		var/msg_type = EMOTE_VISIBLE
+
+		if(mob.see_invisible < invisibility)//if src is invisible to M
+			msg = blind_message
+			msg_type = EMOTE_AUDIBLE
+		else if(T != loc && T != src) //if src is inside something and not a turf.
+			if(mob != loc) // Only give the blind message to hearers that aren't the location
+				msg = blind_message
+				msg_type = EMOTE_AUDIBLE
+		else if(!HAS_TRAIT(mob, TRAIT_HEAR_THROUGH_DARKNESS) && mob.lighting_alpha < LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE && turf.is_softly_lit() && !in_range(turf, mob)) //if it is too dark, unless we're right next to them.
+			msg = blind_message
+			msg_type = EMOTE_AUDIBLE
+
+		if(!msg)
+			continue
+
+		mob.show_message(msg, msg_type, blind_message, EMOTE_AUDIBLE)
+
 
 
 // Show a message to all mobs in sight of this atom

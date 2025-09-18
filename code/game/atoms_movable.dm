@@ -106,6 +106,9 @@
 	var/atom/orbiting = null
 	var/cached_transform = null
 
+	/// The list of factions this atom belongs to
+	var/list/faction
+
 /atom/movable/attempt_init(loc, ...)
 	var/turf/T = get_turf(src)
 	if(T && SSatoms.initialized != INITIALIZATION_INSSATOMS && GLOB.space_manager.is_zlevel_dirty(T.z))
@@ -1551,4 +1554,22 @@
 	REMOVE_TRAIT(src, TRAIT_UNDENSE, FULTON_TRAIT)
 	forceMove(holder_obj.loc)
 	qdel(holder_obj)
+
+
+/**
+ * Check if the other atom/movable has any factions the same as us. Defined at the atom/movable level so it can be defined for just about anything.
+ *
+ * If exact match is set, then all our factions must match exactly
+ */
+/atom/movable/proc/faction_check_atom(atom/movable/target, exact_match)
+	if(!exact_match)
+		return faction_check(faction, target.faction, FALSE)
+
+	var/list/faction_src = LAZYCOPY(faction)
+	var/list/faction_target = LAZYCOPY(target.faction)
+	if(!("[UID_of(src)]" in faction_target)) //if they don't have our ref faction, remove it from our factions list.
+		faction_src -= "[UID_of(src)]" //if we don't do this, we'll never have an exact match.
+	if(!("[UID_of(target)]" in faction_src))
+		faction_target -= "[UID_of(target)]" //same thing here.
+	return faction_check(faction_src, faction_target, TRUE)
 

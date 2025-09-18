@@ -219,6 +219,10 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 
 	var/embed_disarm = FALSE
 
+	///In tiles, how far this weapon can reach; 1 for adjacent, which is default
+	var/reach = 1
+
+
 /obj/item/Initialize(mapload)
 	. = ..()
 
