@@ -15,7 +15,7 @@
 
 	maxHealth = 200
 	health = 200
-	faction = list("gandola")
+	faction = list(FACTION_GONDOLA)
 	response_help = "pets"
 	response_disarm = "bops"
 	response_harm = "kicks"

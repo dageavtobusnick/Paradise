@@ -22,7 +22,7 @@
 	obj_damage = 60
 	melee_damage_lower = 15
 	melee_damage_upper = 20
-	faction = list("spiders")
+	faction = list(FACTION_SPIDER)
 	pass_flags = PASSTABLE
 	move_to_delay = 6
 	attacktext = "кусает"

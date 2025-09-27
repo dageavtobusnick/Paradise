@@ -484,7 +484,7 @@
 	kill.find_target()
 
 	LAZYADD(human.mind.objectives, kill)
-	LAZYADD(human.faction, "hell")
+	LAZYADD(human.faction, FACTION_HELL)
 
 	var/list/messages = human.mind.prepare_announce_objectives()
 	to_chat(human, chat_box_red(messages.Join("<br>")))

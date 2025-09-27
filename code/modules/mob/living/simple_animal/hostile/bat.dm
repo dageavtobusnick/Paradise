@@ -26,7 +26,7 @@
 
 //	break_stuff_probability = 2
 
-	faction = list("scarybat")
+	faction = list(FACTION_SCARY_BAT)
 	var/mob/living/owner
 	gold_core_spawnable = HOSTILE_SPAWN
 

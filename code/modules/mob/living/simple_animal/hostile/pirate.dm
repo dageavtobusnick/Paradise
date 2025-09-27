@@ -26,7 +26,7 @@
 	loot = list(/obj/effect/mob_spawn/human/corpse/pirate,
 			/obj/item/melee/energy/sword/pirate)
 	del_on_death = 1
-	faction = list("pirate")
+	faction = list(FACTION_PIRATE)
 	sentience_type = SENTIENCE_OTHER
 	footstep_type = FOOTSTEP_MOB_SHOE
 	AI_delay_max = 0 SECONDS

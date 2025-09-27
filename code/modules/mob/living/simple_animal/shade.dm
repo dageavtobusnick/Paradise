@@ -24,7 +24,7 @@
 	pull_force = 0
 	see_invisible = SEE_INVISIBLE_HIDDEN_RUNES
 	universal_speak = TRUE
-	faction = list("cult")
+	faction = list(FACTION_CULT)
 	loot = list(/obj/item/reagent_containers/food/snacks/ectoplasm)
 	del_on_death = TRUE
 	deathmessage = "издаёт довольный вздох, пока его форма распадается."
@@ -73,14 +73,14 @@
 	icon_state = "shade_angelic"
 
 /mob/living/simple_animal/shade/sword
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 
 /mob/living/simple_animal/shade/sword/Initialize(mapload)
 	.=..()
 	ADD_TRAIT(src, TRAIT_GODMODE, INNATE_TRAIT)
 
 /mob/living/simple_animal/shade/talisman
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	tts_seed = "Alextraza_echo"
 	// Ckey check for master of talisman
 	var/master

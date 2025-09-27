@@ -14,7 +14,7 @@
 	melee_damage_upper = 5
 	attacktext = "грызёт"
 	attack_sound = 'sound/weapons/bite.ogg'
-	faction = list("creature")
+	faction = list(FACTION_CREATURE)
 	robust_searching = TRUE
 	stat_attack = DEAD
 	obj_damage = 0

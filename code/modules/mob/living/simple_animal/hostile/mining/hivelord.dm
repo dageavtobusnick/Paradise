@@ -148,13 +148,13 @@
 		transfer_reagents(target, 1)
 
 /mob/living/simple_animal/hostile/asteroid/hivelordbrood/blood/attack_hand(mob/living/carbon/human/M)
-	if("\ref[M]" in faction)
+	if(M.UID() in faction)
 		reabsorb_host(M)
 	else
 		return ..()
 
 /mob/living/simple_animal/hostile/asteroid/hivelordbrood/blood/attack_alien(mob/living/carbon/alien/humanoid/M)
-	if("\ref[M]" in faction)
+	if(M.UID() in faction)
 		reabsorb_host(M)
 	else
 		return ..()
@@ -178,7 +178,7 @@
 	reagents.trans_to(C, volume)
 
 /mob/living/simple_animal/hostile/asteroid/hivelordbrood/blood/proc/link_host(mob/living/carbon/C)
-	faction = list("\ref[src]", "\ref[C]") // Hostile to everyone except the host.
+	faction = list(UID(), C.UID()) // Hostile to everyone except the host.
 	C.transfer_blood_to(src, 30)
 	color = mix_color_from_reagents(reagents.reagent_list)
 
@@ -378,7 +378,7 @@
 	move_to_delay = 14
 	vision_range = 5
 	speed = 3
-	faction = list("mining")
+	faction = list(FACTION_MINING)
 	weather_immunities = list(TRAIT_LAVA_IMMUNE, TRAIT_ASHSTORM_IMMUNE)
 	obj_damage = 30
 	nightvision = 8

@@ -108,7 +108,7 @@
 	melee_damage_upper = 60
 	melee_damage_lower = 60
 	environment_smash = ENVIRONMENT_SMASH_RWALLS //Smashes through EVERYTHING - r-walls included
-	faction = list("cult")
+	faction = list(FACTION_CULT)
 	playstyle_string = "<b><span class='userdanger'>Вы — Вестник Резни. Призванный слугами Нар'Си, у вас одна цель: уничтожить еретиков, которые не поклоняются вашему господину!</span></b><br> \
 							<b>Вы можете использовать способность \"Кровавый путь\" рядом с лужей крови, чтобы войти в неё и стать неосязаемым. \
 							Использование способности снова рядом с лужей крови позволит вам выйти из неё. Вы быстры, сильны и почти неуязвимы. Если вы тащите мёртвое или без сознания тело \

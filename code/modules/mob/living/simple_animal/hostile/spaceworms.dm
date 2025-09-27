@@ -1,6 +1,6 @@
 
 //Worm Segments, Dummy, has no AI, relies on the head.
-/mob/living/simple_animal/hostile/spaceWorm
+/mob/living/simple_animal/hostile/space_worm
 	name = "space worm segment"
 	desc = "A part of a space worm."
 	icon_state = "spaceworm"
@@ -33,12 +33,12 @@
 
 	anchored = TRUE //otherwise people can literally fucking pull spaceworms apart
 
-	faction = list("spaceworms")
+	faction = list(FACTION_SPACE_WORM)
 
-	var/mob/living/simple_animal/hostile/spaceWorm/previousWorm //next/previous segments, correspondingly
-	var/mob/living/simple_animal/hostile/spaceWorm/nextWorm     //head is the nextest segment
+	var/mob/living/simple_animal/hostile/space_worm/previousWorm //next/previous segments, correspondingly
+	var/mob/living/simple_animal/hostile/space_worm/nextWorm     //head is the nextest segment
 
-	var/mob/living/simple_animal/hostile/spaceWorm/wormHead/myHead		//Can be the same as next, just a general reference to the main worm.
+	var/mob/living/simple_animal/hostile/space_worm/wormHead/myHead		//Can be the same as next, just a general reference to the main worm.
 
 	var/stomachProcessProbability = 50
 	var/digestionProbability = 20
@@ -47,22 +47,22 @@
 	var/plasmaPoopPotential = 5 //this mainly exists for the name
 
 
-/mob/living/simple_animal/hostile/spaceWorm/Initialize(mapload)
+/mob/living/simple_animal/hostile/space_worm/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
 
-/mob/living/simple_animal/hostile/spaceWorm/ComponentInitialize()
+/mob/living/simple_animal/hostile/space_worm/ComponentInitialize()
 	AddComponent( \
 		/datum/component/animal_temperature, \
 		maxbodytemp = 350, \
 		minbodytemp = 0, \
 	)
 
-/mob/living/simple_animal/hostile/spaceWorm/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
+/mob/living/simple_animal/hostile/space_worm/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
 	return TRUE //space worms can flyyyyyy
 
 //Worm Head, Controls the AI for the entire worm "entity"
-/mob/living/simple_animal/hostile/spaceWorm/wormHead
+/mob/living/simple_animal/hostile/space_worm/wormHead
 	name = "space worm head"
 	icon_state = "spacewormhead"
 	icon_living = "spacewormhead"
@@ -81,7 +81,7 @@
 	AIStatus = AI_ON//The head is conscious
 	stop_automated_movement = 0 //Ditto ^
 
-	faction = list("spaceworms") //head and body both have this faction JIC
+	faction = list(FACTION_SPACE_WORM) //head and body both have this faction JIC
 
 	//head specific variables
 	var/spawnWithSegments = 6
@@ -89,7 +89,7 @@
 	var/catastrophicDeathProb = 15 //15% chance for the death of the head to kill the whole thing
 
 
-/mob/living/simple_animal/hostile/spaceWorm/wormHead/New(location, segments = spawnWithSegments)
+/mob/living/simple_animal/hostile/space_worm/wormHead/New(location, segments = spawnWithSegments)
 	..()
 
 	if(!src)//This is to prevent a runtime.
@@ -98,18 +98,18 @@
 	myHead = src //It's it's own head.
 
 	//Used in the for to attach each worm segment to the next in the sequence, instead of all of them to src
-	var/mob/living/simple_animal/hostile/spaceWorm/currentWormSeg = src
+	var/mob/living/simple_animal/hostile/space_worm/currentWormSeg = src
 
 	for(var/i = 1 to segments)
-		var/mob/living/simple_animal/hostile/spaceWorm/newSegment = new /mob/living/simple_animal/hostile/spaceWorm(loc)
+		var/mob/living/simple_animal/hostile/space_worm/newSegment = new /mob/living/simple_animal/hostile/space_worm(loc)
 		currentWormSeg.Attach(newSegment)
 		currentWormSeg = newSegment
 
-	for(var/mob/living/simple_animal/hostile/spaceWorm/SW in totalWormSegments)
+	for(var/mob/living/simple_animal/hostile/space_worm/SW in totalWormSegments)
 		SW.update_icon(UPDATE_ICON_STATE)
 
 
-/mob/living/simple_animal/hostile/spaceWorm/wormHead/update_icon_state()
+/mob/living/simple_animal/hostile/space_worm/wormHead/update_icon_state()
 	if(stat == CONSCIOUS || stat == UNCONSCIOUS)
 		icon_state = "spacewormhead[previousWorm ? "1" : "0"]"
 		if(previousWorm)
@@ -117,25 +117,25 @@
 	else
 		icon_state = "spacewormheaddead"
 
-	for(var/mob/living/simple_animal/hostile/spaceWorm/SW in totalWormSegments)
+	for(var/mob/living/simple_animal/hostile/space_worm/SW in totalWormSegments)
 		if(SW == src)//incase src ends up in here we don't want an infinite loop
 			continue
 		SW.update_icon(UPDATE_ICON_STATE)
 
 
 //Try to move onto target's turf and eat them
-/mob/living/simple_animal/hostile/spaceWorm/wormHead/AttackingTarget()
+/mob/living/simple_animal/hostile/space_worm/wormHead/AttackingTarget()
 	. = ..()
 	if(.)
 		attemptToEat(target)
 
 //Attempt to eat things we bump into, Mobs, Walls, Clowns
-/mob/living/simple_animal/hostile/spaceWorm/wormHead/Bump(atom/bumped_atom)
+/mob/living/simple_animal/hostile/space_worm/wormHead/Bump(atom/bumped_atom)
 	. = ..()
 	attemptToEat(bumped_atom)
 
 //Attempt to eat things, only the head can eat
-/mob/living/simple_animal/hostile/spaceWorm/wormHead/proc/attemptToEat(atom/noms)
+/mob/living/simple_animal/hostile/space_worm/wormHead/proc/attemptToEat(atom/noms)
 
 
 	if(currentlyEating == noms) //currentlyEating is always undefined at the end, so don't eat the same thing twice
@@ -192,17 +192,17 @@
 
 
 //Harder to kill the head, but it can kill off the whole worm
-/mob/living/simple_animal/hostile/spaceWorm/wormHead/death(gibbed)
+/mob/living/simple_animal/hostile/space_worm/wormHead/death(gibbed)
 	// Only execute the below if we successfully died
 	. = ..(gibbed)
 	if(!.)
 		return FALSE
 	if(prob(catastrophicDeathProb))
-		for(var/mob/living/simple_animal/hostile/spaceWorm/SW in totalWormSegments)
+		for(var/mob/living/simple_animal/hostile/space_worm/SW in totalWormSegments)
 			SW.death()
 
 
-/mob/living/simple_animal/hostile/spaceWorm/Life(seconds, times_fired)
+/mob/living/simple_animal/hostile/space_worm/Life(seconds, times_fired)
 	if(nextWorm && !(Adjacent(nextWorm)))
 		Detach(0)
 
@@ -222,14 +222,14 @@
 
 
 //if a chunk a destroyed, make a new worm out of the split halves
-/mob/living/simple_animal/hostile/spaceWorm/Destroy()
+/mob/living/simple_animal/hostile/space_worm/Destroy()
 	if(previousWorm)
 		previousWorm.Detach(0)
 	return ..()
 
 
 //Move all segments if one piece moves.
-/mob/living/simple_animal/hostile/spaceWorm/Move(atom/newloc, direct = NONE, glide_size_override = 0, update_dir = TRUE)
+/mob/living/simple_animal/hostile/space_worm/Move(atom/newloc, direct = NONE, glide_size_override = 0, update_dir = TRUE)
 	var/segmentNextPos = loc
 	. = ..()
 	if(.)
@@ -239,7 +239,7 @@
 
 
 //Update the appearence of this big weird chain-worm-thingy
-/mob/living/simple_animal/hostile/spaceWorm/update_icon_state()
+/mob/living/simple_animal/hostile/space_worm/update_icon_state()
 	if(stat != DEAD)
 		if(previousWorm)
 			icon_state = "spaceworm[get_dir(src,previousWorm) | get_dir(src,nextWorm)]"
@@ -253,7 +253,7 @@
 
 
 //Add a new worm segment
-/mob/living/simple_animal/hostile/spaceWorm/proc/Attach(mob/living/simple_animal/hostile/spaceWorm/toAttach)
+/mob/living/simple_animal/hostile/space_worm/proc/Attach(mob/living/simple_animal/hostile/spaceWorm/toAttach)
 	if(!toAttach)
 		return
 
@@ -268,7 +268,7 @@
 		myHead.totalWormSegments |= toAttach
 
 		//if toAttach is part of another worm, disconnect all those parts and connect them to the new worm.
-		var/mob/living/simple_animal/hostile/spaceWorm/isPrevWorm
+		var/mob/living/simple_animal/hostile/space_worm/isPrevWorm
 		if(toAttach.previousWorm)
 			isPrevWorm = toAttach.previousWorm
 
@@ -285,9 +285,9 @@
 
 
 //Remove a worm segment
-/mob/living/simple_animal/hostile/spaceWorm/proc/Detach(die = 0)
-	var/mob/living/simple_animal/hostile/spaceWorm/wormHead/newHead = new /mob/living/simple_animal/hostile/spaceWorm/wormHead(loc,0)
-	var/mob/living/simple_animal/hostile/spaceWorm/newHeadPrev
+/mob/living/simple_animal/hostile/space_worm/proc/Detach(die = 0)
+	var/mob/living/simple_animal/hostile/space_worm/wormHead/newHead = new /mob/living/simple_animal/hostile/space_worm/wormHead(loc,0)
+	var/mob/living/simple_animal/hostile/space_worm/newHeadPrev
 
 	if(previousWorm)
 		newHeadPrev = previousWorm
@@ -306,7 +306,7 @@
 	qdel(src)
 
 
-/mob/living/simple_animal/hostile/spaceWorm/death(gibbed)
+/mob/living/simple_animal/hostile/space_worm/death(gibbed)
 	// Only execute the below if we successfully died
 	. = ..()
 	if(!.)
@@ -316,7 +316,7 @@
 
 
 //Process nom noms, things we've eaten have a chance to become plasma
-/mob/living/simple_animal/hostile/spaceWorm/proc/ProcessStomach()
+/mob/living/simple_animal/hostile/space_worm/proc/ProcessStomach()
 	for(var/atom/movable/stomachContent in contents)
 		if(prob(digestionProbability))
 			new /obj/item/stack/sheet/mineral/plasma(src, plasmaPoopPotential)
@@ -339,7 +339,7 @@
 
 
 //Jiggle the whole worm forwards towards the next segment
-/mob/living/simple_animal/hostile/spaceWorm/do_attack_animation(atom/A, visual_effect_icon, used_item, no_effect)
+/mob/living/simple_animal/hostile/space_worm/do_attack_animation(atom/A, visual_effect_icon, used_item, no_effect)
 	..()
 	if(previousWorm)
 		previousWorm.do_attack_animation(src)

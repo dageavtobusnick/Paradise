@@ -72,7 +72,7 @@ GLOBAL_LIST_EMPTY(all_cults)
 		var/list/messages = list(CULT_GREETING)
 		to_chat(cult_mind.current, chat_box_red(messages.Join("<br>")))
 		equip_cultist(cult_mind.current)
-		cult_mind.current.faction |= "cult"
+		cult_mind.current.faction |= FACTION_CULT
 		ADD_TRAIT(cult_mind.current, TRAIT_HEALS_FROM_CULT_PYLONS, CULT_TRAIT)
 		var/datum/objective/servecult/obj = new
 		obj.owner = cult_mind
@@ -177,7 +177,7 @@ GLOBAL_LIST_EMPTY(all_cults)
 
 	if(!(cult_mind in cult))
 		cult += cult_mind
-		cult_mind.current.faction |= "cult"
+		cult_mind.current.faction |= FACTION_CULT
 		cult_mind.special_role = SPECIAL_ROLE_CULTIST
 		ADD_TRAIT(cult_mind.current, TRAIT_HEALS_FROM_CULT_PYLONS, CULT_TRAIT)
 
@@ -265,7 +265,7 @@ GLOBAL_LIST_EMPTY(all_cults)
 	if(cult_mind in cult)
 		var/mob/cultist = cult_mind.current
 		cult -= cult_mind
-		cultist.faction -= "cult"
+		cultist.faction -= FACTION_CULT
 		cult_mind.special_role = null
 		for(var/datum/objective/servecult/O in cult_mind.objectives)
 			cult_mind.objectives -= O

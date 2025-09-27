@@ -19,7 +19,7 @@
 	attacktext = "бьёт"
 	attack_sound = 'sound/weapons/punch1.ogg'
 	unsuitable_atmos_damage = 15
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	check_friendly_fire = 1
 	loot = list(/obj/effect/mob_spawn/human/corpse/syndicatesoldier)
 	del_on_death = 1
@@ -367,7 +367,7 @@
 	melee_damage_upper = 15
 	attacktext = "терзает"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	mob_size = MOB_SIZE_TINY
 	bubble_icon = "syndibot"

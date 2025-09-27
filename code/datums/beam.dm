@@ -322,7 +322,7 @@
 	if(!isliving(arrived))
 		return
 	var/mob/living/target = arrived
-	if("vines" in target.faction)
+	if(FACTION_VINES in target.faction)
 		return
 
 	target.adjustBruteLoss(5)

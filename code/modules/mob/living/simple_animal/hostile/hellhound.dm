@@ -175,7 +175,7 @@
 	health = 300
 	melee_damage_lower = 30
 	melee_damage_upper = 50
-	faction = list("rift")
+	faction = list(FACTION_RIFT)
 
 /mob/living/simple_animal/hostile/hellhound/tear/get_ru_names()
 	return list(

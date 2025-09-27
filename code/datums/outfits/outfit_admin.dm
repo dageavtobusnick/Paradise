@@ -90,7 +90,7 @@
 	var/obj/item/radio/R = H.l_ear
 	if(istype(R))
 		R.set_frequency(SYND_FREQ)
-	H.faction |= "syndicate"
+	H.faction |= FACTION_SYNDICATE
 
 /datum/outfit/admin/syndicate_infiltrator
 	name = "Syndicate Infiltrator"
@@ -99,7 +99,7 @@
 	. = H.equip_syndicate_infiltrator(0, 20, FALSE)
 	H.update_hud_set()
 	if(!visualsOnly)
-		H.faction |= "syndicate"
+		H.faction |= FACTION_SYNDICATE
 
 
 /datum/outfit/admin/syndicate_strike_team
@@ -132,7 +132,7 @@
 	I.access += get_syndicate_access(I.assignment)
 	I.registered_name = H.real_name
 	if(!visualsOnly)
-		H.faction += "syndicate"
+		H.faction += FACTION_STATION
 
 /datum/outfit/admin/syndicate_strike_team/officer
 	name = "Syndicate Stirke Team Officer"

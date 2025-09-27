@@ -66,7 +66,7 @@
 	else if((ride_check_flags & CARRIER_NEEDS_ARM) && (HAS_TRAIT(living_parent, TRAIT_RESTRAINED) || living_parent.incapacitated(INC_IGNORE_RESTRAINED|INC_IGNORE_GRABBED)))
 		. = FALSE
 
-	else if((ride_check_flags & JUST_FRIEND_RIDERS) && !(living_parent.faction.Find(rider)))
+	else if((ride_check_flags & JUST_FRIEND_RIDERS) && !(rider.UID() in living_parent.faction))
 		. = FALSE
 
 	if(. || !consequences)
@@ -192,7 +192,7 @@
 
 /*
 /datum/component/riding/creature/post_vehicle_mob_buckle(mob/living/ridden, mob/living/rider)
-	if(!require_minigame || ridden.faction.Find(REF(rider)))
+	if(!require_minigame || (rider.UID() in riden.faction))
 		return
 	ridden.Shake(duration = 2 SECONDS)
 	ridden.balloon_alert(rider, "вас пытаются сбросить!")

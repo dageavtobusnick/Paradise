@@ -43,7 +43,7 @@
 	can_collar = TRUE
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 	tts_seed = "Sniper"
-	faction = list("neutral", "jungle")
+	faction = list(FACTION_NEUTRAL, FACTION_JUNGLE)
 
 	speak_emote = list("кричит", "говорит", "орёт")
 	emote_hear = list("квохчет")

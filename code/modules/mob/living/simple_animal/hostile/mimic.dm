@@ -23,7 +23,7 @@
 
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 
-	faction = list("mimic")
+	faction = list(FACTION_MIMIC)
 	move_to_delay = 9
 
 	var/is_electronic = 0
@@ -147,7 +147,7 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 	if(owner != creator)
 		lose_target()
 		creator = owner
-		faction |= "\ref[owner]"
+		faction |= owner.UID()
 
 /mob/living/simple_animal/hostile/mimic/copy/proc/CheckObject(obj/O)
 	if((isitem(O) || isstructure(O)) && !is_type_in_list(O, GLOB.protected_objects))
@@ -183,7 +183,7 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 		maxHealth = health
 		if(user)
 			creator = user
-			faction += "\ref[creator]" // very unique
+			faction += creator.UID() // very unique
 		if(destroy_original)
 			qdel(O)
 		return 1

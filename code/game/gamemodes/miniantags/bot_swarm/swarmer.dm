@@ -87,7 +87,7 @@
 	friendly = "щипает"
 	speed = 0
 	can_change_intents = 0
-	faction = list("swarmer")
+	faction = list(FACTION_SWARMER)
 	AIStatus = AI_OFF
 	pass_flags = PASSTABLE
 	mob_size = MOB_SIZE_SMALL

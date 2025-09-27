@@ -19,7 +19,7 @@
 	attacktext = "бьёт"
 	attack_sound = 'sound/weapons/punch1.ogg'
 	unsuitable_atmos_damage = 15
-	faction = list("russian")
+	faction = list(FACTION_USSP, FACTION_RUSSIAN)
 	loot = list(/obj/effect/mob_spawn/human/corpse/russian,
 			/obj/item/kitchen/knife)
 	del_on_death = 1

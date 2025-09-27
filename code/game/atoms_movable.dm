@@ -104,7 +104,7 @@
 
 	/// The list of factions this atom belongs to
 	var/list/faction
-	
+
 	/**
 	 * an associative lazylist of relevant nested contents by "channel", the list is of the form: list(channel = list(important nested contents of that type))
 	 * each channel has a specific purpose and is meant to replace potentially expensive nested contents iteration
@@ -120,7 +120,7 @@
 	/// acts as a key to the list of spatial grid contents types we exist in via SSspatial_grid.spatial_grid_categories.
 	/// We do it like this to prevent people trying to mutate them and to save memory on holding the lists ourselves
 	var/spatial_grid_key
-	
+
 	/// Last location of the atom for demo recording purposes
 	var/atom/demo_last_loc
 
@@ -1733,8 +1733,8 @@
 
 	var/list/faction_src = LAZYCOPY(faction)
 	var/list/faction_target = LAZYCOPY(target.faction)
-	if(!("[UID_of(src)]" in faction_target)) //if they don't have our ref faction, remove it from our factions list.
-		faction_src -= "[UID_of(src)]" //if we don't do this, we'll never have an exact match.
+	if(!("[UID()]" in faction_target)) //if they don't have our ref faction, remove it from our factions list.
+		faction_src -= "[UID()]" //if we don't do this, we'll never have an exact match.
 	if(!("[UID_of(target)]" in faction_src))
 		faction_target -= "[UID_of(target)]" //same thing here.
 	return faction_check(faction_src, faction_target, TRUE)

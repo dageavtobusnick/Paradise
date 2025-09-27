@@ -5,6 +5,7 @@
 	var/level = 2
 	var/flags = NONE
 	var/flags_2 = NONE
+	var/resistance_flags = NONE // INDESTRUCTIBLE
 	var/flags_ricochet = NONE
 	var/list/fingerprints
 	var/list/fingerprints_time

@@ -985,9 +985,9 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 /datum/objective/steal/exchange/proc/set_faction(faction, otheragent)
 	target = otheragent
 	var/datum/theft_objective/unique/targetinfo
-	if(faction == "red")
+	if(faction == TRAITOR_FACTION_RED)
 		targetinfo = new /datum/theft_objective/unique/docs_blue
-	else if(faction == "blue")
+	else if(faction == TRAITOR_FACTION_BLUE)
 		targetinfo = new /datum/theft_objective/unique/docs_red
 	explanation_text = "Заполучите [targetinfo.name], переносимые [target.current.real_name], [target.assigned_role] и агент Синдиката."
 	steal_target = targetinfo
@@ -998,9 +998,9 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 
 /datum/objective/steal/exchange/backstab/set_faction(faction)
 	var/datum/theft_objective/unique/targetinfo
-	if(faction == "red")
+	if(faction == TRAITOR_FACTION_RED)
 		targetinfo = new /datum/theft_objective/unique/docs_red
-	else if(faction == "blue")
+	else if(faction == TRAITOR_FACTION_BLUE)
 		targetinfo = new /datum/theft_objective/unique/docs_blue
 	explanation_text = "Не отдавайте и не теряйте [targetinfo.name]."
 	steal_target = targetinfo

@@ -13,6 +13,6 @@
 	melee_damage_upper = 50
 	attacktext = "кусает"
 	attack_sound = 'sound/weapons/bite.ogg'
-	faction = list("creature")
+	faction = list(FACTION_CREATURE)
 	gold_core_spawnable = HOSTILE_SPAWN
 	AI_delay_max = 0 SECONDS

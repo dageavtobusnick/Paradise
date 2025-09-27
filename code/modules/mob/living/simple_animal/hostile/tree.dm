@@ -27,7 +27,7 @@
 
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 
-	faction = list("hostile", "winter")
+	faction = list(FACTION_HOSTILE, FACTION_WINTER)
 	loot = list(/obj/item/stack/sheet/wood)
 	gold_core_spawnable = HOSTILE_SPAWN
 	deathmessage = "is hacked into pieces!"

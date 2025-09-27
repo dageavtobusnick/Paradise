@@ -1905,7 +1905,7 @@
 	name = "Вампир-животное"
 	real_name = "Вампир-животное"
 	desc = "Сообщите обо мне!"
-	faction = list(ROLE_VAMPIRE)
+	faction = list(FACTION_VAMPIRE)
 	response_help = "обнимает"
 	response_disarm = "аккуратно отодвигает в сторону"
 	response_harm = "бьёт"
@@ -2245,7 +2245,7 @@
 /mob/living/simple_animal/hostile/vampire/bats_summoned/Initialize(mapload, datum/antagonist/vampire/vamp, mob/living/carbon/human/h_vampire, obj/effect/proc_holder/spell/vampire/metamorphosis/meta_spell)
 	. = ..()
 
-	faction = list(ROLE_VAMPIRE)
+	faction = list(FACTION_VAMPIRE)
 	AddElement(/datum/element/simple_flying)
 
 	if(!vampire)

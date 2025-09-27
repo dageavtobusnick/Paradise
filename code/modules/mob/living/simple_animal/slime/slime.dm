@@ -9,7 +9,7 @@
 	can_buckle_to = FALSE
 	var/datum/slime_age/age_state = new /datum/slime_age/baby
 	var/docile = 0
-	faction = list("slime", "neutral")
+	faction = list(FACTION_SLIME, FACTION_NEUTRAL)
 	allows_unconscious = TRUE
 	AI_delay_max = 0.5 SECONDS
 

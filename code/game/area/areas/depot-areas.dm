@@ -217,8 +217,8 @@
 			message_admins("Syndicate Depot visitor mode auto-deactivated because visitors robbed depot! Visitors:")
 			announce_here("Depot Alert","A visiting agent has betrayed the Syndicate. Shoot all visitors on sight!")
 		for(var/mob/M in list_getmobs(peaceful_list))
-			if("syndicate" in M.faction)
-				M.faction -= "syndicate"
+			if(FACTION_SYNDICATE in M.faction)
+				M.faction -= FACTION_SYNDICATE
 				message_admins("- SYNDI DEPOT VISITOR: [ADMIN_FULLMONTY(M)]")
 				list_add(M, hostile_list)
 		peaceful_list = list()

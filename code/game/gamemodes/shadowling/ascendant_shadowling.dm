@@ -29,7 +29,7 @@
 
 	environment_smash = ENVIRONMENT_SMASH_RWALLS
 
-	faction = list("faithless")
+	faction = list(FACTION_FAITHLESS)
 
 
 /mob/living/simple_animal/ascendant_shadowling/Initialize(mapload)

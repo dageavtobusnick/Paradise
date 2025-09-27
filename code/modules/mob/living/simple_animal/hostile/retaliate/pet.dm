@@ -2,7 +2,7 @@
 	name = "Сержант Аранеус"
 	real_name = "Сержант Аранеус"
 	desc = "Свирепый компаньон любого влиятельного лица, эта паучиха была тщательно обучена специалистами Nanotrasen. От пристального взгляда её глаз-бусинок у вас по спине бегают мурашки."
-	faction = list("spiders")
+	faction = list(FACTION_SPIDER)
 	icon_state = "guard(old)"
 	icon_living = "guard(old)"
 	icon_dead = "guard_dead(old)"

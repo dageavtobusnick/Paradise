@@ -629,7 +629,7 @@ Difficulty: Medium
 	name = "lesser ash drake"
 	maxHealth = 200
 	health = 200
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	obj_damage = 80
 	melee_damage_upper = 30
 	melee_damage_lower = 30
@@ -669,7 +669,7 @@ Difficulty: Medium
 	name = "space dragon"
 	maxHealth = 250
 	health = 250
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	desc = "Космический карп, превращённый в дракона злой магией. Обладает той же свирепостью, что и космический карп, но также имеет более мощное тело."
 	icon = 'icons/mob/spacedragon.dmi'
 	icon_state = "spacedragon"

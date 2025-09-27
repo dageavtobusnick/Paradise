@@ -54,20 +54,20 @@
 	return TRUE
 
 /datum/admin_ai_template/proc/apply_controller(mob/living/target, client/user)
-	if (QDELETED(target))
+	if(QDELETED(target))
 		to_chat(user, span_warning("Target stopped existing while you were answering prompts :("))
 		return
 
 	QDEL_NULL(target.ai_controller)
 	target.ai_controller = new controller_type(target)
 
-	if (make_hostile)
-		target.faction = list(FACTION_HOSTILE, REF(target))
+	if(make_hostile)
+		target.faction = list(FACTION_HOSTILE, target.UID())
 
 	var/datum/ai_controller/controller = target.ai_controller
 	controller.set_blackboard_key(BB_BASIC_MOB_IDLE_WALK_CHANCE, idle_chance)
 	controller.set_blackboard_key(BB_TARGET_MINIMUM_STAT, minimum_stat)
-	if (override_client)
+	if(override_client)
 		controller.continue_processing_when_client = TRUE
 		controller.reset_ai_status()
 

@@ -5,7 +5,7 @@
 	for(var/mob/living/simple_animal/hostile/R in range(4,src))
 		if(!R.retaliate_only)
 			continue
-		if(R.faction != "undead" || R == src || prob(50)) continue
+		if((FACTION_UNDEAD in R.faction) || R == src || prob(50)) continue
 		found = 1
 		R.enemies ^= src
 		if(src in R.enemies)
@@ -44,7 +44,7 @@
 
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	pressure_resistance = 300
-	faction = list("undead") // did I mention ghost
+	faction = list(FACTION_UNDEAD) // did I mention ghost
 	loot = list(/obj/item/reagent_containers/food/snacks/ectoplasm)
 	del_on_death = 1
 
@@ -93,7 +93,7 @@
 	robust_searching = TRUE
 	stat_attack = UNCONSCIOUS
 	gold_core_spawnable = HOSTILE_SPAWN
-	faction = list("undead")
+	faction = list(FACTION_UNDEAD, FACTION_SKELETON)
 	nightvision = 8
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	deathmessage = "превращается в груду костей!"
@@ -128,7 +128,7 @@
 	gold_core_spawnable = NO_SPAWN
 	melee_damage_lower = 17
 	melee_damage_upper = 20
-	faction = list("undead", "winter")
+	faction = list(FACTION_UNDEAD, FACTION_SKELETON, FACTION_WINTER)
 	deathmessage = "collapses into a pile of bones, its gear falling to the floor!"
 	loot = list(/obj/effect/decal/remains/human,
 				/obj/item/twohanded/spear,
@@ -156,7 +156,7 @@
 
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 
-	faction = list("undead")
+	faction = list(FACTION_UNDEAD, FACTION_ZOMBIE)
 	loot = list(/obj/effect/decal/cleanable/blood/gibs)
 	del_on_death = 1
 
@@ -171,7 +171,7 @@
 	speak_chance = 1
 	speak_emote = list("рычит", "ревёт")
 
-	faction = list("zombie")
+	faction = list(FACTION_UNDEAD, FACTION_ZOMBIE)
 	icon_living = "zombie2_s"
 	icon_state = "zombie2_s"
 	maxHealth = 100

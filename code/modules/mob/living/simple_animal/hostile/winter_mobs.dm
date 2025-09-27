@@ -3,7 +3,7 @@
 //////////////////////////
 
 /mob/living/simple_animal/hostile/winter
-	faction = list("hostile", "syndicate", "winter")
+	faction = list(FACTION_HOSTILE, FACTION_SYNDICATE, FACTION_WINTER)
 	turns_per_move = 5
 	maxHealth = 50
 	health = 50

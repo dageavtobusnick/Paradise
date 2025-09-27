@@ -1502,7 +1502,7 @@
 					SSticker.mode.apprentices -= src
 					special_role = null
 					current.spellremove(current)
-					current.faction = list("Station")
+					current.faction = list(FACTION_STATION)
 					SSticker.mode.update_wiz_icons_removed(src)
 					to_chat(current, span_userdanger(span_fontsize3("You have been brainwashed! You are no longer a apprentice wizard!")))
 					log_admin("[key_name(usr)] has de-apprentice-wizarded [key_name(current)]")
@@ -1515,7 +1515,7 @@
 					SSticker.mode.update_wiz_icons_added(src)
 					SEND_SOUND(current, sound('sound/ambience/antag/ragesmages.ogg'))
 					to_chat(current, span_danger("You are a Space Wizard!"))
-					current.faction = list("wizard")
+					current.faction = list(FACTION_WIZARD)
 					log_admin("[key_name(usr)] has wizarded [key_name(current)]")
 					message_admins("[key_name_admin(usr)] has wizarded [key_name_admin(current)]")
 			if("apprentice")
@@ -1525,7 +1525,7 @@
 					SSticker.mode.update_wiz_icons_added(src)
 					SEND_SOUND(current, sound('sound/ambience/antag/ragesmages.ogg'))
 					to_chat(current, span_danger("You are a Apprentice of Space Wizard!"))
-					current.faction = list("wizard")
+					current.faction = list(FACTION_WIZARD)
 					log_admin("[key_name(usr)] has apprentice-wizarded [key_name(current)]")
 					message_admins("[key_name_admin(usr)] has apprentice-wizarded [key_name_admin(current)]")
 			if("lair")
@@ -2641,13 +2641,13 @@
 		SSticker.mode.wizards -= src
 		special_role = null
 		current.spellremove(current)
-		current.faction = list("Station")
+		current.faction = list(FACTION_STATION)
 		SSticker.mode.update_wiz_icons_removed(src)
 	if(src in SSticker.mode.apprentices)
 		SSticker.mode.apprentices -= src
 		special_role = null
 		current.spellremove(current)
-		current.faction = list("Station")
+		current.faction = list(FACTION_STATION)
 		SSticker.mode.update_wiz_icons_removed(src)
 
 

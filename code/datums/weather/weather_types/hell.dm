@@ -66,7 +66,7 @@
 		return
 	var/demon_type = (prob(50))? /mob/living/simple_animal/demon/slaughter : /mob/living/simple_animal/demon/slaughter/laughter
 	var/mob/new_mob = new demon_type(get_turf(mob))
-	LAZYOR(new_mob.faction, "hell")
+	LAZYOR(new_mob.faction, FACTION_HELL)
 	new_mob.key = mob.key
 	mob.dust()
 	new_mob.mind?.add_antag_datum(/datum/antagonist/imp/demon)
@@ -85,7 +85,7 @@
 	if(QDELETED(src))
 		return
 	var/mob/new_mob = new /mob/living/simple_animal/imp(get_turf(mob))
-	LAZYOR(new_mob.faction, "hell")
+	LAZYOR(new_mob.faction, FACTION_HELL)
 	new_mob.key = mob.key
 	mob.dust()
 	new_mob.mind?.add_antag_datum(/datum/antagonist/imp/from_soul)
@@ -113,7 +113,7 @@
 		return
 
 	var/mob/new_mob = new /mob/living/simple_animal/demon/shadow(get_turf(mob))
-	LAZYOR(new_mob.faction, "hell")
+	LAZYOR(new_mob.faction, FACTION_HELL)
 	new_mob.key = mob.key
 	mob.dust()
 	new_mob.mind?.add_antag_datum(/datum/antagonist/imp/demon/shadow)

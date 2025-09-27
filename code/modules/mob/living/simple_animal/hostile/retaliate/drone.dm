@@ -24,7 +24,7 @@
 	projectiletype = /obj/projectile/beam/immolator/weak
 	projectilesound = 'sound/weapons/laser3.ogg'
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	faction = list("malf_drone")
+	faction = list(FACTION_MALF_DRONE)
 	deathmessage = "suddenly breaks apart."
 	del_on_death = 1
 	var/passive_mode = TRUE // if true, don't target anything.
@@ -197,7 +197,7 @@
 
 /mob/living/simple_animal/hostile/malf_drone/syndicate
 	stop_automated_movement_when_pulled = TRUE
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	speak = list()
 
 /mob/living/simple_animal/bot/ed209/combat_drone
@@ -318,7 +318,7 @@
 		/datum/crafting_recipe/drone_circ,
 		/datum/crafting_recipe/drone_circ_adv,
 		/datum/crafting_recipe/drone_circ_ai)
-	user.faction += list("syndicate")
+	user.faction += list(FACTION_SYNDICATE)
 	qdel(src)
 
 /obj/item/drone_modules

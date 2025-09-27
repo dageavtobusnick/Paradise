@@ -218,7 +218,7 @@
 	if(checkpass(mover))
 		return TRUE
 	var/mob/living/mob_check = get_mob_in_atom_without_warning(mover)
-	return ("terrorspiders" in mob_check.faction)
+	return (FACTION_TERROR_SPIDER in mob_check.faction)
 
 
 //DEFILER//

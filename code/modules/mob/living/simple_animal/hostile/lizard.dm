@@ -68,4 +68,4 @@
 /mob/living/simple_animal/hostile/lizard/croco/Gena
 	name = "Гена"
 	desc = "Крокодил обожающий музыкальные инструменты и плюшевые игрушки. Пожевать."
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)

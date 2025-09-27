@@ -32,7 +32,7 @@
 	response_harm   = "squashes"
 	maxHealth = 10
 	health = 10
-	faction = list("hostile")
+	faction = list(FACTION_HOSTILE)
 	move_to_delay = 0
 	obj_damage = 0
 	environment_smash = 0
@@ -337,7 +337,7 @@
 	melee_damage_upper = 5
 	maxHealth = 25
 	health = 25
-	faction = list("hostile", "syndicate")
+	faction = list(FACTION_HOSTILE, FACTION_SYNDICATE)
 	search_objects = FALSE //these bees don't care about trivial things like plants, especially when there is havoc to sow
 	bee_syndicate = TRUE
 	AI_delay_max = 0 SECONDS

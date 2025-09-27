@@ -22,7 +22,7 @@
 	resistance_flags = FIRE_PROOF | LAVA_PROOF
 	max_integrity = 200
 
-	var/faction = list("ashwalker")
+	var/faction = list(FACTION_ASHWALKER)
 	var/meat_counter = 6
 
 /obj/structure/lavaland/ash_walker/Initialize(mapload)
@@ -125,7 +125,7 @@
 
 /obj/effect/mob_spawn/human/ash_walker/special(mob/living/carbon/human/new_spawn)
 	new_spawn.rename_character(new_spawn.real_name, new_spawn.dna.species.get_random_name(new_spawn.gender))
-	new_spawn.faction += "ashwalker"
+	new_spawn.faction += FACTION_ASHWALKER
 
 /obj/effect/mob_spawn/human/ash_walker/New()
 	. = ..()

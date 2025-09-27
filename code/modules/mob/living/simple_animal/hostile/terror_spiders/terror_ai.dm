@@ -210,7 +210,7 @@
 			continue
 		if(isliving(A))
 			var/mob/living/M = A
-			if(!("terrorspiders" in M.faction))
+			if(!(FACTION_TERROR_SPIDER in M.faction))
 				enemies |= M
 		else if(ismecha(A))
 			var/obj/mecha/M = A

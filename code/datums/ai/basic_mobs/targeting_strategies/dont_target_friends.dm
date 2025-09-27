@@ -1,7 +1,7 @@
 /// Don't target an atom in our friends list (or turfs), anything else is fair game
 /datum/targeting_strategy/basic/not_friends
 	/// Stop regarding someone as a valid target once they pass this stat level, setting it to DEAD means you will happily attack corpses
-	var/attack_until_past_stat = HARD_CRIT
+	var/attack_until_past_stat = UNCONSCIOUS
 	/// If we can try to closed turfs or not
 	var/attack_closed_turf = FALSE
 	/// If we want it to attack ALL OBJECTS

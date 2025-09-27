@@ -71,7 +71,7 @@ GLOBAL_LIST_EMPTY(all_clockers)
 		var/list/messages = list(CLOCK_GREETING)
 		to_chat(clockwork_mind.current, chat_box_yellow(messages.Join("<br>")))
 		equip_clocker(clockwork_mind.current)
-		clockwork_mind.current.faction |= "clockwork_cult"
+		clockwork_mind.current.faction |= FACTION_CLOCKWORK_CULT
 		var/datum/objective/serveclock/obj = new
 		obj.owner = clockwork_mind
 		clockwork_mind.objectives += obj
@@ -174,7 +174,7 @@ GLOBAL_LIST_EMPTY(all_clockers)
 
 	if(!(clock_mind in clockwork_cult))
 		clockwork_cult += clock_mind
-		clock_mind.current.faction |= "clockwork_cult"
+		clock_mind.current.faction |= FACTION_CLOCKWORK_CULT
 		clock_mind.special_role = SPECIAL_ROLE_CLOCKER
 
 		if(clock_mind.assigned_role == JOB_TITLE_CLOWN)
@@ -283,7 +283,7 @@ GLOBAL_LIST_EMPTY(all_clockers)
 		return
 
 	clockwork_cult -= clock_mind
-	clocker.faction -= "clockwork_cult"
+	clocker.faction -= FACTION_CLOCKWORK_CULT
 	clock_mind.special_role = null
 
 	for(var/datum/objective/serveclock/objective in clock_mind.objectives)

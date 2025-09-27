@@ -45,7 +45,7 @@ Difficulty: Hard
 	icon_living = "hierophant"
 	friendly = "пристально смотрит"
 	icon = 'icons/mob/lavaland/hierophant_new.dmi'
-	faction = list("boss") //asteroid mobs? get that shit out of my beautiful square house
+	faction = list(FACTION_BOSS) //asteroid mobs? get that shit out of my beautiful square house
 	speak_emote = list("проповедует")
 	armour_penetration = 100 //It does 15 damage / only attacks when enraged
 	melee_damage_lower = 15

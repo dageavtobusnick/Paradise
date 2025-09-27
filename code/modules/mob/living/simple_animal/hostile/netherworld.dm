@@ -12,11 +12,10 @@
 	melee_damage_upper = 50
 	attacktext = "грызёт"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
-	faction = list("creature")
+	faction = list(FACTION_HELL, FACTION_CREATURE)
 	speak_emote = list("кричит")
 	gold_core_spawnable = HOSTILE_SPAWN
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	faction = list("nether")
 
 /mob/living/simple_animal/hostile/netherworld/get_ru_names()
 	return list(
@@ -100,7 +99,7 @@
 	icon = 'icons/mob/nest.dmi'
 	spawn_text = "crawls through"
 	mob_types = list(/mob/living/simple_animal/hostile/netherworld/migo, /mob/living/simple_animal/hostile/netherworld, /mob/living/simple_animal/hostile/netherworld/blankbody)
-	faction = list("nether")
+	faction = list(FACTION_HELL)
 	scanner_taggable = TRUE
 	mob_gps_id = "?!?"
 	spawner_gps_id = "Netheric Distortion"

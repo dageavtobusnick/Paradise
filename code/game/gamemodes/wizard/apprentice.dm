@@ -72,7 +72,7 @@
 				SSticker.mode.apprentices += apprentice.mind
 				apprentice.mind.special_role = SPECIAL_ROLE_WIZARD_APPRENTICE
 				SSticker.mode.update_wiz_icons_added(apprentice.mind)
-				apprentice.faction = list("wizard")
+				apprentice.faction = list(FACTION_WIZARD)
 				log_game("[apprentice.key] has become [teacher]'s (ckey: [teacher.key]) apprentice.")
 			else
 				used = 0
@@ -493,7 +493,7 @@
 	desc = "Школа, использующая традиции магии пеплоходцев."
 
 /datum/magick_school/lavaland/kit()
-	owner.faction += "mining"
+	owner.faction += FACTION_MINING
 	owner.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe/conjure/legion_skulls)
 	owner.mind.AddSpell(new /obj/effect/proc_holder/spell/goliath_tentacles)
 	owner.mind.AddSpell(new /obj/effect/proc_holder/spell/goliath_dash)

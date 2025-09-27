@@ -856,7 +856,7 @@
 	for(var/i in 1 to amount)
 		var/mob/living/simple_animal/S
 		S = new to_spawn(get_turf(src))
-		S.faction |= "petSpraySummon"
+		S.faction |= FACTION_RELICT_SUMMON
 		S.gold_core_spawnable = HOSTILE_SPAWN
 		S.low_priority_targets += user.UID()
 		if(prob(50))

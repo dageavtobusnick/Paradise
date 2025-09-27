@@ -22,7 +22,7 @@
 	obj_damage = 20
 	environment_smash = ENVIRONMENT_SMASH_WALLS
 	attack_sound = 'sound/weapons/punch1.ogg'
-	faction = list("hostile", "monkey", "jungle")
+	faction = list(FACTION_NEUTRAL, FACTION_MONKEY, FACTION_JUNGLE)
 	robust_searching = TRUE
 	nightvision = 8
 	can_collar = TRUE
@@ -416,7 +416,7 @@
 	name = "каргорилла"
 	icon = 'icons/mob/cargorillia.dmi'
 	desc = "Ручной самец гориллы, приписанный к отделу грузоперевозок. Похоже у него набито тату \"Я люблю Маму\"."
-	faction = list("neutral", "monkey", "jungle")
+	faction = list(FACTION_NEUTRAL, FACTION_MONKEY, FACTION_JUNGLE)
 	gold_core_spawnable = NO_SPAWN
 	environment_smash = ENVIRONMENT_SMASH_STRUCTURES
 	gender = MALE

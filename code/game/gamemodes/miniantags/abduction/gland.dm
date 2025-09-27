@@ -136,7 +136,7 @@
 
 /obj/item/organ/internal/heart/gland/slime/insert(mob/living/carbon/M, special = ORGAN_MANIPULATION_DEFAULT)
 	..()
-	owner.faction |= "slime"
+	owner.faction |= FACTION_SLIME
 	owner.add_language(LANGUAGE_SLIME)
 
 /obj/item/organ/internal/heart/gland/slime/activate()
@@ -255,7 +255,7 @@
 
 /obj/item/organ/internal/heart/gland/spiderman/activate()
 	to_chat(owner, span_warning("Вам кажется, что под кожей что-то шевелится."))
-	owner.faction |= "spiders"
+	owner.faction |= FACTION_SPIDER
 	var/obj/structure/spider/spiderling/S = new(owner.loc)
 	S.master_commander = owner
 

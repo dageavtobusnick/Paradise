@@ -90,7 +90,7 @@
 	mob_size = MOB_SIZE_SMALL
 	density = FALSE
 
-	faction = list("creature")
+	faction = list(FACTION_CREATURE)
 	ventcrawler_trait = TRAIT_VENTCRAWLER_ALWAYS
 
 	wander = FALSE

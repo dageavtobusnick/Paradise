@@ -612,7 +612,7 @@
 /obj/item/shield/mirror/proc/spawn_illusion(mob/living/carbon/human/user, hostile, betray)
 	if(hostile)
 		var/mob/living/simple_animal/hostile/illusion/cult/H = new(user.loc)
-		H.faction = list("cult")
+		H.faction = list(FACTION_CULT)
 		if(!betray)
 			H.Copy_Parent(user, 70, 10, 5)
 		else

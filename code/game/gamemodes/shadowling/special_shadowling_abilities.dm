@@ -113,7 +113,7 @@ GLOBAL_LIST_INIT(possibleShadowlingNames, list("U'ruan", "Y`shej", "Nex", "Hel-u
 	user.underwear = "None"
 	user.undershirt = "None"
 	user.socks = "None"
-	user.faction |= "faithless"
+	user.faction |= FACTION_FAITHLESS
 
 	user.set_species(/datum/species/shadow/ling)	//can't be a shadowling without being a shadowling
 	user.mind.RemoveSpell(src)
@@ -263,7 +263,7 @@ GLOBAL_LIST_INIT(possibleShadowlingNames, list("U'ruan", "Y`shej", "Nex", "Hel-u
 	underwear = "None"
 	undershirt = "None"
 	socks = "None"
-	faction |= "faithless"
+	faction |= FACTION_FAITHLESS
 	add_language(LANGUAGE_HIVE_SHADOWLING)
 	set_species(/datum/species/shadow/ling)
 	to_chat(src, span_shadowling("<b><i>Ваши силы пробудились. Теперь вы заживёте в полную меру. Помните свои цели. Сотрудничайте со своими союзниками и рабами.</b></i>"))

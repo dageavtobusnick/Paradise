@@ -17,7 +17,7 @@
 	attack_same = 2
 	attacktext = "грызёт"
 	attack_sound = 'sound/weapons/bite.ogg'
-	faction = list("mushroom")
+	faction = list(FACTION_MUSHROOM)
 	environment_smash = 0
 	stat_attack = DEAD
 	ventcrawler_trait = TRAIT_VENTCRAWLER_ALWAYS

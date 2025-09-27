@@ -35,7 +35,7 @@
 	allow_gender_pick = TRUE
 	allow_name_pick = TRUE
 	pickable_species = list(SPECIES_HUMAN, SPECIES_VULPKANIN, SPECIES_TAJARAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_DRASK, SPECIES_VOX, SPECIES_PLASMAMAN, SPECIES_MACNINEPERSON, SPECIES_KIDAN, SPECIES_GREY, SPECIES_NUCLEATION, SPECIES_SLIMEPERSON, SPECIES_WRYN, SPECIES_MOTH)
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	min_hours = 10
 
 /obj/effect/mob_spawn/human/space_base_syndicate/Destroy()
@@ -68,7 +68,7 @@
 				box = /obj/item/storage/box/survival_syndi
 
 /datum/outfit/space_base_syndicate/post_equip(mob/living/carbon/human/H)
-	H.faction |= "syndicate"
+	H.faction |= FACTION_SYNDICATE
 	if(H.dna.species)
 
 		var/race = H.dna.species.name

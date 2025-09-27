@@ -474,15 +474,16 @@
  * * user - new gorilla master.
  */
 /mob/living/simple_animal/hostile/gorilla/proc/update_master(mob/living/carbon/human/user)
-	if(user)
-		LAZYCLEARLIST(friend2bananas)
-		initial_faction = faction.Copy()
-		faction = list("neutral", "monkey", "jungle")
-		faction += "\ref[user]"
-		master = user
-		toggle_ai(AI_OFF)
-		RegisterSignal(user, COMSIG_MOB_POINTED, PROC_REF(check_pointed))
-		RegisterSignal(user, COMSIG_MOB_DEATH, PROC_REF(on_death))
+	if(!user)
+		return
+	LAZYCLEARLIST(friend2bananas)
+	initial_faction = faction.Copy()
+	faction = list(FACTION_NEUTRAL, FACTION_MONKEY, FACTION_JUNGLE)
+	faction += user.UID()
+	master = user
+	toggle_ai(AI_OFF)
+	RegisterSignal(user, COMSIG_MOB_POINTED, PROC_REF(check_pointed))
+	RegisterSignal(user, COMSIG_MOB_DEATH, PROC_REF(on_death))
 
 
 /**

@@ -7,7 +7,7 @@
 	environment_smash = ENVIRONMENT_SMASH_RWALLS
 	obj_damage = 400
 	light_range = 3
-	faction = list("mining", "boss")
+	faction = list(FACTION_BOSS, FACTION_MINING)
 	weather_immunities = list(TRAIT_LAVA_IMMUNE, TRAIT_ASHSTORM_IMMUNE)
 	tts_seed = "Mannoroth"
 	robust_searching = TRUE

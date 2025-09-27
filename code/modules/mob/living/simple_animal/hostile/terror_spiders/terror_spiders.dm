@@ -67,7 +67,7 @@ GLOBAL_LIST_EMPTY(ts_spiderling_list)
 	var/can_wrap = TRUE   //can spider wrap corpses and objects?
 	var/web_type = /obj/structure/spider/terrorweb
 	var/delay_web = 25 // delay between starting to spin web, and finishing
-	faction = list("terrorspiders")
+	faction = list(FACTION_TERROR_SPIDER)
 	var/spider_opens_doors = 1 // all spiders can open firedoors (they have no security). 1 = can open depowered doors. 2 = can open powered doors
 	var/ai_ventcrawls = TRUE
 	var/idle_ventcrawl_chance = 15
@@ -359,7 +359,7 @@ GLOBAL_LIST_EMPTY(ts_spiderling_list)
 			to_chat(T, "<span class='terrorspider'>TerrorSense: [msgtext]</span>")
 
 /mob/living/simple_animal/hostile/poison/terror_spider/proc/CheckFaction()
-	if(faction.len != 2 || (!("terrorspiders" in faction)) || master_commander != null)
+	if(faction.len != 2 || (!(FACTION_TERROR_SPIDER in faction)) || master_commander != null)
 		to_chat(src, span_userdanger("Ваша связь с коллективным разумом разрывается!"))
 		log_runtime(EXCEPTION("Terror spider with incorrect faction list at: [atom_loc_line(src)]"))
 		gib()

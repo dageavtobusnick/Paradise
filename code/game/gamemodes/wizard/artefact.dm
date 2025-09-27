@@ -131,7 +131,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 	sharp = 1
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("атаковал", "полоснул", "уколол", "поранил", "порезал")
-	var/faction = list("unassigned")
+	var/faction = list(NO_FACTION)
 	var/cooldown = 0
 	var/cooldown_between_uses = 400 //time in deciseconds between uses--default of 40 seconds.
 	var/assigned = "unassigned"
@@ -162,15 +162,12 @@ GLOBAL_LIST_EMPTY(multiverse)
 		to_chat(user, span_warning("You know better than to touch your teacher's stuff."))
 		return
 	if(cooldown < world.time)
-		var/faction_check = 0
-		for(var/F in faction)
-			if(F in user.faction)
-				faction_check = 1
-				break
-		if(faction_check == 0)
-			faction = list("[user.real_name]")
+		var/faction_check = length(faction & user.faction)
+		if(!faction_check)
+			var/uid = user.UID()
+			faction = list(uid )
 			assigned = "[user.real_name]"
-			user.faction = list("[user.real_name]")
+			user.faction = list(uid)
 			to_chat(user, "You bind the sword to yourself. You can now use it to summon help.")
 			if(!usr.mind.special_role)
 				var/list/messages = list()
@@ -223,7 +220,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 	M.key = C.key
 	M.mind.name = user.real_name
 	to_chat(M, "<b>You are an alternate version of [user.real_name] from another universe! Help [user.p_them()] accomplish [user.p_their()] goals at all costs.</b>")
-	M.faction = list("[user.real_name]")
+	M.faction = list(user.UID())
 	if(duplicate_self)
 		M.set_species(user.dna.species.type) //duplicate the sword user's species.
 	else
@@ -265,7 +262,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 
 	var/obj/item/multisword/sword = new sword_type
 	sword.assigned = assigned
-	sword.faction = list("[assigned]")
+	sword.faction = faction.Copy()
 	sword.evil = evil
 
 	if(duplicate_self)

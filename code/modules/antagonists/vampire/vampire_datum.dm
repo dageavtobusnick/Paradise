@@ -106,7 +106,7 @@
 
 	if(!transformation)
 		check_vampire_upgrade(announce = FALSE)
-		user.faction |= ROLE_VAMPIRE
+		user.faction |= FACTION_VAMPIRE
 		user.dna?.species?.hunger_type = "vampire"
 		//goon vampire slaves code
 		//if(mob_override.mind.som)
@@ -138,7 +138,7 @@
 	REMOVE_TRAIT(owner, TRAIT_BAD_SOUL, INNATE_TRAIT)
 
 	if(!transformation)
-		user.faction -= ROLE_VAMPIRE
+		user.faction -= FACTION_VAMPIRE
 
 		var/datum/hud/hud = user.hud_used
 		if(hud?.vampire_blood_display)
@@ -725,13 +725,13 @@
 
 /datum/antagonist/mindslave/thrall/apply_innate_effects(mob/living/mob_override)
 	var/mob/living/user = ..()
-	user.faction |= ROLE_VAMPIRE
+	user.faction |= FACTION_VAMPIRE
 	return user
 
 
 /datum/antagonist/mindslave/thrall/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/user = ..()
-	user.faction -= ROLE_VAMPIRE
+	user.faction -= FACTION_VAMPIRE
 	return user
 
 

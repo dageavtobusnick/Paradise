@@ -7,7 +7,7 @@
 	allow_species_pick = TRUE
 	allow_gender_pick = TRUE
 	allow_name_pick = TRUE
-	faction = list("ussp")
+	faction = list(FACTION_USSP)
 	pickable_species = list(SPECIES_HUMAN)
 	mob_species = /datum/species/human
 	min_hours = 10

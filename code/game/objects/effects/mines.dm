@@ -4,7 +4,7 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "uglyminearmed"
 	var/triggered = 0
-	var/faction = "syndicate"
+	faction = list("syndicate")
 
 
 /obj/effect/mine/Initialize(mapload)
@@ -28,7 +28,7 @@
 	if(arrived.movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
 		return
 
-	if(faction && (faction in arrived.faction))
+	if(length(faction & arrived.faction))
 		return
 
 	triggermine(arrived)

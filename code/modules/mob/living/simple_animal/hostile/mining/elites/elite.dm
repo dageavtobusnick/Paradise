@@ -13,7 +13,7 @@
 	name = "elite"
 	desc = "Элитный монстр, найденный в одном из странных опухолей на Лазисе."
 	icon = 'icons/mob/lavaland/lavaland_elites.dmi'
-	faction = list("boss")
+	faction = list(FACTION_BOSS)
 	robust_searching = TRUE
 	ranged_ignores_vision = TRUE
 	ranged = TRUE
@@ -515,7 +515,7 @@ While using this makes the system rely on OnFire, it still gives options for tim
 		if(E.stat != DEAD || E.sentience_type != SENTIENCE_BOSS || !E.key)
 			user.visible_message(span_warning("Похоже, [E.declent_ru(ACCUSATIVE)] сейчас невозможно воскресить. Попробуйте позже."))
 			return
-		E.faction = list("\ref[user]")
+		E.faction = list(user.UID())
 		E.friends += user
 		E.reviver = user
 		E.revive()

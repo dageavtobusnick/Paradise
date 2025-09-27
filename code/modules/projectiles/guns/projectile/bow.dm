@@ -161,11 +161,9 @@
 	if(!ismob(H) || !LAZYLEN(nemesis_factions))
 		return
 
-	for(var/faction in H.faction)
-		if(faction in nemesis_factions)
-			nemesis_faction = TRUE
-			damage += faction_bonus_damage
-			break
+	if(length(H.faction & nemesis_factions))
+		nemesis_faction = TRUE
+		damage += faction_bonus_damage
 
 	. = ..()
 
