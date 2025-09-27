@@ -146,8 +146,7 @@
 
 /// Adds the debris element for projectile impacts.
 /atom/proc/add_debris_element()
-
-
+	return
 
 ///Step-towards method of determining whether one atom can see another. Similar to viewers()
 ///note: this is a line of sight algorithm, view() does not do any sort of raycasting and cannot be emulated by it accurately
@@ -170,4 +169,3 @@
 		current = get_step_towards(current, target_turf)
 		steps++
 	return TRUE
-
