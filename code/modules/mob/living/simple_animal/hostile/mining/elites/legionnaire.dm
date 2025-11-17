@@ -174,7 +174,7 @@
 	playsound(src,'sound/effects/bang.ogg', 200, TRUE)
 	var/throwtarget = get_edge_target_turf(src, move_dir)
 	for(var/mob/living/L in T.contents - src)
-		if(faction_check_mob(L))
+		if(faction_check_atom(L))
 			return
 		visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] топчет и пинает [L.declent_ru(ACCUSATIVE)]!"))
 		to_chat(L, span_userdanger("[capitalize(declent_ru(NOMINATIVE))] топчет вас и отбрасывает пинком!"))

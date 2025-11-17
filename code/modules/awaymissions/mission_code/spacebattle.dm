@@ -229,7 +229,7 @@
 	icon_state = "spawner_mine"
 	var/id = null
 	var/triggered = FALSE
-	var/faction = null
+	faction = null
 	var/safety_z_check = TRUE
 
 
@@ -250,7 +250,7 @@
 	if(!isliving(arrived))
 		return
 
-	if(faction && (faction in arrived.faction))
+	if(length(faction & arrived.faction))
 		return
 
 	arrived.spawn_alert(arrived)
@@ -420,7 +420,7 @@
 	icon_gib = "drone_dead"
 	health = 50
 	maxHealth = 50
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	projectiletype = /obj/projectile/beam/laser/syndrone
 
 /obj/projectile/beam/laser/syndrone

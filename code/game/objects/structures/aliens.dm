@@ -227,7 +227,7 @@
 	if(!isliving(user))
 		return FALSE
 	var/mob/living/mob = user
-	if(!isalien(user) && !("alien" in mob.faction))
+	if(!isalien(user) && !(FACTION_XENOMORPH in mob.faction))
 		return FALSE
 
 	var/mob/living/carbon/alien/alien = user

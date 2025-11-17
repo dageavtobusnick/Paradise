@@ -212,3 +212,14 @@
 #define STATUS_EFFECT_LEANING /datum/status_effect/leaning
 
 #define STATUS_EFFECT_TEMPERATURE /datum/status_effect/transient/temperature
+
+
+//Incapacitated status effect flags
+/// If the mob is normal incapacitated. Should never need this, just avoids issues if we ever overexpand this
+#define TRADITIONAL_INCAPACITATED (1<<0)
+/// If the incapacitated status effect is being caused by restraints (handcuffs)
+#define INCAPABLE_RESTRAINTS (1<<1)
+/// If the incapacitated status effect is being caused by stasis (stasis beds)
+#define INCAPABLE_STASIS (1<<2)
+/// If the incapacitated status effect is being caused by being agressively grabbed
+#define INCAPABLE_GRAB (1<<3)

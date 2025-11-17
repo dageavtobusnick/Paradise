@@ -32,7 +32,7 @@
 	var/atom/move_target
 	var/closest = INFINITY
 
-	for (var/dir in GLOB.cardinals)
+	for (var/dir in GLOB.cardinal)
 		var/turf/cardinal_turf = get_ranged_target_turf(target, dir, minimum_distance)
 		if (cardinal_turf.is_blocked_turf())
 			continue
@@ -52,7 +52,7 @@
 	var/atom/target = controller.blackboard[target_key]
 	if (QDELETED(target))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
-	if (!(get_dir(controller.pawn, target) in GLOB.cardinals))
+	if (!(get_dir(controller.pawn, target) in GLOB.cardinal))
 		target_nearest_cardinal(controller, target)
 		return AI_BEHAVIOR_INSTANT
 	var/distance_to_target = get_dist(controller.pawn, target)

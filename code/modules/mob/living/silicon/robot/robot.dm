@@ -157,7 +157,7 @@ GLOBAL_LIST_INIT(robot_verbs_default, list(
 	init(alien, connect_to_AI, ai_to_sync_to)
 
 	if(is_taipan(z) || syndie) //Чтобы турели не били собранных на тайпане или из емагнутого корпуса боргов
-		faction += "syndicate"
+		faction += FACTION_SYNDICATE
 
 	if(has_camera && !camera && !syndie)
 		camera = new(src, list("SS13", "Robots"), real_name)
@@ -475,7 +475,7 @@ GLOBAL_LIST_INIT(robot_verbs_default, list(
 
 	R.mmi = new /obj/item/mmi/robotic_brain/syndicate(M)
 	M.mind.transfer_to(R)
-	R.faction = list("syndicate")
+	R.faction = list(FACTION_SYNDICATE)
 	SEND_SOUND(R.mind.current, sound('sound/effects/contractstartup.ogg'))
 
 	robot_module_hat_offset(icon_state)
@@ -1856,7 +1856,7 @@ GLOBAL_LIST_INIT(robot_verbs_default, list(
 	emp_protection = TRUE // Это киборг отряда смерти, он не должен быть остановим обычной импульсной винтовкой.
 	allow_rename = FALSE
 	modtype = /obj/item/robot_module/deathsquad
-	faction = list("nanotrasen")
+	faction = list(FACTION_NANOTRASEN)
 	is_emaggable = FALSE
 	can_lock_cover = TRUE
 	default_cell_type = /obj/item/stock_parts/cell/infinite
@@ -1966,7 +1966,7 @@ GLOBAL_LIST_INIT(robot_verbs_default, list(
 	brute_mod = 0.5 // Пулевые орудия наносят на 50%+5ед меньше урона. Теперь полная обойма ружейных пуль не убьет киборга(но заставит потерять 2 модуля и броню)
 	burn_mod = 0.5 // Забавно, у киборга отряда смерти отражение лазерных снарядов, впрочем все ещё снижает урон от взрывов, и позволяет пережить более чем одну ракету из SRM8.
 	damage_protection = 20 // Reduce all incoming damage by this number. Very high in the case of /destroyer borgs, since it is an admin-only borg.
-	faction = list("nanotrasen")
+	faction = list(FACTION_NANOTRASEN)
 	is_emaggable = FALSE
 	can_lock_cover = TRUE
 	default_cell_type = /obj/item/stock_parts/cell/infinite/abductor

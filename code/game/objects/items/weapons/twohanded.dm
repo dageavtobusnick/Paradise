@@ -582,17 +582,21 @@
 	..()
 	if(!proximity)
 		return
-	user.faction |= "greytide(\ref[user])"
-	if(isliving(AM))
-		var/mob/living/L = AM
-		if(istype (L, /mob/living/simple_animal/hostile/illusion))
-			return
-		if(!L.stat && prob(50))
-			var/mob/living/simple_animal/hostile/illusion/M = new(user.loc)
-			M.faction = user.faction.Copy()
-			M.attack_sound = hitsound
-			M.Copy_Parent(user, 100, user.health/2.5, 12, 30)
-			M.GiveTarget(L)
+	user.faction |= "greytide([user.UID()])"
+	if(!isliving(AM))
+		return
+	var/mob/living/L = AM
+	if(istype (L, /mob/living/simple_animal/hostile/illusion))
+		return
+		
+	if(L.stat || prob(50))
+		return
+		
+	var/mob/living/simple_animal/hostile/illusion/M = new(user.loc)
+	M.faction = user.faction.Copy()
+	M.attack_sound = hitsound
+	M.Copy_Parent(user, 100, user.health/2.5, 12, 30)
+	M.GiveTarget(L)
 
 
 /obj/item/twohanded/spear/attackby(obj/item/I, mob/living/user, params)

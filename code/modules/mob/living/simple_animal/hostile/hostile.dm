@@ -241,7 +241,7 @@
 			continue
 		if(isliving(A))
 			var/mob/living/M = A
-			if(faction_check_mob(M) && attack_same || !faction_check_mob(M))
+			if(faction_check_atom(M) && attack_same || !faction_check_atom(M))
 				enemies |= M
 		else if(ismecha(A))
 			var/obj/mecha/M = A
@@ -255,7 +255,7 @@
 				enemies |= S.pilot
 
 	for(var/mob/living/simple_animal/hostile/H in around)
-		if(faction_check_mob(H) && !attack_same && !H.attack_same)
+		if(faction_check_atom(H) && !attack_same && !H.attack_same)
 			H.enemies |= enemies
 	return 0
 
@@ -334,7 +334,7 @@
 	if(search_objects < 2)
 		if(isliving(the_target))
 			var/mob/living/L = the_target
-			var/faction_check = faction_check_mob(L)
+			var/faction_check = faction_check_atom(L)
 			if(robust_searching)
 				if(faction_check && !attack_same)
 					return FALSE
@@ -535,7 +535,7 @@
 	do_alert_animation(src)
 	playsound(loc, 'sound/machines/chime.ogg', 50, TRUE, -1)
 	for(var/mob/living/simple_animal/hostile/M in oview(distance, targets_from))
-		if(faction_check_mob(M, TRUE))
+		if(faction_check_atom(M, TRUE))
 			if(M.AIStatus == AI_OFF)
 				return
 			else
@@ -547,7 +547,7 @@
 			for(var/mob/living/L in T)
 				if(L == src || L == A)
 					continue
-				if(faction_check_mob(L) && !attack_same)
+				if(faction_check_atom(L) && !attack_same)
 					return TRUE
 
 /mob/living/simple_animal/hostile/proc/OpenFire(atom/A)

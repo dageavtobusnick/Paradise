@@ -684,7 +684,7 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 				P.universal_speak = TRUE
 				P.universal_understand = TRUE
 				P.set_can_collar(TRUE)
-				P.faction = list("neutral")
+				P.faction = list(FACTION_NEUTRAL)
 				var/obj/item/clothing/accessory/petcollar/C = new
 				P.add_collar(C)
 				var/obj/item/card/id/I = H.wear_id

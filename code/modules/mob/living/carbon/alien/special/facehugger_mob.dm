@@ -44,7 +44,7 @@
 	stat_attack = UNCONSCIOUS // Necessary for them to attack (zombify) dead humans
 	speed = -0.5
 	holder_type = /obj/item/clothing/mask/facehugger
-	faction = list("alien")
+	faction = list(FACTION_XENOMORPH)
 	use_pathfinding = TRUE
 	can_strip = FALSE
 	butcher_results = list()
@@ -131,7 +131,7 @@
 			for(var/mob/living/L in T)
 				if(L == src || L == A)
 					continue
-				if(faction_check_mob(L) && !attack_same)
+				if(faction_check_atom(L) && !attack_same)
 					return
 	visible_message(span_danger("<b>[capitalize(declent_ru(NOMINATIVE))]</b> [ranged_message] на [A]!"))
 	throw_at(A, jumpdistance, jumpspeed, spin = FALSE, diagonals_first = TRUE, dodgeable = FALSE)

@@ -493,7 +493,7 @@
 		smoke.set_up(amount = 5, location = target.loc)
 		smoke.start()
 
-	C.faction |= "\ref[user]"
+	C.faction |= user.UID()
 	C.key = target.key
 	if(user && iscultist(user) || cult_override)
 		SSticker.mode.add_cultist(C.mind)
@@ -516,7 +516,7 @@
 	update_appearance(UPDATE_ICON_STATE|UPDATE_NAME)
 	log_game("[S.key] has become [S.name] with [purified ? "holy" : "corrupted"] essence.")
 	if(user)
-		S.faction |= "\ref[user]" //Add the master as a faction, allowing inter-mob cooperation
+		S.faction |= user.UID() //Add the master as a faction, allowing inter-mob cooperation
 
 		if(S.mind)
 			if(iswizard(user))

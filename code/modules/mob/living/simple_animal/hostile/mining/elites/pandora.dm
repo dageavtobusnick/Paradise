@@ -133,7 +133,7 @@
 	ranged_cooldown = world.time + cooldown_time * 2.5 // this shreads people incredibly effectivly at low hp, so needs higher cooldown than other attacks
 	var/active_chasers = 0
 	for(var/mob/living/M in orange(7, src))
-		if(M.faction_check_mob(src))
+		if(M.faction_check_atom(src))
 			continue
 		if(M.stat == DEAD)
 			continue

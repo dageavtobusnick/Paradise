@@ -25,7 +25,7 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 	stop_automated_movement_when_pulled = 0
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	faction = list("slime", "neutral")
+	faction = list(FACTION_SLIME, FACTION_NEUTRAL)
 	reagents = new()
 	holder_type = /obj/item/holder/snail
 
@@ -64,7 +64,7 @@
 /mob/living/simple_animal/snail/lube
 	desc = "Маленькая космо-улиточка со своим космо-домиком. Прочная, тихая и медленная. И очень склизкая."
 	gold_core_spawnable = HOSTILE_SPAWN
-	faction = list("slime", "hostile")
+	faction = list(FACTION_SLIME, FACTION_HOSTILE)
 
 /mob/living/simple_animal/snail/lube/make_wet_floor(atom/oldLoc)
 	if(oldLoc != src.loc)

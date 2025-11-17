@@ -10,7 +10,7 @@
 	icobase = 'icons/mob/human_races/r_shadow.dmi'
 	deform = 'icons/mob/human_races/r_shadow.dmi'
 	dangerous_existence = TRUE
-	inherent_factions = list("faithless")
+	inherent_factions = list(FACTION_FAITHLESS)
 
 	unarmed_type = /datum/unarmed_attack/claws
 

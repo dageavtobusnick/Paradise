@@ -14,7 +14,7 @@
 	emote_hear = list("лает", "гавкает", "тявкает", "пыхтит")
 	emote_see = list("трясёт головой", "пытается поймать свой хвост", "дрожит")
 	tts_seed = "Stetmann"
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	maxHealth = 50
 	health = 50
 	melee_damage_type = STAMINA
@@ -504,7 +504,7 @@
 	icon_state = "narsian"
 	icon_living = "narsian"
 	icon_dead = "narsian_dead"
-	faction = list("neutral", "cult")
+	faction = list(FACTION_NEUTRAL, FACTION_CULT)
 	bark_emote = list("рыч%(ит,ат)%.", "зловеще ла%(ет,ют)%.")
 	gold_core_spawnable = NO_SPAWN
 	nofur = TRUE
@@ -548,7 +548,7 @@
 	icon_state = "clik"
 	icon_living = "clik"
 	icon_dead = "clik_dead"
-	faction = list("neutral", "clockwork_cult")
+	faction = list(FACTION_NEUTRAL, FACTION_CLOCKWORK_CULT)
 	gold_core_spawnable = NO_SPAWN
 	nofur = TRUE
 	unique_pet = TRUE

@@ -59,3 +59,7 @@
 	if(!.)
 		. = B[STAT_ENTRY_COUNT] - A[STAT_ENTRY_COUNT]
 
+
+/// Orders mobs by health
+/proc/cmp_mob_health(mob/living/mob_a, mob/living/mob_b)
+	return mob_b.health - mob_a.health

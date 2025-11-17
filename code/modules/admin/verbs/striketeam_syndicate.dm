@@ -80,7 +80,7 @@ GLOBAL_VAR_INIT(sent_syndicate_strike_team, 0)
 			new_syndicate_commando.mind.store_memory("<b>Миссия:</b> <span class='warning'>[input]</span>.")
 
 			to_chat(new_syndicate_commando, span_notice("Вы [is_leader ? "<b>Лидер</b>" : "боец"] Элитного Отряда в подчинении Синдиката. \nВаша миссия: <span class='userdanger'>[input]</span>"))
-			new_syndicate_commando.faction += "syndicate"
+			new_syndicate_commando.faction += FACTION_SYNDICATE
 			var/datum/atom_hud/antag/opshud = GLOB.huds[ANTAG_HUD_OPS]
 			opshud.join_hud(new_syndicate_commando.mind.current)
 			set_antag_hud(new_syndicate_commando.mind.current, "hudoperative")

@@ -14,7 +14,7 @@
 	see_invisible = SEE_INVISIBLE_HIDDEN_RUNES
 	attack_sound = 'sound/weapons/punch1.ogg'
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	faction = list("cult")
+	faction = list(FACTION_CULT)
 	pressure_resistance = 100
 	universal_speak = TRUE
 	AIStatus = AI_OFF //normal constructs don't have AI
@@ -162,7 +162,7 @@
 
 /mob/living/simple_animal/hostile/construct/armoured/holy
 	cult_icon_changing = FALSE
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	icon_state = "holy_juggernaut"
 	icon_living = "holy_juggernaut"
 	construct_spells = list(/obj/effect/proc_holder/spell/night_vision, /obj/effect/proc_holder/spell/aoe/conjure/build/lesserforcewall/holy)
@@ -200,7 +200,7 @@
 
 /mob/living/simple_animal/hostile/construct/wraith/holy
 	cult_icon_changing = FALSE
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	icon_state = "holy_shifter"
 	icon_living = "holy_shifter"
 	holy = TRUE
@@ -289,7 +289,7 @@
 
 /mob/living/simple_animal/hostile/construct/builder/holy
 	cult_icon_changing = FALSE
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	icon_state = "holy_artificer"
 	icon_living = "holy_artificer"
 	holy = TRUE

@@ -372,8 +372,7 @@
 		target.add_traits(inherent_traits, SPECIES_TRAIT)
 
 	if(inherent_factions)
-		for(var/i in inherent_factions)
-			target.faction += i //Using +=/-= for this in case you also gain the faction from a different source.
+		target.faction += inherent_factions //Using +=/-= for this in case you also gain the faction from a different source.
 
 	for(var/obj/item/item as anything in target.get_equipped_items())
 		if(QDELETED(item) || item.loc != target)	// was deleted or dropped already
@@ -443,8 +442,7 @@
 	human.hud_used?.update_locked_slots()
 
 	if(inherent_factions)
-		for(var/i in inherent_factions)
-			human.faction -= i
+		human.faction -= inherent_factions
 
 	qdel(human?.GetComponent(/datum/component/muscles))
 

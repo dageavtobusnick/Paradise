@@ -987,7 +987,7 @@
 	resistance_flags = NONE
 	hide_tail_by_species = null
 	species_restricted = list("exclude", SPECIES_WRYN, "lesser form")
-	faction_restricted = list("ashwalker")
+	faction_restricted = list(FACTION_ASHWALKER)
 	undyeable = TRUE
 	var/obj/item/tank/jetpack/suit/jetpack = null
 	var/jetpack_upgradable = FALSE

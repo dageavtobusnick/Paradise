@@ -83,7 +83,7 @@
 		wizard_mind.special_role = null
 		add_conversion_logs(wizard_mind.current, "De-wizarded")
 		wizard_mind.current.spellremove(wizard_mind.current)
-		wizard_mind.current.faction = list("Station")
+		wizard_mind.current.faction = list(FACTION_STATION)
 		if(issilicon(wizard_mind.current))
 			to_chat(wizard_mind.current, span_userdanger("You have been turned into a robot! You can feel your magical powers fading away..."))
 		else
@@ -94,7 +94,7 @@
 		wizard_mind.special_role = null
 		add_conversion_logs(wizard_mind.current, "De-apprentice-wizarded")
 		wizard_mind.current.spellremove(wizard_mind.current)
-		wizard_mind.current.faction = list("Station")
+		wizard_mind.current.faction = list(FACTION_STATION)
 		if(issilicon(wizard_mind.current))
 			to_chat(wizard_mind.current, span_userdanger("You have been turned into a robot! You can feel your magical powers fading away..."))
 		else
@@ -196,7 +196,7 @@
 	spellbook.owner = wizard_mob
 	wizard_mob.equip_to_slot_or_del(spellbook, ITEM_SLOT_HAND_LEFT)
 
-	wizard_mob.faction = list("wizard")
+	wizard_mob.faction = list(FACTION_WIZARD)
 
 
 
@@ -246,7 +246,7 @@
 	apprentice_book.owner = wizard_mob
 	wizard_mob.equip_to_slot_or_del(apprentice_book, ITEM_SLOT_HAND_LEFT)
 
-	wizard_mob.faction = list("wizard")
+	wizard_mob.faction = list(FACTION_WIZARD)
 
 
 

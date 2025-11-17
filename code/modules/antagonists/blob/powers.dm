@@ -272,7 +272,7 @@
 	for(var/mob/living/player in T)
 		if(!player.can_blob_attack())
 			continue
-		if(ROLE_BLOB in player.faction) //no friendly/dead fire
+		if(FACTION_BLOB in player.faction) //no friendly/dead fire
 			continue
 		if(player.stat != DEAD)
 			attack_success = TRUE

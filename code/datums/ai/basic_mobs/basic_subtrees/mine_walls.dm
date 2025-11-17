@@ -54,7 +54,7 @@
 	if(!ISDIAGONALDIR(direction_to_turf))
 		return TRUE
 	var/list/directions_to_check = list()
-	for(var/direction_check in GLOB.cardinals)
+	for(var/direction_check in GLOB.cardinal)
 		if(direction_check & direction_to_turf)
 			directions_to_check += direction_check
 

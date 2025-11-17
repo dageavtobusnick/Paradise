@@ -304,7 +304,7 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 	luminosity = 4
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	del_on_death = 1
 	unsuitable_atmos_damage = 0
 	environment_smash = 0

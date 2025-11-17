@@ -1545,6 +1545,11 @@
 #define COMSIG_SUPPLYPOD_CLIMB_CHECK "climb_check"
 	#define COMPONENT_CLIMB (1<<0)
 
-
 /// Called after placing item on table. (mob/user, obj/structure/table)
 #define COMSIG_ITEM_PLACED_ON_TABLE "item_placed_on_table"
+
+///from  [/proc/smooth_icon]: ()
+#define COMSIG_ATOM_SMOOTHED_ICON "atom_smoothed_icon"
+
+/// from /mob/update_incapacitated(): (old_incap, new_incap)
+#define COMSIG_MOB_INCAPACITATE_CHANGED "mob_incapacitated"

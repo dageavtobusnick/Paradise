@@ -136,7 +136,7 @@
 	force = 30
 	block_chance = 30
 	var/faction_bonus_force = 30
-	var/nemesis_factions = list("mining", "boss")
+	var/nemesis_factions = MINING_FACTIONS
 
 /obj/item/melee/katana/basalt/get_ru_names()
 	return list(
@@ -151,12 +151,9 @@
 
 /obj/item/melee/katana/basalt/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	var/nemesis_faction = FALSE
-	if(LAZYLEN(nemesis_factions))
-		for(var/faction in target.faction)
-			if(faction in nemesis_factions)
-				nemesis_faction = TRUE
-				force += faction_bonus_force
-				break
+	if(LAZYLEN(nemesis_factions & target.faction))
+		nemesis_faction = TRUE
+		force += faction_bonus_force
 	. = ..()
 	if(nemesis_faction)
 		force -= faction_bonus_force

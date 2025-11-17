@@ -265,7 +265,7 @@
 		give_blood(10)
 
 /obj/item/soulscythe/attack_hand(mob/user, list/modifiers)
-	if(soul.ckey && !soul.faction_check_mob(user))
+	if(soul.ckey && !soul.faction_check_atom(user))
 		to_chat(user, span_warning("Ты не можешь поднять [src.declent_ru(ACCUSATIVE)]!"))
 		return
 	return ..()
@@ -308,7 +308,7 @@
 
 	soul.possess_by_player(ghost.ckey)
 	LAZYOR(soul.languages, master.languages) //Make sure the sword can understand and communicate with the master.
-	soul.faction = list("\ref[master]")
+	soul.faction = list(master.UID())
 	soul.default_language = master.get_default_language()
 	balloon_alert(master, "коса светится")
 	add_overlay("soulscythe_gem")
@@ -340,7 +340,7 @@
 /obj/item/soulscythe/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(isliving(hit_atom))
 		var/mob/living/mob = hit_atom
-		if(soul.faction_check_mob(mob))
+		if(soul.faction_check_atom(mob))
 			return
 	. = ..()
 	if(!charging)
@@ -415,7 +415,7 @@
 
 	if(isliving(attacked_atom))
 		var/mob/living/mob = attacked_atom
-		if(soul.faction_check_mob(mob))
+		if(soul.faction_check_atom(mob))
 			return
 
 	if(get_dist(source, attacked_atom) > 1)
@@ -435,7 +435,7 @@
 		to_chat(source, span_notice("Немного подумав, Вы решаете не трогать [attacked_atom.declent_ru(ACCUSATIVE)]."))
 		return
 
-	if(faction_check(list("[attacked_atom.UID()]"), soul.faction))
+	if(attacked_atom.UID() in soul.faction)
 		return
 
 	INVOKE_ASYNC(src, PROC_REF(charge_target), attacked_atom)
@@ -565,7 +565,7 @@
 /obj/projectile/soulscythe/on_hit(atom/target, blocked = 0, pierce_hit)
 	if(isliving(target))
 		var/mob/living/as_living = target
-		if(firer.faction_check_mob(as_living))
+		if(firer.faction_check_atom(as_living))
 			damage *= 0
 		if(faction_check(as_living.faction, MINING_FACTIONS))
 			damage *= 2

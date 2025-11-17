@@ -23,7 +23,7 @@
 	depotarea = get_area(src)
 
 /obj/machinery/computer/syndicate_depot/attack_ai(mob/user)
-	if(length(req_access) && !("syndicate" in user.faction))
+	if(length(req_access) && !(FACTION_SYNDICATE in user.faction))
 		to_chat(user, span_warning("A firewall blocks your access."))
 		return TRUE
 	return ..()
@@ -343,7 +343,7 @@
 	if(depotarea.something_looted)
 		to_chat(user, span_warning("Visitor sign-in is not possible after supplies have been taken from a locker in the depot."))
 		return
-	if("syndicate" in user.faction)
+	if(FACTION_SYNDICATE in user.faction)
 		to_chat(user, span_warning("You are already recognized as a member of the Syndicate, and do not need to sign in."))
 		return
 	if(!user.mind || user.mind.special_role != SPECIAL_ROLE_TRAITOR)
@@ -358,7 +358,7 @@
 	playsound(user, sound_yes, 50, FALSE)
 
 /obj/machinery/computer/syndicate_depot/syndiecomms/proc/grant_syndie_faction(mob/user)
-	user.faction += "syndicate"
+	user.faction += FACTION_SYNDICATE
 	depotarea.alert_log += "[user.name] signed in as a visitor."
 	depotarea.list_add(user, depotarea.peaceful_list)
 	to_chat(user, {"<br><span class='userdanger'>Welcome, Agent.</span>

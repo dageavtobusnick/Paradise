@@ -167,7 +167,7 @@
 				continue
 			if(depotarea.list_includes(body, depotarea.dead_list))
 				continue
-			if(faction_check_mob(body))
+			if(faction_check_atom(body))
 				continue
 			say("Target [body]... terminated.")
 			depotarea.list_add(body, depotarea.dead_list)
@@ -206,7 +206,7 @@
 	if(.)
 		return TRUE
 	if(isliving(mover))
-		return faction_check_mob(mover)
+		return faction_check_atom(mover)
 
 
 /mob/living/simple_animal/hostile/syndicate/melee/autogib/depot/officer

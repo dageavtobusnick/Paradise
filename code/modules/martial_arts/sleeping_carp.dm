@@ -31,7 +31,7 @@
 
 /datum/martial_art/the_sleeping_carp/teach(mob/living/carbon/human/H, make_temporary)
 	. = ..()
-	H.faction |= "carp"// :D
+	H.faction |= FACTION_CARP// :D
 	to_chat(H, span_sciradio("Ты выучил древнюю технику Спящего Карпа! \
 					Твои навыки рукопашного боя стали намного эффективнее, также ты теперь способен отражать пули и лазеры до тех пор пока хотя бы одна твоя рука свободна. \
 					Однако, ты теперь не можешь пользоваться стрелковым оружием. \
@@ -42,7 +42,7 @@
 
 /datum/martial_art/the_sleeping_carp/remove(mob/living/carbon/human/H)
 	. = ..()
-	H.faction -= "carp"// :C
+	H.faction -= FACTION_CARP// :C
 
 /datum/martial_art/the_sleeping_carp/try_deflect(mob/living/carbon/human/user)
 	if(user.is_hands_free())

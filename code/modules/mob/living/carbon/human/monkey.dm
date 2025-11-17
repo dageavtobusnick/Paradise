@@ -3,7 +3,7 @@
 	var/master_commander = null
 	var/sentience_type = SENTIENCE_ORGANIC
 	ai_controller = /datum/ai_controller/monkey
-	faction = list("neutral", "monkey")
+	faction = list(FACTION_NEUTRAL, FACTION_MONKEY)
 
 /mob/living/carbon/human/lesser/setup_dna(datum/species/new_species, monkeybasic = TRUE)
 	. = ..()

@@ -1,5 +1,5 @@
 /mob/living/silicon/robot/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/ninja_suit, mob/living/carbon/human/ninja, obj/item/clothing/gloves/space_ninja/ninja_gloves)
-	if(!ninja_suit || !ninja || !ninja_gloves || (ROLE_NINJA in faction) || drain_act_protected || !mind)
+	if(!ninja_suit || !ninja || !ninja_gloves || (FACTION_NINJA in faction) || drain_act_protected || !mind)
 		return INVALID_DRAIN
 	var/datum/mind/ninja_mind = ninja.mind
 	if(!ninja_mind)

@@ -185,7 +185,7 @@
 	speak = list("РЫЫЫ!","Рррр...","ГРРР!!!","РААА!!")
 	speak_chance = 10
 	speak_emote = list("рычит", "ревёт")
-	faction = list("hostile", "syndicate", "winter")
+	faction = list(FACTION_HOSTILE, FACTION_SYNDICATE, FACTION_WINTER)
 	icon = 'icons/mob/simple_human.dmi'
 	icon_state = "monkey_shaftminer"
 	maxHealth = 50

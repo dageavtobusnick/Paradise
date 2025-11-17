@@ -790,7 +790,7 @@ Difficulty: Hard
 		return
 	for(var/mob/living/L in T.contents - hit_things) //find and damage mobs...
 		hit_things += L
-		if((friendly_fire_check && caster && L.faction_check_mob(caster)) || L.stat == DEAD)
+		if((friendly_fire_check && caster && L.faction_check_atom(caster)) || L.stat == DEAD)
 			continue
 		if(L.client)
 			flash_color(L.client, "#660099", 1)
@@ -814,7 +814,7 @@ Difficulty: Hard
 	for(var/obj/mecha/M in T.contents - hit_things) //also damage mechs.
 		hit_things += M
 		if(M.occupant)
-			if(friendly_fire_check && caster && caster.faction_check_mob(M.occupant))
+			if(friendly_fire_check && caster && caster.faction_check_atom(M.occupant))
 				continue
 			to_chat(M.occupant, span_userdanger("Ваш  [M.declent_ru(NOMINATIVE)] поражён [declent_ru(ACCUSATIVE)]!"))
 		playsound(M,'sound/weapons/sear.ogg', 50, TRUE, -4)

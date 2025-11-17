@@ -19,7 +19,7 @@
 	tts_seed = null
 	friendly = "утыкается в"
 	bubble_icon = "machine"
-	faction = list("neutral", "silicon")
+	faction = list(FACTION_NEUTRAL, FACTION_SILICON)
 
 	light_system = MOVABLE_LIGHT
 
@@ -1261,7 +1261,7 @@ Pass the desired type path itself, declaring a temporary var beforehand is not r
 
 
 /mob/living/simple_animal/bot/sentience_act()
-	faction -= "silicon"
+	faction -= FACTION_SILICON
 
 
 /mob/living/simple_animal/bot/verb/show_laws()

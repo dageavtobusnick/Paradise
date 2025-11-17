@@ -316,7 +316,7 @@ multiple modular subtrees with behaviors
 
 /datum/ai_controller/proc/setup_able_to_run()
 	// paused_until is handled by PauseAi() manually
-	RegisterSignals(pawn, list(SIGNAL_ADDTRAIT(TRAIT_AI_PAUSED), SIGNAL_REMOVETRAIT(TRAIT_AI_PAUSED)), PROC_REF(update_able_to_run))
+	RegisterSignal(pawn, list(SIGNAL_ADDTRAIT(TRAIT_AI_PAUSED), SIGNAL_REMOVETRAIT(TRAIT_AI_PAUSED)), PROC_REF(update_able_to_run))
 
 /datum/ai_controller/proc/clear_able_to_run()
 	UnregisterSignal(pawn, list(SIGNAL_ADDTRAIT(TRAIT_AI_PAUSED), SIGNAL_REMOVETRAIT(TRAIT_AI_PAUSED)))
@@ -645,9 +645,9 @@ multiple modular subtrees with behaviors
 				Please ensure that we are not doing this by adding handling where necessary."); \
 			return; \
 		}; \
-		else if(!HAS_TRAIT_FROM(_tracked_datum, TRAIT_AI_TRACKING, "[REF(src)]_[key]")) { \
+		else if(!HAS_TRAIT_FROM(_tracked_datum, TRAIT_AI_TRACKING, "[UID()]_[key]")) { \
 			RegisterSignal(_tracked_datum, COMSIG_QDELETING, PROC_REF(sig_remove_from_blackboard), override = TRUE); \
-			ADD_TRAIT(_tracked_datum, TRAIT_AI_TRACKING, "[REF(src)]_[key]"); \
+			ADD_TRAIT(_tracked_datum, TRAIT_AI_TRACKING, "[UID()]_[key]"); \
 		}; \
 	}; \
 } while(FALSE)
@@ -661,7 +661,7 @@ multiple modular subtrees with behaviors
 #define CLEAR_AI_DATUM_TARGET(tracked_datum, key) do { \
 	if(isdatum(tracked_datum)) { \
 		var/datum/_tracked_datum = tracked_datum; \
-		REMOVE_TRAIT(_tracked_datum, TRAIT_AI_TRACKING, "[REF(src)]_[key]"); \
+		REMOVE_TRAIT(_tracked_datum, TRAIT_AI_TRACKING, "[UID()]_[key]"); \
 		if(!HAS_TRAIT(_tracked_datum, TRAIT_AI_TRACKING)) { \
 			UnregisterSignal(_tracked_datum, COMSIG_QDELETING); \
 		}; \

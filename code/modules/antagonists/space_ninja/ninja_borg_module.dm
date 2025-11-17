@@ -4,7 +4,7 @@
 /mob/living/silicon/robot/syndicate/saboteur/ninja
 	base_icon = "ninja"
 	icon_state = "ninja"
-	faction = list(ROLE_NINJA)
+	faction = list(FACTION_NINJA)
 	designation = "Spider Clan"
 	modtype = /obj/item/robot_module/ninja
 	req_access = list(ACCESS_SYNDICATE)

@@ -54,7 +54,7 @@
 				upriser.shoot_inventory = FALSE
 				upriser.aggressive = FALSE
 				var/mob/living/simple_animal/hostile/mimic/copy/vendor/M = new(upriser.loc, upriser, null)
-				M.faction = list("profit")
+				M.faction = list(FACTION_PROFIT)
 				M.speak = rampant_speeches.Copy()
 				M.speak_chance = 15
 			else

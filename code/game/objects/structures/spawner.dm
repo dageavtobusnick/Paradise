@@ -12,7 +12,7 @@
 	var/spawn_time = 300 //30 seconds default
 	var/mob_types = list(/mob/living/simple_animal/hostile/carp)
 	var/spawn_text = "emerges from"
-	faction = list("hostile")
+	faction = list(FACTION_HOSTILE)
 	var/spawner_type = /datum/component/spawner
 	/// Is this spawner taggable with something?
 	var/scanner_taggable = FALSE
@@ -82,7 +82,7 @@
 	icon_state = "syndbeacon"
 	spawn_text = "warps in from"
 	mob_types = list(/mob/living/simple_animal/hostile/syndicate/ranged)
-	faction = list(ROLE_SYNDICATE)
+	faction = list(FACTION_SYNDICATE)
 	mob_gps_id = "SYN" // syndicate
 	spawner_gps_id = "Hostile Warp Beacon"
 
@@ -95,7 +95,7 @@
 	spawn_time = 150
 	mob_types = list(/mob/living/simple_animal/hostile/skeleton)
 	spawn_text = "climbs out of"
-	faction = list("undead")
+	faction = list(FACTION_UNDEAD)
 	mob_gps_id = "SKL" // skeletons
 	spawner_gps_id = "Bone Pit"
 
@@ -109,7 +109,7 @@
 	spawn_time = 150
 	mob_types = list(/mob/living/simple_animal/hostile/retaliate/clown)
 	spawn_text = "climbs out of"
-	faction = list("clown")
+	faction = list(FACTION_CLOWN)
 	spawner_gps_id = "Clown Planet Distortion"
 
 /obj/structure/spawner/mining
@@ -120,7 +120,7 @@
 	icon = 'icons/mob/nest.dmi'
 	spawn_text = "crawls out of"
 	mob_types = list(/mob/living/simple_animal/hostile/asteroid/goldgrub, /mob/living/simple_animal/hostile/asteroid/goliath, /mob/living/simple_animal/hostile/asteroid/hivelord, /mob/living/simple_animal/hostile/asteroid/basilisk)
-	faction = list("mining")
+	faction = list(FACTION_MINING)
 
 /obj/structure/spawner/mining/goldgrub
 	name = "goldgrub den"
@@ -156,5 +156,5 @@
 	spawn_time = 600
 	mob_types = list(/mob/living/simple_animal/hostile/headcrab, /mob/living/simple_animal/hostile/headcrab/fast, /mob/living/simple_animal/hostile/headcrab/poison)
 	spawn_text = "crawls out of"
-	faction = list("hostile")
+	faction = list(FACTION_HOSTILE)
 	mob_gps_id = "HC"

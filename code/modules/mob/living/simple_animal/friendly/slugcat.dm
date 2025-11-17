@@ -22,7 +22,7 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 	footstep_type = FOOTSTEP_MOB_SLIME
 	tts_seed = "Narrator"
-	faction = list("slime","neutral")
+	faction = list(FACTION_SLIME, FACTION_NEUTRAL)
 	//holder_type = /obj/item/holder/cat2 //soon
 
 	//Шляпы для слизнекота!
@@ -62,7 +62,7 @@
 	icon_dead = "slugcat_hunter_dead"
 	icon_resting = "slugcat_hunter_rest"
 	is_reduce_damage = FALSE
-	faction = list("slime","neutral","hostile")
+	faction = list(FACTION_SLIME, FACTION_NEUTRAL, FACTION_HOSTILE)
 	gold_core_spawnable = HOSTILE_SPAWN
 	health = 150
 	maxHealth = 150

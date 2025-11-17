@@ -858,7 +858,6 @@
 	icon_state = "monkeycube"
 	bitesize = 12
 	filling_color = "#ADAC7F"
-	var/faction
 	var/datum/species/monkey_type = /datum/species/monkey
 	list_reagents = list("nutriment" = 2)
 	tastes = list("the jungle" = 1, "bananas" = 1)
@@ -899,7 +898,7 @@
 		qdel(src)
 
 /obj/item/reagent_containers/food/snacks/monkeycube/syndicate
-	faction = list("neutral", "syndicate")
+	faction = list(FACTION_NEUTRAL, FACTION_SYNDICATE)
 
 /obj/item/reagent_containers/food/snacks/monkeycube/farwacube
 	name = "farwa cube"

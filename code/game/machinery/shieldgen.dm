@@ -635,14 +635,14 @@
 		return TRUE
 	if(isliving(mover))
 		var/mob/living/living_mover = mover
-		if("syndicate" in living_mover.faction)
+		if(FACTION_SYNDICATE in living_mover.faction)
 			return TRUE
 	else if(isprojectile(mover))
 		return FALSE
 
 
 /obj/machinery/shieldwall/syndicate/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
-	if(pass_info.faction && ("syndicate" in pass_info.faction))
+	if(pass_info.faction && (FACTION_SYNDICATE in pass_info.faction))
 		return TRUE
 	return ..()
 

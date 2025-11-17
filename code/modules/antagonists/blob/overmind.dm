@@ -14,7 +14,7 @@ GLOBAL_LIST_EMPTY(overminds)
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
 	see_invisible = SEE_INVISIBLE_LIVING
 	pass_flags = PASSBLOB
-	faction = list(ROLE_BLOB)
+	faction = list(FACTION_BLOB)
 	mouse_opacity = MOUSE_OPACITY_ICON
 	move_on_shuttle = TRUE
 	layer = FLY_LAYER

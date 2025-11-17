@@ -107,7 +107,7 @@
 	icon_living = "Syndifox"
 	icon_dead = "Syndifox_dead"
 	icon_resting = "Syndifox_rest"
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	unique_pet = TRUE
 	gold_core_spawnable = NO_SPAWN
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
@@ -145,7 +145,7 @@
 	icon_living = "alisa"
 	icon_dead = "alisa_dead"
 	icon_resting = "alisa_rest"
-	faction = list("nanotrasen")
+	faction = list(FACTION_NANOTRASEN)
 	unique_pet = TRUE
 	gold_core_spawnable = NO_SPAWN
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)

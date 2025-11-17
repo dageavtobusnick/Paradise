@@ -13,7 +13,7 @@
 	arrest_type = TRUE
 	auto_patrol = TRUE
 	emagged = 2
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	shoot_sound = 'sound/weapons/wave.ogg'
 	anchored = TRUE
 	window_id = "syndiebot"
@@ -145,7 +145,7 @@
 	for(var/mob/M in view(7, src))
 		if(M.invisibility > see_invisible)
 			continue
-		if("syndicate" in M.faction)
+		if(FACTION_SYNDICATE in M.faction)
 			continue
 		if(M.stat == DEAD)
 			continue
@@ -162,7 +162,7 @@
 			continue
 		if(!P.pilot)
 			continue
-		if("syndicate" in P.pilot.faction)
+		if(FACTION_SYNDICATE in P.pilot.faction)
 			continue
 		if(P.pilot.stat == DEAD)
 			continue

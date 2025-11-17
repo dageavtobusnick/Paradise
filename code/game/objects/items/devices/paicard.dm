@@ -12,7 +12,7 @@
 	var/obj/item/radio/headset/radio
 	var/looking_for_personality = 0
 	var/mob/living/silicon/pai/pai
-	faction = list("neutral") // The factions the pAI will inherit from the card
+	faction = list(FACTION_NEUTRAL) // The factions the pAI will inherit from the card
 	resistance_flags = FIRE_PROOF | ACID_PROOF | INDESTRUCTIBLE
 	COOLDOWN_DECLARE(ping_cooldown)
 	/// for Syndicate pAI type
@@ -34,7 +34,7 @@
 
 /obj/item/paicard/syndicate // Only seems that it is syndicard
 	name = "syndicate personal AI device"
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	is_syndicate_type = TRUE
 	upgrade = new()
 

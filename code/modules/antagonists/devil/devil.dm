@@ -233,7 +233,7 @@
 
 	update_hud()
 	info.banish.link_banish(owner.current)
-	LAZYADD(owner.current.faction, "hell")
+	LAZYADD(owner.current.faction, FACTION_HELL)
 	ADD_TRAIT(owner.current, TRAIT_NO_DEATH, UNIQUE_TRAIT_SOURCE(src))
 
 /datum/antagonist/devil/proc/on_say_your_name(mob/living/target, mob/living/sender)
@@ -272,7 +272,7 @@
 	info.obligation?.remove_obligation()
 	info.ban?.remove_ban()
 
-	LAZYREMOVE(owner.current.faction, "hell")
+	LAZYREMOVE(owner.current.faction, FACTION_HELL)
 	REMOVE_TRAIT(owner.current, TRAIT_NO_DEATH, UNIQUE_TRAIT_SOURCE(src))
 
 /datum/antagonist/devil/ui_interact(mob/user, datum/tgui/ui)

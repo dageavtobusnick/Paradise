@@ -253,7 +253,7 @@
 
 
 //Add a new worm segment
-/mob/living/simple_animal/hostile/space_worm/proc/Attach(mob/living/simple_animal/hostile/spaceWorm/toAttach)
+/mob/living/simple_animal/hostile/space_worm/proc/Attach(mob/living/simple_animal/hostile/space_worm/toAttach)
 	if(!toAttach)
 		return
 

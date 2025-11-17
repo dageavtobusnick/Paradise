@@ -170,7 +170,7 @@
 /datum/species/unathi/ashwalker
 	name = SPECIES_ASHWALKER_BASIC
 	name_plural = "Ash Walkers"
-	inherent_factions = list("ashwalker")
+	inherent_factions = list(FACTION_ASHWALKER)
 
 	blurb = "Пеплоходцы — рептильные гуманоиды, по-видимому, родственные унати. Но кажутся значительно менее развитыми. \
 	Они бродят по пустошам Лазиса, поклоняются мёртвому городу и ловят ничего не подозревающих шахтёров."

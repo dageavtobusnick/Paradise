@@ -101,7 +101,7 @@
 	if(isliving(the_target))
 		var/mob/living/L = the_target
 
-		if(faction_check_mob(L) && !attack_same)
+		if(faction_check_atom(L) && !attack_same)
 			return FALSE
 		if(L.stat > stat_attack || L.stat != stat_attack && stat_exclusive)
 			return FALSE
@@ -195,7 +195,7 @@
 	gold_core_spawnable = NO_SPAWN
 	var/growth = 0
 
-/mob/living/simple_animal/hostile/asteroid/gutlunch/grublunch/get_ru_names()	
+/mob/living/simple_animal/hostile/asteroid/gutlunch/grublunch/get_ru_names()
 	return list(
 		NOMINATIVE = "червожор",
 		GENITIVE = "червожора",

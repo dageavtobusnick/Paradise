@@ -78,7 +78,7 @@
 
 	RegisterSignal(antag, COMSIG_LIVING_LIFE, PROC_REF(rift_checks))
 	RegisterSignal(antag, COMSIG_LIVING_DEATH, PROC_REF(destroy_rifts))
-	antag.faction |= "carp"
+	antag.faction |= FACTION_CARP
 	// Give the ability over if we have one
 	if(!rift_ability)
 		rift_ability = new()
@@ -92,7 +92,7 @@
 
 	UnregisterSignal(antag, COMSIG_LIVING_LIFE)
 	UnregisterSignal(antag, COMSIG_LIVING_DEATH)
-	antag.faction -= "carp"
+	antag.faction -= FACTION_CARP
 	rift_ability?.Remove(antag)
 
 

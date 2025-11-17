@@ -37,13 +37,13 @@
 				balloon_alert(user, "неподходящее животное!")
 				return
 			if(M.stat == DEAD)
-				M.faction = list("neutral")
+				M.faction = list(FACTION_NEUTRAL)
 				M.revive()
 				M.can_collar = 1
 				if(istype(target, /mob/living/simple_animal/hostile))
 					var/mob/living/simple_animal/hostile/H = M
 					if(malfunctioning)
-						H.faction |= list("lazarus", "\ref[user]")
+						H.faction |= list(FACTION_LAZARUS, user.UID())
 						H.robust_searching = 1
 						H.friends += user
 						H.attack_same = 1
@@ -119,7 +119,7 @@
 	if(captured)
 		to_chat(M, span_notice("Ошибка захвата! В капсуле уже зарегистрировано существо!"))
 	else
-		if("neutral" in S.faction)
+		if(FACTION_NEUTRAL in S.faction)
 			S.forceMove(src)
 			S.name = "[M.name]'s [initial(S.name)]"
 			S.cancel_camera()

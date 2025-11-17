@@ -359,6 +359,12 @@
 	popup.open(FALSE)
 
 
+/obj/item/paper/proc/add_raw_text(text)
+	info += text
+	populatefields()
+	updateinfolinks()
+	update_icon()
+
 /obj/item/paper/proc/topic_href_write(mob/user, id, input_element)
 	var/obj/item/item_write = user.get_active_hand() // Check to see if he still got that darn pen, also check if he's using a crayon or pen.
 	add_hiddenprint(user) // No more forging nasty documents as someone else, you jerks

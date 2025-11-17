@@ -27,7 +27,7 @@
 	var/ailock = FALSE	//Silicons cannot use this
 
 	var/syndicate = FALSE
-	var/faction = "" // Turret controls can only access turrets that are in the same faction
+	faction = null // Turret controls can only access turrets that are in the same faction
 
 	req_access = list(ACCESS_AI_UPLOAD)
 
@@ -54,7 +54,7 @@
 	ailock = TRUE
 
 	syndicate = TRUE
-	faction = "syndicate"
+	faction = list(FACTION_SYNDICATE)
 	req_access = list(ACCESS_SYNDICATE_LEADER)
 
 /obj/machinery/turretid/Destroy()
@@ -245,7 +245,7 @@
 
 	if(istype(control_area))
 		for(var/obj/machinery/porta_turret/aTurret in control_area.machinery_cache)
-			if(faction == aTurret.faction)
+			if(length(faction & aTurret.faction))
 				aTurret.setState(TC)
 
 

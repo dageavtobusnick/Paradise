@@ -30,7 +30,7 @@
 /datum/antagonist/nuclear_operative/apply_innate_effects(mob/living/mob_override)
 	. = ..()
 	owner.offstation_role = TRUE
-	owner.current?.faction |= "syndicate"
+	owner.current?.faction |= FACTION_SYNDICATE
 	old_real_name = owner.current.real_name
 	rename()
 
@@ -40,7 +40,7 @@
 /datum/antagonist/nuclear_operative/remove_innate_effects(mob/living/mob_override)
 	. = ..()
 	owner.offstation_role = FALSE
-	owner.current?.faction -= "syndicate"
+	owner.current?.faction -= FACTION_SYNDICATE
 	owner.current.real_name = old_real_name
 
 /datum/antagonist/nuclear_operative/farewell()

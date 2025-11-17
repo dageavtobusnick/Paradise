@@ -321,6 +321,20 @@ h2.alert {
   color: hsl(0, 0%, 20%);
 }
 
+.nicegreen {
+  color: hsl(132.6, 78.7%, 36.9%);
+}
+
+.boldnicegreen {
+  color: hsl(132.6, 78.7%, 36.9%);
+  font-weight: bold;
+}
+
+.tinynicegreen {
+  color: hsl(132.6, 78.7%, 36.9%);
+  font-size: 85%;
+}
+
 // MARK: Syndicate codewords
 span.body .codephrases {
   color: hsl(240, 100%, 50%);

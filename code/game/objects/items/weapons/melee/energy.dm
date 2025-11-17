@@ -23,13 +23,10 @@
 
 /obj/item/melee/energy/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	var/nemesis_faction = FALSE
-	if(LAZYLEN(nemesis_factions))
-		for(var/faction in target.faction)
-			if(faction in nemesis_factions)
-				nemesis_faction = TRUE
-				force += faction_bonus_force
-				nemesis_effects(user, target)
-				break
+	if(LAZYLEN(nemesis_factions & target.faction))
+		nemesis_faction = TRUE
+		force += faction_bonus_force
+		nemesis_effects(user, target)
 	. = ..()
 	if(nemesis_faction)
 		force -= faction_bonus_force
@@ -329,7 +326,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	sharp = TRUE
 	faction_bonus_force = 30
-	nemesis_factions = list("mining", "boss")
+	nemesis_factions = MINING_FACTIONS
 	var/transform_cooldown
 	var/swiping = FALSE
 

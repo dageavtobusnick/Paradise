@@ -1011,7 +1011,7 @@
 /mob/living/simple_animal/hostile/syndicate/ranged/orion
 	name = "spaceport security"
 	desc = "Лучшие корпоративные силы службы безопасности для всех космопортов, расположенных вдоль пути к Ориону."
-	faction = list("orion")
+	faction = list(FACTION_ORION)
 	loot = list()
 
 /mob/living/simple_animal/hostile/syndicate/ranged/orion/get_ru_names()

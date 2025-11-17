@@ -19,7 +19,7 @@
 	return
 
 /mob/living/silicon/decoy/syndicate
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	bubble_icon = "syndibot"
 	name = "R.O.D.G.E.R"
 	desc = "Red Operations, Depot General Emission Regulator"

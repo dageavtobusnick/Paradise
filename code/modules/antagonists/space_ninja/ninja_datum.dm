@@ -113,7 +113,7 @@
 
 /datum/antagonist/ninja/apply_innate_effects(mob/living/mob_override)
 	var/mob/living/user = ..()
-	user.faction = list(ROLE_NINJA)
+	user.faction = list(FACTION_NINJA)
 
 	user.AddElement( \
 		/datum/element/pref_viewer, \
@@ -136,7 +136,7 @@
 
 /datum/antagonist/ninja/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/user = ..()
-	user.faction = list("Station")
+	user.faction = list(FACTION_STATION)
 	if(user.hud_used)
 		user.hud_used.remove_ninja_hud()
 

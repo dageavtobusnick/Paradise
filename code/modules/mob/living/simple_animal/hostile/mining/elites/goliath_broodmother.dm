@@ -56,7 +56,7 @@
 		INSTRUMENTAL = "маткой голиафов",
 		PREPOSITIONAL = "матке голиафов"
 	)
-	
+
 
 /datum/action/innate/elite_attack/tentacle_patch
 	name = "Поле из щупалец"
@@ -269,7 +269,7 @@
 /obj/effect/temp_visual/goliath_tentacle/broodmother/trip()
 	var/latched = FALSE
 	for(var/mob/living/L in loc)
-		if((!QDELETED(spawner) && spawner.faction_check_mob(L)) || L.stat == DEAD)
+		if((!QDELETED(spawner) && spawner.faction_check_atom(L)) || L.stat == DEAD)
 			continue
 		visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] опутывает щупальцами [L.declent_ru(ACCUSATIVE)]!"))
 		L.Stun(stun_duration)

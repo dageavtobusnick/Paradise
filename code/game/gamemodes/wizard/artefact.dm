@@ -131,7 +131,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 	sharp = 1
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("атаковал", "полоснул", "уколол", "поранил", "порезал")
-	var/faction = list(NO_FACTION)
+	faction = list(NO_FACTION)
 	var/cooldown = 0
 	var/cooldown_between_uses = 400 //time in deciseconds between uses--default of 40 seconds.
 	var/assigned = "unassigned"
@@ -165,7 +165,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 		var/faction_check = length(faction & user.faction)
 		if(!faction_check)
 			var/uid = user.UID()
-			faction = list(uid )
+			faction = list(uid)
 			assigned = "[user.real_name]"
 			user.faction = list(uid)
 			to_chat(user, "You bind the sword to yourself. You can now use it to summon help.")

@@ -78,7 +78,7 @@
 		if(grasping.len < max_grasps)
 			grasping:
 				for(var/mob/living/L in view(grasp_range, src))
-					if(L == src || faction_check_mob(L) || (L in grasping) || L == target)
+					if(L == src || faction_check_atom(L) || (L in grasping) || L == target)
 						continue
 					for(var/turf/T as anything in get_line(src,L))
 						for(var/atom/check as anything in T)

@@ -22,7 +22,7 @@
 	var/obj/effect/temp_visual/pka_explosion/effect = new /obj/effect/temp_visual/pka_explosion(get_turf(spore))
 	effect.alpha = 150
 	for(var/mob/living/actor in orange(get_turf(spore), 1))
-		if(ROLE_BLOB in actor.faction) // No friendly fire
+		if(FACTION_BLOB in actor.faction) // No friendly fire
 			continue
 		actor.take_overall_damage(BLOB_REAGENT_SPORE_VOL, BLOB_REAGENT_SPORE_VOL)
 
@@ -61,7 +61,7 @@
 		exposed_mob.take_overall_damage(brute_loss, burn_loss)
 
 		for(var/mob/living/nearby_mob in orange(epicenter_turf, 1))
-			if(ROLE_BLOB in nearby_mob.faction) // No friendly fire.
+			if(FACTION_BLOB in nearby_mob.faction) // No friendly fire.
 				continue
 			if(nearby_mob == exposed_mob) // We've already hit the epicenter mob
 				continue

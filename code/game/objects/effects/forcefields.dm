@@ -57,5 +57,5 @@
 	if(checkpass(mover))
 		return TRUE
 	var/mob/living/mob_check = get_mob_in_atom_without_warning(mover)
-	return ("syndicate" in mob_check.faction) || istype(mob_check.get_id_card(), /obj/item/card/id/syndicate)
+	return (FACTION_SYNDICATE in mob_check.faction) || istype(mob_check.get_id_card(), /obj/item/card/id/syndicate)
 

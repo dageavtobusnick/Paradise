@@ -6,7 +6,7 @@
 	scrambledcodes = 1
 	has_camera = FALSE
 	pdahide = 1
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	bubble_icon = "syndibot"
 	designation = "Syndicate Assault"
 	modtype = /obj/item/robot_module/syndicate

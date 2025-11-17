@@ -14,7 +14,7 @@
 	health = 25
 	maxHealth = 25
 	speed = 1.25
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	ventcrawler_trait = TRAIT_VENTCRAWLER_ALWAYS
 
 	verb_say = "пищит"

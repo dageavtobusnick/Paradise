@@ -66,7 +66,7 @@
 	base_icon = "general_syndie"
 	spin_icon = "general_syndie-c"
 	radio_channel = SYND_TAIPAN_FREQ_NAME
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	allow_pai = TRUE
 	auto_patrol = TRUE
 	remote_disabled = TRUE
@@ -160,7 +160,7 @@
 		var/area/location = get_area(src)
 		if(!spam_flag)
 			if(syndie)
-				speak("Контакт! [C] [threat] уровня угрозы, место - [location]! Сейчас нашинкую этого [("syndicate" in C.faction) ? "ублюдка!" : "прихвостня НТ!"]", radio_channel)
+				speak("Контакт! [C] [threat] уровня угрозы, место - [location]! Сейчас нашинкую этого [(FACTION_SYNDICATE in C.faction) ? "ублюдка!" : "прихвостня НТ!"]", radio_channel)
 			else
 				speak("Контакт! [C] [threat] уровня угрозы, место - [location]! Сейчас нашинкую этого ублюдка!", radio_channel)
 			spam_flag = TRUE
@@ -234,7 +234,7 @@
 		if(syndie)
 			if(idcheck && istype(C.get_id_card(), /obj/item/card/id/syndicate))
 				threatlevel = 0
-			else if(!("syndicate" in C.faction))
+			else if(!(FACTION_SYNDICATE in C.faction))
 				threatlevel = 20
 			if(is_taipan(z) && C.mind?.assigned_role != "Space Base Syndicate Comms Officer" && (check_for_mug(C.get_active_hand()) || check_for_mug(C.get_inactive_hand())))
 				speak("[C.name], наглый ты воришка! Положи кружку на место!", radio_channel)

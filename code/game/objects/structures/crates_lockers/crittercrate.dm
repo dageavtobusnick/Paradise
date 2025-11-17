@@ -55,7 +55,7 @@
 			var/mob/living/simple_animal/pet = new content_mob(loc)
 			var/area/SA = get_area(src)
 			if(istype(SA, /area/syndicate/unpowered/syndicate_space_base))
-				pet.faction += "syndicate" //чтобы туррели по зверушкам из синди карго не стреляли
+				pet.faction += FACTION_SYNDICATE //чтобы туррели по зверушкам из синди карго не стреляли
 		already_opened = 1
 	. = ..()
 

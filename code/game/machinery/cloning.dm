@@ -313,7 +313,7 @@ GLOBAL_LIST_INIT(cloner_biomass_items, list(\
 		H.add_language(L.name)
 
 	if(is_taipan(z))
-		H.faction.Add("syndicate")	// So that Syndie guys remain Syndie guys after cloning
+		H.faction.Add(FACTION_SYNDICATE)	// So that Syndie guys remain Syndie guys after cloning
 
 
 	H.check_genes(MUTCHK_FORCED) // Ensures species that get powers by the species proc handle_dna keep them

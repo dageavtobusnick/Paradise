@@ -134,7 +134,7 @@
 
 /obj/effect/tear/proc/make_mob(mob_type)
 	var/mob/mob = new mob_type(get_turf(src))
-	mob.faction = list("rift")
+	mob.faction = list(FACTION_RIFT)
 	step(mob, pick(GLOB.cardinal))
 	if(prob(30))
 		visible_message(span_danger("[capitalize(mob.declent_ru(NOMINATIVE))] выход[pluralize_ru(mob.gender, "ит", "ят")] из портала!"))

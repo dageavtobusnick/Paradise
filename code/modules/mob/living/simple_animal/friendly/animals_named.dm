@@ -205,7 +205,7 @@
 	emote_hear = list("угукает!", "ухает!", "размахивает своими крыльями!")
 	emote_see = list("встряхивает свои перья.", "машет крылышками.", "дрожит.")
 	tts_seed = "Priest"
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	maxHealth = 50
 	health = 50
 	melee_damage_type = STAMINA

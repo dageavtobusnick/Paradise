@@ -11,7 +11,7 @@
 	emote_hear = list("кудахчет", "крякает","гогочет")
 	emote_see = list("потрясывает спинкой", "шлёпает себя крыльями", "чистит перья")
 	tts_seed = "Narrator"
-	faction = list("penguin")
+	faction = list(FACTION_PENGUIN)
 	butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/bird = 4)
 	nightvision = 5
 	speak_chance = 1
@@ -53,7 +53,7 @@
 	speak_emote = list("бормочет", "гогочет")
 	emote_hear = list("свистит", "гогочет")
 	emote_see = list("потрясывает спинкой", "шлёпает себя крыльями", "чистит перья")
-	faction = list("penguin", "cult")
+	faction = list(FACTION_PENGUIN, FACTION_CULT)
 
 /mob/living/simple_animal/pet/penguin/eldritch/ComponentInitialize()
 	AddComponent( \

@@ -50,7 +50,7 @@
 	butcher_results = list(/obj/item/stack/ore/diamond = 5, /obj/item/stack/sheet/animalhide/ashdrake = 10, /obj/item/stack/sheet/sinew = 5, /obj/item/stack/sheet/bone = 30, /obj/item/reagent_containers/food/snacks/carpmeat = 15)
 	deathmessage = "визж%(ит,ат)%, %(его,её,его,их)% глаза мутнеют, крылья превращаются в пыль и %(он,она,оно,они)% пада%(ет,ют)% замертво!"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	faction = list("carp")
+	faction = list(FACTION_CARP)
 	pressure_resistance = 200
 	sentience_type = SENTIENCE_BOSS
 	see_in_dark = 8
@@ -170,7 +170,7 @@
 			if(eat(L))
 				adjustHealth(-L.maxHealth * 0.5)
 			return
-		if("carp" in L.faction)
+		if(FACTION_CARP in L.faction)
 			to_chat(src, span_warning("Вы почти укусили своего сородича, но вовремя остановились."))
 			return
 	if(istype(target, /obj/structure/carp_rift))
@@ -343,7 +343,7 @@
 	for(var/mob/living/L in T.contents)
 		if(L in hit_list)
 			continue
-		if("carp" in L.faction)
+		if(FACTION_CARP in L.faction)
 			continue
 		hit_list += L
 		L.adjustFireLoss(45)

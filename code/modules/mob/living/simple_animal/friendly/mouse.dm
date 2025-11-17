@@ -20,7 +20,7 @@
 	talk_sound = list('sound/creatures/rat_talk.ogg')
 	damaged_sound = list('sound/creatures/rat_wound.ogg')
 	death_sound = 'sound/creatures/rat_death.ogg'
-	faction = list("neutral", "rodent")
+	faction = list(FACTION_NEUTRAL, FACTION_RAT)
 	tts_seed = "Gyro"
 	speak_chance = 1
 	turns_per_move = 5

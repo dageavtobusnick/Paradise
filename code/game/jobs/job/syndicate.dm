@@ -52,7 +52,7 @@
 	var/obj/item/implant/uplink/admin/U = new /obj/item/implant/uplink/admin(H)
 	U.implant(H)
 	U.hidden_uplink.uses = 2500
-	H.faction += "syndicate"
+	H.faction += FACTION_SYNDICATE
 	var/datum/atom_hud/antag/opshud = GLOB.huds[ANTAG_HUD_OPS]
 	opshud.join_hud(H.mind.current)
 	H.mind?.offstation_role = TRUE

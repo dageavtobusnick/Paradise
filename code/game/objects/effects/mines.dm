@@ -4,7 +4,7 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "uglyminearmed"
 	var/triggered = 0
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 
 
 /obj/effect/mine/Initialize(mapload)

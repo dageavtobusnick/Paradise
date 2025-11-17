@@ -26,11 +26,11 @@
 
 /datum/antagonist/mindslave/devil_pawn/apply_innate_effects(mob/living/mob_override)
 	var/mob/living/user = ..()
-	user.faction |= "hell"
+	user.faction |= FACTION_HELL
 	return user
 
 
 /datum/antagonist/mindslave/devil_pawn/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/user = ..()
-	user.faction -= "hell"
+	user.faction -= FACTION_HELL
 	return user

@@ -11,7 +11,7 @@
 	language = LANGUAGE_MOTH
 	icobase = 'icons/mob/human_races/r_moth.dmi'
 	deform = 'icons/mob/human_races/r_moth.dmi'
-	inherent_factions = list("moth")
+	inherent_factions = list(FACTION_MOTH)
 	inherent_traits = list(
 		TRAIT_HAS_REGENERATION,
 	)

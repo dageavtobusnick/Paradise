@@ -69,6 +69,8 @@
 #define FACTION_PLANTS "plants"
 /// Rats and mice
 #define FACTION_RAT "rats"
+
+#define FACTION_MOTH "moth"
 /// Creatures from Space Russia
 #define FACTION_RUSSIAN "russian"
 /// Creatures affiliated with the AI and Cyborgs
@@ -108,6 +110,10 @@
 
 #define FACTION_RIFT "rift"
 
+#define FACTION_LAZARUS "lazarus"
+
+#define FACTION_PROFIT "profit"
+
 // Antagonist factions
 
 /// Cultists and their constructs
@@ -121,6 +127,8 @@
 
 #define FACTION_SYNDICATE "syndicate"
 
+#define FACTION_NANOTRASEN "nanotrasen"
+
 #define FACTION_USSP "ussp"
 
 #define FACTION_CLOCKWORK_CULT	"clockwork_cult"
@@ -131,6 +139,8 @@
 
 #define FACTION_BLOB ROLE_BLOB
 
+#define FACTION_NINJA ROLE_NINJA
+
 #define FACTION_SWARMER "swarmer"
 
 #define FACTION_MALF_DRONE "malf_drone"
@@ -140,6 +150,8 @@
 
 /// Generates a mob faction for the passed owner, used by stabilized pink extracts
 #define FACTION_PINK_EXTRACT(owner) "pink_[owner]"
+
+#define FACTION_FAUNA_BOMB(uid) "fauna_bomb[uid]"
 
 #define MINING_FACTIONS list(FACTION_MINING, FACTION_BOSS)
 

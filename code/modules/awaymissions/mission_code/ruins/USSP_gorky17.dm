@@ -186,7 +186,7 @@
 	name = "Gorky17 vault room"
 	icon_state = "away16"
 	var/communism_has_fallen = FALSE
-	var/safe_faction = list("ussp")
+	var/safe_faction = list(FACTION_USSP)
 
 /area/ruin/space/USSP_gorky17/collapsed/rnd
 	name = "Gorky17 Gorky17 RnD zone"

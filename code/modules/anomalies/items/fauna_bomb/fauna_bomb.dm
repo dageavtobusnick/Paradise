@@ -206,9 +206,9 @@
 		return
 
 	if(owner)
-		owner.faction -= "fauna_bomb[UID()]"
+		owner.faction -= FACTION_FAUNA_BOMB(UID())
 
-	user.faction += "fauna_bomb[UID()]"
+	user.faction += FACTION_FAUNA_BOMB(UID())
 	owner = user
 
 /obj/item/fauna_bomb/ui_interact(mob/user, datum/tgui/ui)
@@ -291,7 +291,7 @@
 			max_charge -= datas["[index]"].req_charge
 			var/mob/mob = new /mob/living/simple_animal/hostile/airmob(get_turf(src), src, datas["[index]"])
 			created_mobs.Add(mob)
-			mob.faction = list("fauna_bomb[UID()]")
+			mob.faction = list(FACTION_FAUNA_BOMB(UID()))
 			for(var/j = 1, j <= rand(1, 3), j++)
 				step(mob, GLOB.cardinal)
 

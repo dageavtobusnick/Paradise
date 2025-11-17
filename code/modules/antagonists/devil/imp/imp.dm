@@ -17,7 +17,7 @@
 	stop_automated_movement = 1
 	attack_sound = 'sound/misc/demon_attack1.ogg'
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	faction = list("hell")
+	faction = list(FACTION_HELL)
 	attacktext = "неистово терзает"
 	maxHealth = 200
 	health = 200

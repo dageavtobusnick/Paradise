@@ -92,6 +92,7 @@ GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 				new_commando.key = ghost_mob.key
 				new_commando.internal = new_commando.s_store
 				new_commando.update_action_buttons_icon()
+				new_commando.faction += FACTION_NANOTRASEN
 				new_commando.change_voice()
 				if(nuke_code)
 					new_commando.mind.store_memory("<b>Коды от боеголовки:</b> <span class='warning'>[nuke_code].</span>")

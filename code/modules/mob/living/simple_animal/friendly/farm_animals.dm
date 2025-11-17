@@ -19,7 +19,7 @@
 	response_help = "гладит"
 	response_disarm = "осторожно отодвигает в сторону"
 	response_harm = "пинает"
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	attack_same = 1
 	attacktext = "бодает"
 	attack_sound = 'sound/weapons/punch1.ogg'

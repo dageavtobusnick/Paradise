@@ -68,7 +68,7 @@ GLOBAL_VAR_INIT(sent_syndicate_infiltration_team, 0)
 			infiltrators -= theguy
 		to_chat(new_syndicate_infiltrator, span_danger("Вы [!syndicate_leader_selected?"Диверсант":"<b>Командир Диверсантов</b>"] в подчинении Синдиката. \nВаша миссия: <b>[input]</b>"))
 		to_chat(new_syndicate_infiltrator, span_notice("Вы оснащены имплантом аплинка, который поможет вам достичь ваших целей. ((активируйте его с помощью кнопки в левом верхнем углу экрана))"))
-		new_syndicate_infiltrator.faction += "syndicate"
+		new_syndicate_infiltrator.faction += FACTION_SYNDICATE
 		GLOB.data_core.manifest_inject(new_syndicate_infiltrator)
 		if(syndicate_leader_selected)
 			team_leader = new_syndicate_infiltrator

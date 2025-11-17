@@ -66,7 +66,7 @@
 /mob/living/simple_animal/hostile/asteroid/elite/AttackingTarget()
 	if(istype(target, /mob/living/simple_animal/hostile))
 		var/mob/living/simple_animal/hostile/M = target
-		if(faction_check_mob(M))
+		if(faction_check_atom(M))
 			return FALSE
 	if(istype(target, /obj/structure/elite_tumor))
 		var/obj/structure/elite_tumor/T = target

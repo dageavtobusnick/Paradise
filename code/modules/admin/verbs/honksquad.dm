@@ -89,6 +89,7 @@ GLOBAL_VAR_INIT(sent_clownsequritysquad, 0)
 	new_honksquad.mind.assigned_role = SPECIAL_ROLE_HONKSQUAD
 	new_honksquad.mind.special_role = SPECIAL_ROLE_HONKSQUAD
 	new_honksquad.mind.offstation_role = TRUE
+	new_honksquad.faction += FACTION_CLOWN
 	new_honksquad.add_language(LANGUAGE_CLOWN)
 	new_honksquad.change_voice()
 	SSticker.mode.honksquad |= new_honksquad.mind//Adds them to current traitor list. Which is really the extra antagonist list.
@@ -144,6 +145,7 @@ GLOBAL_VAR_INIT(sent_clownsequritysquad, 0)
 	new_honksquad.mind.assigned_role = SPECIAL_ROLE_HONKSQUAD
 	new_honksquad.mind.special_role = SPECIAL_ROLE_HONKSQUAD
 	new_honksquad.mind.offstation_role = TRUE
+	new_honksquad.faction += FACTION_CLOWN
 	SSticker.mode.traitors |= new_honksquad.mind//Adds them to current traitor list. Which is really the extra antagonist list.
 
 	//экипируем уже готовы пресетом

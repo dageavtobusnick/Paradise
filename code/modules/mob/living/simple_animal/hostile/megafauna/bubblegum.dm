@@ -307,7 +307,7 @@ Difficulty: Hard
 	. = list()
 	for(var/mob/living/L in targets)
 		var/list/bloodpool = get_pools(get_turf(L), 0)
-		if(bloodpool.len && (!faction_check_mob(L) || L.stat == DEAD))
+		if(bloodpool.len && (!faction_check_atom(L) || L.stat == DEAD))
 			. += L
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/try_bloodattack()
@@ -356,7 +356,7 @@ Difficulty: Hard
 		new /obj/effect/temp_visual/bubblegum_hands/leftsmack(T)
 	SLEEP_CHECK_DEATH(src, 4)
 	for(var/mob/living/L in T)
-		if(!faction_check_mob(L))
+		if(!faction_check_atom(L))
 			to_chat(L, span_userdanger("[declent_ru(NOMINATIVE)] разрывает вас!"))
 			playsound(T, attack_sound, 100, TRUE, -1)
 			var/limb_to_hit = L.get_organ(pick(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG, BODY_ZONE_TAIL, BODY_ZONE_WING))
@@ -372,7 +372,7 @@ Difficulty: Hard
 		new /obj/effect/temp_visual/bubblegum_hands/leftthumb(T)
 	SLEEP_CHECK_DEATH(src, 6)
 	for(var/mob/living/L in T)
-		if(!faction_check_mob(L))
+		if(!faction_check_atom(L))
 			if(L.stat != CONSCIOUS)
 				to_chat(L, span_userdanger("[declent_ru(NOMINATIVE)] тащит вас через кровь!"))
 				playsound(T, 'sound/misc/enter_blood.ogg', 100, TRUE, -1)

@@ -4,7 +4,7 @@
 	register_init_signals()
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_atom_to_hud(src)
-	faction += "\ref[src]"
+	faction += UID()
 	determine_move_and_pull_forces()
 	gravity_setup()
 	if(unique_name)
@@ -1975,6 +1975,7 @@
 
 /mob/living/set_pulledby(new_pulledby)
 	. = ..()
+	update_incapacitated()
 	if(. == FALSE) //null is a valid value here, we only want to return if FALSE is explicitly passed.
 		return .
 	/*
@@ -2350,6 +2351,23 @@
 		death()
 	to_chat(src, span_notice("Вы сдаётесь и принимаете смерть."))
 	apply_status_effect(STATUS_EFFECT_RECENTLY_SUCCUMBED)
+
+// Remember, anything that influences this needs to call update_incapacitated somehow when it changes
+// Most often best done in [code/modules/mob/living/init_signals.dm]
+/mob/living/build_incapacitated(flags)
+	// Holds a set of flags that describe how we are currently incapacitated
+	var/incap_status = NONE
+	if(HAS_TRAIT(src, TRAIT_INCAPACITATED))
+		incap_status |= TRADITIONAL_INCAPACITATED
+	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
+		incap_status |= INCAPABLE_RESTRAINTS
+	if(pulledby && pulledby.grab_state >= GRAB_AGGRESSIVE)
+		incap_status |= INCAPABLE_GRAB
+	/*if(HAS_TRAIT(src, TRAIT_STASIS))
+		incap_status |= INCAPABLE_STASIS*/
+
+	return incap_status
+
 
 /// Updates damage slowdown accordingly to the current health
 /mob/living/proc/update_movespeed_damage_modifiers()

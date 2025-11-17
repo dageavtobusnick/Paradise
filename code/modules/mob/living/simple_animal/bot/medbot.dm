@@ -111,7 +111,7 @@
 	name = "Suspicious Medibot"
 	desc = "Вам лучше быть застрахованным!"
 	skin = "bezerk"
-	faction = list("syndicate")
+	faction = list(FACTION_SYNDICATE)
 	treatment_oxy = "perfluorodecalin"
 	treatment_brute = "bicaridine"
 	treatment_fire = "kelotane"
@@ -487,7 +487,7 @@
 	if(emagged == 2 || hijacked) //Everyone needs our medicine. (Our medicine is toxins)
 		return TRUE
 
-	if(syndicate_aligned && !("syndicate" in C.faction))
+	if(syndicate_aligned && !(FACTION_SYNDICATE in C.faction))
 		return FALSE
 
 	if(declare_crit && C.health <= 0) //Critical condition! Call for help!

@@ -196,7 +196,7 @@
 			continue
 		if(isliving(A) && overmind && !controller) // Make sure to inject strain-reagents with automatic attacks when needed.
 			var/mob/living/mob = A
-			if(ROLE_BLOB in mob.faction) //no friendly fire
+			if(FACTION_BLOB in mob.faction) //no friendly fire
 				continue
 			overmind.blobstrain.attack_living(mob)
 			continue // Don't smack them twice though
@@ -285,7 +285,7 @@
 
 
 /obj/structure/blob/attack_animal(mob/living/simple_animal/M)
-	if(ROLE_BLOB in M.faction) //sorry, but you can't kill the blob as a blobbernaut
+	if(FACTION_BLOB in M.faction) //sorry, but you can't kill the blob as a blobbernaut
 		to_chat(M, span_danger("Вы не можете навредить структурам блоба"))
 		return
 	..()

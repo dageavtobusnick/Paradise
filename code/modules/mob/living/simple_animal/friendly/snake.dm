@@ -26,7 +26,7 @@
 	response_help  = "pets"
 	response_disarm = "shoos"
 	response_harm   = "steps on"
-	faction = list("hostile")
+	faction = list(FACTION_HOSTILE)
 	ventcrawler_trait = TRAIT_VENTCRAWLER_ALWAYS
 	density = FALSE
 	pass_flags = PASSTABLE | PASSMOB
@@ -82,7 +82,7 @@
 	mobility_flags = MOBILITY_FLAGS_REST_CAPABLE_DEFAULT
 	var/obj/item/inventory_head
 	var/list/strippable_inventory_slots = list()
-	faction = list("neutral", "syndicate")
+	faction = list(FACTION_NEUTRAL, FACTION_SYNDICATE)
 	gold_core_spawnable = NO_SPAWN
 	unique_pet = TRUE
 	can_hide = 1
@@ -254,7 +254,7 @@
 	tts_seed = "Xenia"
 	melee_damage_lower = 1
 	melee_damage_upper = 3
-	faction = list("neutral")
+	faction = list(FACTION_NEUTRAL)
 	unique_pet = TRUE
 	
 

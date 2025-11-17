@@ -278,7 +278,7 @@
 /obj/projectile/herald/prehit(atom/target)
 	if(ismob(target) && ismob(firer))
 		var/mob/living/mob_target = target
-		if(mob_target.faction_check_mob(firer))
+		if(mob_target.faction_check_atom(firer))
 			nodamage = TRUE
 			damage = 0
 			return

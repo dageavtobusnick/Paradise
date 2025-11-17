@@ -5,10 +5,10 @@
 	if(HAS_TRAIT(controller.pawn, TRAIT_MOVE_VENTCRAWLING))
 		return SUBTREE_RETURN_FINISH_PLANNING // hold on let me cook
 
-	var/obj/machinery/atmospherics/components/unary/vent_pump/target = controller.blackboard[BB_ENTRY_VENT_TARGET]
+	var/obj/machinery/atmospherics/unary/vent_pump/target = controller.blackboard[BB_ENTRY_VENT_TARGET]
 
 	if(QDELETED(target))
-		controller.queue_behavior(/datum/ai_behavior/find_and_set, BB_ENTRY_VENT_TARGET, /obj/machinery/atmospherics/components/unary/vent_pump) // keep looking otherwise they KILL US AND WE DIE
+		controller.queue_behavior(/datum/ai_behavior/find_and_set, BB_ENTRY_VENT_TARGET, /obj/machinery/atmospherics/unary/vent_pump) // keep looking otherwise they KILL US AND WE DIE
 		return
 
 	if(get_turf(controller.pawn) != get_turf(target))

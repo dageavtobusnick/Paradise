@@ -7,7 +7,7 @@
 	unique_name = TRUE
 	pass_flags = PASSBLOB
 	status_flags = NONE // No throwing blobspores into deep space to despawn, or throwing blobbernaughts, which are bigger than you.
-	faction = list(ROLE_BLOB)
+	faction = list(FACTION_BLOB)
 	bubble_icon = "blob"
 	speak_emote = null
 	stat_attack = UNCONSCIOUS
@@ -78,7 +78,7 @@
 	RegisterSignal(factory, COMSIG_QDELETING, PROC_REF(on_factory_destroyed))
 
 /mob/living/simple_animal/hostile/blob_minion/attack_animal(mob/living/simple_animal/M)
-	if(ROLE_BLOB in M.faction)
+	if(FACTION_BLOB in M.faction)
 		to_chat(M, span_danger("Вы не можете навредить другому порождению блоба"))
 		return
 	..()

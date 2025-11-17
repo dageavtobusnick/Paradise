@@ -21,7 +21,7 @@ GLOBAL_VAR_INIT(off_mob_spawns, FALSE)
 	var/description = "A description for this has not been set. This is either an oversight or an admin-spawned spawner not in normal use."	//intended as OOC info about the role
 	var/important_info = ""	//important info such as rules that apply to you, etc. Optional.
 	var/id_job = null			//Such as "Clown" or "Chef." This just determines what the ID reads as, not their access
-	var/faction = null
+	faction = null
 	var/permanent = FALSE	//If true, the spawner will not disappear upon running out of uses.
 	var/random = FALSE		//Don't set a name or gender, just go random
 	var/objectives = null
@@ -53,7 +53,7 @@ GLOBAL_VAR_INIT(off_mob_spawns, FALSE)
 	if(SSticker.current_state != GAME_STATE_PLAYING || !loc || !ghost_usable)
 		return
 	if(GLOB.off_mob_spawns)
-		return 
+		return
 	if(!uses)
 		to_chat(user, span_warning("This spawner is out of charges!"))
 		return

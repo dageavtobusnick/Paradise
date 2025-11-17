@@ -237,6 +237,20 @@ h2.alert {
   color: hsl(0, 100%, 50%);
 }
 
+.nicegreen {
+  color: hsl(132.8, 93.4%, 29.6%);
+}
+
+.boldnicegreen {
+  color: hsl(132.8, 93.4%, 29.6%);
+  font-weight: bold;
+}
+
+.tinynicegreen {
+  color: hsl(132.8, 93.4%, 29.6%);
+  font-size: 85%;
+}
+
 // MARK: Admin/Mentor
 .mentorhelp {
   color: hsl(202, 100%, 37%);

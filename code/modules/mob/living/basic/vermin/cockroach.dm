@@ -23,7 +23,7 @@
 	speak_emote = list("щебечет")
 	layer = BELOW_MOB_LAYER //when you stomp on it and he lives, it looks kinda bad
 	basic_mob_flags = DEL_ON_DEATH
-	faction = list("hostile")
+	faction = list(FACTION_HOSTILE)
 	affects_by_temperature = FALSE
 
 	ai_controller = /datum/ai_controller/basic_controller/cockroach
@@ -87,7 +87,7 @@
 	icon_state = "glockroach"
 	obj_damage = 5
 	gold_core_spawnable = HOSTILE_SPAWN
-	faction = list("hostile")
+	faction = list(FACTION_HOSTILE)
 	ai_controller = /datum/ai_controller/basic_controller/cockroach/glockroach
 
 /mob/living/basic/cockroach/glockroach/get_ru_names()
@@ -128,7 +128,7 @@
 	obj_damage = 8
 	gold_core_spawnable = HOSTILE_SPAWN
 	attack_sound = 'sound/weapons/bladeslice.ogg'
-	faction = list("hostile")
+	faction = list(FACTION_HOSTILE)
 	ai_controller = /datum/ai_controller/basic_controller/cockroach/hauberoach
 
 /mob/living/basic/cockroach/hauberoach/get_ru_names()

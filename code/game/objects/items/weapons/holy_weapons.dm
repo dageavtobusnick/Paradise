@@ -486,11 +486,11 @@
 /obj/item/nullrod/carp/attack_self(mob/living/user)
 	if(user.mind && !(user.mind.isholy || user.mind.isblessed))
 		return
-	if("carp" in user.faction)
+	if(FACTION_CARP in user.faction)
 		to_chat(user, "You are already blessed by Carp-Sie.")
 		return
 	to_chat(user, "You are blessed by Carp-Sie. Wild space carp will no longer attack you.")
-	user.faction |= "carp"
+	user.faction |= FACTION_CARP
 
 /obj/item/nullrod/claymore/bostaff //May as well make it a "claymore" and inherit the blocking
 	name = "monk's staff"

@@ -19,7 +19,7 @@ GLOBAL_LIST_EMPTY(slime_actions)
 	icobase = 'icons/mob/human_races/r_slime.dmi'
 	deform = 'icons/mob/human_races/r_slime.dmi'
 	remains_type = /obj/effect/decal/remains/slime
-	inherent_factions = list("slime")
+	inherent_factions = list(FACTION_SLIME)
 
 	// More sensitive to the cold
 	cold_level_1 = 280

@@ -13,16 +13,16 @@
 
 /datum/ai_behavior/crawl_through_vents/setup(datum/ai_controller/controller, target_key)
 	. = ..()
-	var/obj/machinery/atmospherics/components/unary/vent_pump/target = controller.blackboard[target_key] || controller.blackboard[BB_ENTRY_VENT_TARGET]
+	var/obj/machinery/atmospherics/unary/vent_pump/target = controller.blackboard[target_key] || controller.blackboard[BB_ENTRY_VENT_TARGET]
 	return istype(target) && isliving(controller.pawn) // only mobs can vent crawl in the current framework
 
 /datum/ai_behavior/crawl_through_vents/perform(seconds_per_tick, datum/ai_controller/controller, target_key)
-	var/obj/machinery/atmospherics/components/unary/vent_pump/entry_vent = controller.blackboard[target_key] || controller.blackboard[BB_ENTRY_VENT_TARGET]
+	var/obj/machinery/atmospherics/unary/vent_pump/entry_vent = controller.blackboard[target_key] || controller.blackboard[BB_ENTRY_VENT_TARGET]
 	var/mob/living/cached_pawn = controller.pawn
 	if(HAS_TRAIT(cached_pawn, TRAIT_MOVE_VENTCRAWLING) || !controller.blackboard[BB_CURRENTLY_TARGETING_VENT] || !is_vent_valid(entry_vent))
 		return AI_BEHAVIOR_DELAY
 
-	if(!cached_pawn.can_enter_vent(entry_vent, provide_feedback = FALSE)) // we're an AI we scoff at feedback
+	if(!cached_pawn.can_ventcrawl(entry_vent, provide_feedback = FALSE)) // we're an AI we scoff at feedback
 		// "never enter a hole you can't get out of"
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
@@ -52,13 +52,13 @@
 
 /// Figure out an exit vent that we should head towards. If we don't have one, default to the entry vent. If they're all kaput, we die.
 /datum/ai_behavior/crawl_through_vents/proc/calculate_exit_vent(datum/ai_controller/controller, target_key)
-	var/obj/machinery/atmospherics/components/unary/vent_pump/returnable_vent
-	var/obj/machinery/atmospherics/components/unary/vent_pump/vent_we_entered_through = controller.blackboard[target_key] || controller.blackboard[BB_ENTRY_VENT_TARGET]
+	var/obj/machinery/atmospherics/unary/vent_pump/returnable_vent
+	var/obj/machinery/atmospherics/unary/vent_pump/vent_we_entered_through = controller.blackboard[target_key] || controller.blackboard[BB_ENTRY_VENT_TARGET]
 
-	var/datum/pipeline/entry_vent_parent = vent_we_entered_through.parents[1]
+	var/datum/pipeline/entry_vent_parent = vent_we_entered_through.parent
 	var/list/potential_exits = list()
 
-	for(var/obj/machinery/atmospherics/components/unary/vent_pump/vent in entry_vent_parent.other_atmos_machines)
+	for(var/obj/machinery/atmospherics/unary/vent_pump/vent in entry_vent_parent.other_atmosmch)
 		if(is_vent_valid(vent))
 			potential_exits.Add(vent)
 
@@ -76,8 +76,8 @@
 
 /// We've had enough horsing around in the vents, it's time to get out.
 /datum/ai_behavior/crawl_through_vents/proc/exit_the_vents(datum/ai_controller/controller, target_key)
-	var/obj/machinery/atmospherics/components/unary/vent_pump/emergency_vent // vent we will scramble to search for in case plan A is a bust (exit vent)
-	var/obj/machinery/atmospherics/components/unary/vent_pump/exit_vent = controller.blackboard[BB_EXIT_VENT_TARGET]
+	var/obj/machinery/atmospherics/unary/vent_pump/emergency_vent // vent we will scramble to search for in case plan A is a bust (exit vent)
+	var/obj/machinery/atmospherics/unary/vent_pump/exit_vent = controller.blackboard[BB_EXIT_VENT_TARGET]
 	var/mob/living/living_pawn = controller.pawn
 
 	if(!HAS_TRAIT(living_pawn, TRAIT_MOVE_VENTCRAWLING) && isturf(get_turf(living_pawn))) // we're out of the vents, so no need to do an exit
@@ -86,7 +86,7 @@
 		return
 
 	living_pawn.forceMove(exit_vent)
-	if(!living_pawn.can_enter_vent(exit_vent, provide_feedback = FALSE))
+	if(!living_pawn.can_ventcrawl(exit_vent, provide_feedback = FALSE))
 		// oh shit, something happened while we were waiting on that timer. let's figure out a different way to get out of here.
 		emergency_vent = calculate_exit_vent(controller)
 		if(isnull(emergency_vent))
@@ -108,7 +108,7 @@
 	return
 
 /// Incredibly stripped down version of the overarching `can_enter_vent` proc on `/mob, just meant for rapid rechecking of a vent. Will be TRUE if not blocked, FALSE otherwise.
-/datum/ai_behavior/crawl_through_vents/proc/is_vent_valid(obj/machinery/atmospherics/components/unary/vent_pump/checkable)
+/datum/ai_behavior/crawl_through_vents/proc/is_vent_valid(obj/machinery/atmospherics/unary/vent_pump/checkable)
 	return !QDELETED(checkable) && !checkable.welded
 
 /// Wraps a delayed defeat, so we gotta handle the return value properly ya feel?

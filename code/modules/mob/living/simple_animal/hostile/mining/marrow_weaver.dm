@@ -99,7 +99,7 @@
 /mob/living/simple_animal/hostile/asteroid/marrowweaver/CanAttack(atom/A)
 	if(..())
 		return TRUE
-	if((health < maxHealth) && ishuman(A) && !faction_check_mob(A))
+	if((health < maxHealth) && ishuman(A) && !faction_check_atom(A))
 		if(fiesta(A))
 			return TRUE
 	return FALSE

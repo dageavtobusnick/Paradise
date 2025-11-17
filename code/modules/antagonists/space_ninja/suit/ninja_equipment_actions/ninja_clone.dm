@@ -30,7 +30,7 @@
 	add_attack_logs(ninja, null, "Activated Energy Clones")
 	for(var/i=0, i<2, i++)
 		var/mob/living/simple_animal/hostile/illusion/ninja_clone = new(ninja.loc)
-		ninja_clone.faction = list(ROLE_NINJA)
+		ninja_clone.faction = list(FACTION_NINJA)
 		ninja_clone.Copy_Parent(ninja, 20 SECONDS, 20, 10, 50)
 		do_teleport(ninja_clone, get_turf(ninja), 2)
 		// Check mobs in a small radius from the cast position for mindshield
