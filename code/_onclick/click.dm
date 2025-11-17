@@ -37,13 +37,12 @@
  * * [mob/proc/RangedAttack] (atom, modifiers) - used only ranged, only used for tk and laser eyes but could be changed
  */
 /mob/proc/ClickOn(atom/A, params)
-	if(client.click_intercept)
-		client.click_intercept.InterceptClickOn(src, params, A)
-		return
-
 	if(next_click > world.time)
 		return
 	changeNext_click(1)
+
+	if(check_click_intercept(params,A) || HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
+		return
 
 	var/list/modifiers = params2list(params)
 
@@ -58,6 +57,9 @@
 
 	if(IsFrozen(A) && !is_admin(usr))
 		to_chat(usr, span_boldannounceooc("Interacting with admin-frozen players is not permitted."))
+		return
+
+	if(SEND_SIGNAL(src, COMSIG_MOB_CLICKON, A, modifiers) & COMSIG_MOB_CANCEL_CLICKON)
 		return
 
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
@@ -209,7 +211,7 @@
 	var/list/closed = list()
 	var/list/checking = list(ultimate_target)
 
-	while (checking.len && depth > 0)
+	while(checking.len && depth > 0)
 		var/list/next = list()
 		--depth
 
@@ -217,8 +219,8 @@
 			if(closed[target] || isarea(target))  // avoid infinity situations
 				continue
 
-			if(isturf(target) || isturf(target.loc) || (target in direct_access) || LAZYLEN(target.loc.contents)) //Directly accessible atoms
-				if(Adjacent(target) || (tool && CheckToolReach(src, target, tool.reach))) //Adjacent or reaching attacks
+			if(isturf(target) || isturf(target.loc) || (target in direct_access) || LAZYLEN(target.loc.contents) || (ismovable(target))) //Directly accessible atoms
+				if(Adjacent(target) || (tool && CheckToolReach(src, target, tool.reach)))) //Adjacent or reaching attacks
 					return TRUE
 
 			closed[target] = TRUE
@@ -245,6 +247,11 @@
 /mob/living/DirectAccess(atom/target)
 	return ..() + get_all_contents()
 
+/atom/proc/AllowClick()
+	return FALSE
+
+/turf/AllowClick()
+	return TRUE
 
 /proc/CheckToolReach(atom/movable/here, atom/movable/there, reach)
 	if(!here || !there)
@@ -403,7 +410,6 @@
 	if(istype(ML))
 		ML.pulled(src)
 
-
 /mob/living/CtrlClick(mob/living/user)
 	if(!isliving(user) || !user.Adjacent(src) || user.incapacitated())
 		return ..()
@@ -418,7 +424,6 @@
 	return ..()
 
 // Alt Click is in `click_alt.dm` now! I stole it
-
 
 /mob/proc/TurfAdjacent(turf/T)
 	return T.Adjacent(src)
@@ -440,7 +445,6 @@
 
 /atom/proc/AltShiftClick(mob/user)
 	return
-
 
 /atom/proc/allow_click()
 	return FALSE
@@ -499,7 +503,6 @@
 	setDir(direction)
 	return TRUE
 
-
 /atom/movable/screen/click_catcher
 	icon_state = "catcher"
 	plane = CLICKCATCHER_PLANE
@@ -545,6 +548,20 @@
 			modifiers["catcher"] = TRUE
 			click_turf.Click(click_turf, control, list2params(modifiers))
 	. = 1
+
+
+/mob/proc/check_click_intercept(params,A)
+	//Client level intercept
+	if(client?.click_intercept)
+		if(call(client.click_intercept, "InterceptClickOn")(src, params, A))
+			return TRUE
+
+	//Mob level intercept
+	if(click_intercept)
+		if(call(click_intercept, "InterceptClickOn")(src, params, A))
+			return TRUE
+
+	return FALSE
 
 #undef MAX_SAFE_BYOND_ICON_SCALE_TILES
 #undef MAX_SAFE_BYOND_ICON_SCALE_PX

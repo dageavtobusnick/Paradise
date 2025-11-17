@@ -49,17 +49,21 @@
 	else
 		return A.layer - B.layer
 
-
 /proc/cmp_typepaths_asc(A, B)
 	return sorttext("[B]","[A]")
-
 
 /proc/cmp_generic_stat_item_time(list/A, list/B)
 	. = B[STAT_ENTRY_TIME] - A[STAT_ENTRY_TIME]
 	if(!.)
 		. = B[STAT_ENTRY_COUNT] - A[STAT_ENTRY_COUNT]
 
-
 /// Orders mobs by health
 /proc/cmp_mob_health(mob/living/mob_a, mob/living/mob_b)
 	return mob_b.health - mob_a.health
+	
+/// Orders cameras by their `c_tag` ascending
+/proc/cmp_camera_ctag_asc(obj/machinery/camera/a, obj/machinery/camera/b)
+	return sorttext(b.c_tag, a.c_tag)
+
+/proc/cmp_sheet_list(list/a, list/b)
+	return a["value"] - b["value"]

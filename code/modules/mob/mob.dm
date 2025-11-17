@@ -1,4 +1,5 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	persistent_client?.set_mob(null)
 	remove_from_mob_list()
 	remove_from_alive_mob_list()
 	remove_from_dead_mob_list()
@@ -84,7 +85,6 @@
 	if(. && slowdown_edit && isnum(diff))
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/admin_varedit, multiplicative_slowdown = diff)
 
-
 /atom/proc/prepare_huds()
 	if(hud_list) // I choose to be lienient about people calling this proc more then once
 		return
@@ -126,7 +126,6 @@
 
 	usr.show_message(t, 1)
 
-
 /mob/proc/show_message(msg, type, alt_msg, alt_type, chat_message_type, avoid_highlighting = FALSE)
 
 	if(!client)
@@ -161,7 +160,6 @@
 			return FALSE
 	to_chat(src, msg, chat_message_type)
 
-
 // Show a message to all mobs in sight of this one
 // This would be for visible actions by the src mob
 // message is the message output to anyone who can see e.g. "[src] does something!"
@@ -183,8 +181,6 @@
 		to_chat(src, self_message, avoid_highlighting = block_self_highlight)
 	else
 		show_message(self_message, EMOTE_VISIBLE, blind_message, EMOTE_AUDIBLE, avoid_highlighting = block_self_highlight)
-
-
 
 // Show a message to all mobs in sight of this atom
 // Use for objects performing visible actions
@@ -235,8 +231,6 @@
 
 		mob.show_message(msg, msg_type, blind_message, EMOTE_AUDIBLE)
 
-
-
 // Show a message to all mobs in earshot of this one
 // This would be for audible actions by the src mob
 // message is the message output to anyone who can hear.
@@ -265,7 +259,6 @@
 	for(var/obj/O in listening_obj)
 		O.hear_message(src, omsg)
 
-
 // Show a message to all mobs in earshot of this atom
 // Use for objects performing audible actions
 // message is the message output to anyone who can hear.
@@ -278,13 +271,11 @@
 	for(var/mob/M as anything in viewers(range, src))
 		M.show_message(message, EMOTE_AUDIBLE, deaf_message, EMOTE_VISIBLE)
 
-
 /mob/proc/findname(msg)
 	for(var/mob/M in GLOB.mob_list)
 		if(M.real_name == text("[]", msg))
 			return M
 	return 0
-
 
 /mob/proc/get_visible_mobs()
 	var/list/seen_mobs = list()
@@ -313,7 +304,7 @@
 	var/list/mobs_in_view = get_visible_mobs()
 
 	for(var/mob/living/M in range(14, T))
-		if(M && M.mind)
+		if(M?.mind)
 			if(M == src)
 				continue
 			var/mob_name
@@ -330,7 +321,6 @@
 			while(validtargets[result_name])
 			validtargets[result_name] = M
 	return validtargets
-
 
 /**
  * Reset the attached clients perspective (viewpoint)
@@ -375,7 +365,6 @@
 
 	return TRUE
 
-
 /mob/living/reset_perspective(atom/new_eye)
 	. = ..()
 	if(!.)
@@ -385,7 +374,6 @@
 	update_fullscreen()
 	update_pipe_vision()
 
-
 /// Proc used to handle the fullscreen overlay updates, realistically meant for the reset_perspective() proc.
 /mob/living/proc/update_fullscreen()
 	if(client.eye && client.eye != src)
@@ -393,7 +381,6 @@
 		client_eye.get_remote_view_fullscreens(src)
 	else
 		clear_fullscreen("remote_view", 0)
-
 
 /mob/dead/reset_perspective(atom/new_eye)
 	. = ..()
@@ -429,7 +416,6 @@
 
 	to_chat(src, chat_box_examine(result.Join("\n")), MESSAGE_TYPE_INFO, confidential = TRUE)
 
-
 /mob/verb/mode()
 	set name = "Использовать объект"
 	set src = usr
@@ -455,12 +441,14 @@
 
 	limb_attack_self()
 
-
 /// Cleanup proc that's called when a mob loses a client, either through client destroy or logout
 /// Logout happens post client del, so we can't just copypaste this there. This keeps things clean and consistent
 /mob/proc/become_uncliented()
 	if(!canon_client)
 		return
+
+	for(var/datum/callback/callback as anything in persistent_client.post_logout_callbacks)
+		callback.Invoke()
 
 	if(canon_client?.movingmob)
 		LAZYREMOVE(canon_client.movingmob.client_mobs_in_contents, src)
@@ -512,13 +500,12 @@
 	set src in usr
 	if(usr != src)
 		to_chat(usr, "No.")
-	var/msg = tgui_input_text(usr, "Set the flavor text in your 'examine' verb. The flavor text should be a physical descriptor of your character at a glance. SFW Drawn Art of your character is acceptable.", "Flavor Text", flavor_text, multiline = TRUE)
+	var/msg = tgui_input_text(usr, "Set the flavor text in your 'examine' verb. The flavor text should be a physical descriptor of your character at a glance. SFW Drawn Art of your character is acceptable.", "Описание внешности", flavor_text, max_length = MAX_PAPER_MESSAGE_LEN, multiline = TRUE)
 	if(isnull(msg))
 		return
 	if(stat)
 		to_chat(usr, "<span class='notice'>You have to be conscious to change your flavor text</span>")
 		return
-	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
 	flavor_text = msg
 
 /mob/proc/print_flavor_text(shrink = TRUE)
@@ -545,7 +532,7 @@
 		to_chat(usr, "You are not dead or you have given up your right to be respawned!")
 		return
 
-	var/deathtime = world.time - src.timeofdeath
+	var/deathtime = world.time - persistent_client.time_of_death
 	if(istype(src,/mob/dead/observer))
 		var/mob/dead/observer/G = src
 		if(cannotPossess(G))
@@ -591,7 +578,7 @@
 		qdel(M)
 		return
 
-	M.key = key
+	M.possess_by_player(key)
 	GLOB.respawnable_list += usr
 	return
 
@@ -626,10 +613,9 @@
 		popup.set_content(GLOB.scoreboard)
 		popup.open(FALSE)
 
-
-/mob/MouseDrop(mob/living/user, src_location, over_location, src_control, over_control, params)
+/mob/mouse_drop_dragged(atom/over_object, mob/living/user, src_location, over_location, params)
 	. = ..()
-	if(!. || usr != user || usr == src || !HAS_TRAIT(user, TRAIT_CAN_STRIP))
+	if(!. || usr != user || usr == src || over_object != usr || !HAS_TRAIT(user, TRAIT_CAN_STRIP))
 		return FALSE
 	if(!user.can_strip || isliving(user) && user.mob_size <= MOB_SIZE_SMALL)
 		return FALSE // Stops pAI drones and small mobs (borers, parrots, crabs) from stripping people. --DZD
@@ -725,26 +711,21 @@
 	client.move_delay += cached_multiplicative_slowdown
 	return TRUE
 
-
 /mob/verb/eastface()
 	set hidden = 1
 	return facedir(EAST)
-
 
 /mob/verb/westface()
 	set hidden = 1
 	return facedir(WEST)
 
-
 /mob/verb/northface()
 	set hidden = 1
 	return facedir(NORTH)
 
-
 /mob/verb/southface()
 	set hidden = 1
 	return facedir(SOUTH)
-
 
 /mob/proc/IsAdvancedToolUser()//This might need a rename but it should replace the can this mob use things check
 	return FALSE
@@ -804,8 +785,7 @@
 
 	to_chat(usr, span_notice(message))
 	GLOB.respawnable_list -= usr
-	picked_mob.key = key
-
+	picked_mob.possess_by_player(key)
 
 /mob/proc/become_mouse()
 	var/timedifference = world.time - client.time_joined_as_mouse
@@ -822,7 +802,7 @@
 		var/obj/vent_found = pick(found_vents)
 		var/choosen_type = prob(90) ? /mob/living/simple_animal/mouse : /mob/living/simple_animal/mouse/rat
 		var/mob/living/simple_animal/mouse/host = new choosen_type(vent_found.loc)
-		host.ckey = src.ckey
+		host.possess_by_player(ckey)
 		to_chat(host, span_notice("You are now a mouse. Try to avoid interaction with players, and do not give hints away that you are more than a simple rodent."))
 	else
 		to_chat(src, "<span class='warning'>Unable to find any unwelded vents to spawn mice at.</span>")
@@ -857,14 +837,14 @@
 			location.add_vomit_floor(FALSE, TRUE)
 		else
 			if(!no_text)
-				visible_message("<span class='warning'>[src.name] наблевал[genderize_ru(src.gender,"","а","о","и")] на себя!</span>","<span class='warning'>Вы наблевали на себя!</span>")
+				visible_message("<span class='warning'>[src.name] наблевал[GEND_A_O_I(src)] на себя!</span>","<span class='warning'>Вы наблевали на себя!</span>")
 			location.add_vomit_floor(TRUE)
-
 
 /mob/proc/AddSpell(obj/effect/proc_holder/spell/spell)
 	if(!istype(spell))
 		return
 	LAZYADD(mob_spell_list, spell)
+	spell.action.allow_observer_click = TRUE
 	spell.action.Grant(src)
 	spell.on_spell_gain(src)
 
@@ -876,11 +856,9 @@
 			LAZYREMOVE(mob_spell_list, spell)
 			qdel(spell)
 
-
 //override to avoid rotating pixel_xy on mobs
 /mob/shuttleRotate(rotation)
 	dir = angle2dir(rotation+dir2angle(dir))
-
 
 /**
  * Buckle to another mob
@@ -894,7 +872,6 @@
 		return FALSE
 	return ..()
 
-
 /**
  * Buckle a living mob to this mob. Also turns you to face the other mob
  *
@@ -905,19 +882,16 @@
 		return FALSE
 	return ..()
 
-
 ///Call back post buckle to a mob to offset your visual height
 /mob/post_buckle_mob(mob/living/target)
 	target.pixel_y += target.get_mob_buckling_height(src)
 	if(target.layer < layer)
 		target.layer = layer + 0.01
 
-
 ///Call back post unbuckle from a mob, (reset your visual height here)
 /mob/post_unbuckle_mob(mob/living/target)
 	target.pixel_y -= target.get_mob_buckling_height(src)
 	target.layer = initial(target.layer)
-
 
 ///returns the height in pixel the mob should have when buckled to another mob.
 /mob/proc/get_mob_buckling_height(mob/seat)
@@ -926,7 +900,6 @@
 		if(L.mob_size <= MOB_SIZE_SMALL) //being on top of a small mob doesn't put you very high.
 			return 0
 	return 9
-
 
 //Can the mob see reagents inside of containers?
 /mob/proc/can_see_reagents()
@@ -975,25 +948,22 @@
 	var/datum/log_record/record = new(log_type, src, what, target, where, world.time)
 	GLOB.logging.add_log(real_ckey, record)
 
-
 /mob/proc/create_attack_log(text, collapse = TRUE)
 	LAZYINITLIST(attack_log_old)
 	create_log_in_list(attack_log_old, text, collapse, last_log)
 	last_log = world.timeofday
 
-
 /mob/proc/create_debug_log(text, collapse = TRUE)
 	LAZYINITLIST(debug_log)
 	create_log_in_list(debug_log, text, collapse, world.timeofday)
-
 
 /proc/create_log_in_list(list/target, text, collapse = TRUE, last_log)//forgive me code gods for this shitcode proc
 	//this proc enables lovely stuff like an attack log that looks like this: "[18:20:29-18:20:45]21x John Smith attacked Andrew Jackson with a crowbar."
 	//That makes the logs easier to read, but because all of this is stored in strings, weird things have to be used to get it all out.
 	var/new_log = "\[[time_stamp()]] [text]"
 
-	if(target.len)//if there are other logs already present
-		var/previous_log = target[target.len]//get the latest log
+	if(length(target))//if there are other logs already present
+		var/previous_log = target[length(target)]//get the latest log
 		var/last_log_is_range = (copytext(previous_log, 10, 11) == "-") //whether the last log is a time range or not. The "-" will be an indicator that it is.
 		var/x_sign_position = findtext(previous_log, "x")
 
@@ -1008,7 +978,6 @@
 			if(!(copytext(previous_log, 12) == text))
 				collapse = 0
 
-
 		if(collapse == 1)
 			var/rep = 0
 			var/old_timestamp = copytext(previous_log, 2, 10)//copy the first time value. This one doesn't move when it's a timespan, so no biggie
@@ -1018,10 +987,9 @@
 				rep = text2num(copytext(previous_log, 44, x_sign_position))//get whatever number is right before the 'x'
 
 			new_log = "\[[old_timestamp]-[time_stamp()]]<font color='purple'><b>[rep?rep+1:2]x</b></font> [text]"
-			target -= target[target.len]//remove the last log
+			target -= target[length(target)]//remove the last log
 
 	target += new_log
-
 
 /mob/vv_get_dropdown()
 	. = ..()
@@ -1181,12 +1149,10 @@
 		. = invoked_callback.Invoke()
 	usr = temp
 
-
 GLOBAL_LIST_INIT(holy_areas, typecacheof(list(
 	/area/chapel,
 	/area/maintenance/chapel
 )))
-
 
 /mob/proc/holy_check()
 	if(!is_type_in_typecache(get_area(src), GLOB.holy_areas))
@@ -1207,18 +1173,15 @@ GLOBAL_LIST_INIT(holy_areas, typecacheof(list(
 	to_chat(src, span_warning("Your powers are useless on this holy ground."))
 	return TRUE
 
-
 /mob/proc/reset_visibility()
 	invisibility = initial(invisibility)
 	alpha = initial(alpha)
 	add_to_all_human_data_huds()
 
-
 /mob/proc/make_invisible()
 	invisibility = INVISIBILITY_LEVEL_TWO
 	alpha = 128
 	remove_from_all_data_huds()
-
 
 /mob/proc/set_stat(new_stat)
 	if(new_stat == stat)
@@ -1241,10 +1204,8 @@ GLOBAL_LIST_INIT(holy_areas, typecacheof(list(
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOB_SLIPPED, weaken_amount, slipped_on, lube_flags, tilesSlipped)
 
-
 /mob/proc/IsLying()
 	return FALSE
-
 
 ///Ignores specific action slowdowns. Accepts a list of slowdowns.
 /mob/proc/add_actionspeed_mod_immunities(source, slowdown_type, update = TRUE)
@@ -1259,7 +1220,6 @@ GLOBAL_LIST_INIT(holy_areas, typecacheof(list(
 		LAZYADDASSOCLIST(actionspeed_mod_immunities, slowdown_type, source)
 	if(update)
 		update_actionspeed()
-
 
 ///Unignores specific action slowdowns. Accepts a list of slowdowns.
 /mob/proc/remove_actionspeed_mod_immunities(source, slowdown_type, update = TRUE)
@@ -1314,9 +1274,6 @@ GLOBAL_LIST_INIT(holy_areas, typecacheof(list(
 			add_misc_logs(src, "Z-TRACKING: [src] of type [src.type] has a Z-registration despite not having a client.")
 			update_z(null)
 
-/mob/proc/set_key(key)
-	src.key = key
-
 /// Assigns a (c)key to this mob.
 /mob/proc/possess_by_player(ckey)
 	SHOULD_NOT_OVERRIDE(TRUE)
@@ -1327,7 +1284,6 @@ GLOBAL_LIST_INIT(holy_areas, typecacheof(list(
 		CRASH("Tried to assign a mob a non-text ckey, wtf?!")
 
 	src.ckey = ckey(ckey)
-
 
 /**
  * set every hud image in the given category active so other people with the given hud can see it.

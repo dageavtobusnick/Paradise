@@ -98,7 +98,9 @@
 						success = TRUE
 						break
 				else
-					victim.visible_message(span_danger("[living_pawn] tried to snatch [target] from [victim], but failed!"), span_userdanger("[living_pawn] tried to grab [target]!"))
+					victim.visible_message(span_danger("[living_pawn] пыта[PLUR_ET_YUT(living_pawn)]ся украсть [target.declent_ru(ACCUSATIVE)] у [victim], но провалива[PLUR_ET_YUT(living_pawn)]ся!"),
+						span_userdanger("[living_pawn] пыта[PLUR_ET_YUT(living_pawn)]ся украсть [target.declent_ru(ACCUSATIVE)]!")
+					)
 
 	finish_action(controller, success) //We either fucked up or got the item.
 
@@ -298,5 +300,4 @@
 
 	controller.set_blackboard_key(set_key, pick_weight(valids))
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
-
 

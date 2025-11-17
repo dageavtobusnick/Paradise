@@ -43,7 +43,7 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 		if (can_see(living_mob, hostile_machine, aggro_range))
 			potential_targets += hostile_machine
 
-	if(!potential_targets.len)
+	if(!length(potential_targets))
 		failed_to_find_anyone(controller, target_key, targeting_strategy_key, hiding_location_key)
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
@@ -54,7 +54,7 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 			filtered_targets += pot_target
 			continue
 
-	if(!filtered_targets.len)
+	if(!length(filtered_targets))
 		failed_to_find_anyone(controller, target_key, targeting_strategy_key, hiding_location_key)
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
