@@ -141,7 +141,7 @@
 	. = ..()
 	if(isliving(A))
 		var/mob/living/mob = A
-		var/mobref = "\ref[mob]"
+		var/mobref = mob.UID()
 		if(mob == reviver)
 			return
 		if(mobref in faction)
