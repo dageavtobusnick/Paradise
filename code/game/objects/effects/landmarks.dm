@@ -377,6 +377,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/awaystart)
 	GLOB.start_landmarks_list |= src
 
 /obj/effect/landmark/start/set_tag()
+	. = ..()
 	if(name != "start")
 		tag = "start*[name]"
 
