@@ -637,6 +637,11 @@
 
 /obj/structure/spacevine_controller/Destroy()
 	STOP_PROCESSING(SSobj, src)
+	for(var/obj/structure/spacevine/vine as anything in vines)
+		vine.master = null
+		qdel(vine)
+	LAZYCLEARLIST(vines)
+	LAZYCLEARLIST(growth_queue)
 	return ..()
 
 /obj/structure/spacevine_controller/has_prints()
@@ -679,6 +684,8 @@
 
 	for(var/obj/structure/spacevine/SV in growth_queue)
 		if(QDELETED(SV))
+			if(SV in vines)
+				vines -= SV
 			continue
 		i++
 		queue_end += SV
